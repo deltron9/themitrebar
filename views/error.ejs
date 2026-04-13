@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página no encontrada | The Mitre</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+
+    <main class="error-hero">
+        <div class="error-container">
+            <h1 class="error-code">404</h1>
+            <h2 class="error-message">Parece que te perdiste en la barra...</h2>
+            <p class="error-description">
+                La página que estás buscando no existe o fue movida. 
+                Pero no te preocupes, el camino de regreso es corto.
+            </p>
+            
+            <a href="/" class="btn-cta pulsed-btn capsule-btn shiny-btn">
+                <span>VOLVER AL INICIO</span>
+            </a>
+        </div>
+    </main>
+    <script>
+        // Redirigir automáticamente al inicio después de 5 segundos
+        setTimeout(() => {
+            window.location.href = "/";
+        }, 5000);
+    </script>
+</body>
+</html>
