@@ -31,6 +31,7 @@ h1, h3 {
 }
 
 /* =========== NAVBAR =========== */
+/* =========== NAVBAR =========== */
 .navbar {
     background-color: rgba(10, 10, 10, 0.98);
     border-bottom: 1px solid rgba(226, 176, 74, 0.4);
@@ -76,6 +77,9 @@ h1, h3 {
     gap: 2.5rem;
 }
 
+/* =========== NAVBAR =========== */
+/* ... (el resto de tu estilo .navbar, .nav-container, etc. se mantiene igual) ... */
+
 .nav-links a {
     text-decoration: none;
     color: var(--white);
@@ -83,22 +87,62 @@ h1, h3 {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 2px;
-    transition: 0.3s;
+    transition: color 0.3s ease;
+    position: relative;
+    padding: 8px 0;
+    outline: none;
 }
 
+/* El subrayado base (escondido) */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--gold);
+    transform: translateX(-50%);
+    transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* --- HOVER: Mantenemos la apertura animada para los otros links --- */
 .nav-links a:hover {
     color: var(--gold);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* --- ESTADO "PINTADO": Seccion Actual --- */
+/* Esta es la clase que hace que el link ya aparezca marcado al entrar */
+.nav-links a.active {
+    color: var(--gold);
+}
+
+.nav-links a.active::after {
+    width: 100%; 
+    transition: none; 
+}
+
+.nav-links a:focus {
+    color: var(--gold);
+}
+
+.nav-links a:focus::after {
+    width: 100%;
+    transition: none;
 }
 
 .mobile-menu-icon {
     display: none;
 }
-
 /* =========== INICIO =========== */
 .hero-section {
     height: 100vh;
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), 
-                url('../assets/fondo_bienvenida.webp');
+                url('../assets/fondo_bienvenida.webp') no-repeat;
     background-size: cover;
     background-position: center;
     display: flex;
@@ -111,14 +155,22 @@ h1, h3 {
     text-align: center;
 }
 
-.hero-overlay h1 {
+.hero-overlay h1{
     font-size: clamp(3rem, 10vw, 6rem);
-    margin-bottom: 1rem;
+    margin-bottom: 0.2rem;
     color: var(--gold);
     border-color: #ffcc6d;
 }
 
-/* --- ESTILO DEL BOTÓN  */
+.hero-overlay p {
+    font-family: 'Montserrat', sans-serif;
+    font-style: italic;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    margin-bottom: 0.5rem; /* Distancia entre el texto y el botón */
+    color: var(--white);
+}
+
+/* ESTILO DEL BOTÓN  */
 .btn-cta {
     display: inline-block;
     padding: 1.2rem 3.5rem;
@@ -156,7 +208,7 @@ h1, h3 {
 
 /* Pulso */
 .pulsed-btn {
-    animation: pulse-gold 2s infinite;
+    animation: pulse-gold 4s infinite;
 }
 
 @keyframes pulse-gold {
