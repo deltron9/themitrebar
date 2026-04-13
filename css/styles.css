@@ -26,11 +26,6 @@ body {
     line-height: 1.6;
 }
 
-h1, h3 {
-    font-family: 'Playfair Display', serif;
-}
-
-/* =========== NAVBAR =========== */
 /* =========== NAVBAR =========== */
 .navbar {
     background-color: rgba(10, 10, 10, 0.98);
@@ -78,7 +73,6 @@ h1, h3 {
 }
 
 /* =========== NAVBAR =========== */
-/* ... (el resto de tu estilo .navbar, .nav-container, etc. se mantiene igual) ... */
 
 .nav-links a {
     text-decoration: none;
@@ -93,7 +87,7 @@ h1, h3 {
     outline: none;
 }
 
-/* El subrayado base (escondido) */
+/* El subrayado base escondido */
 .nav-links a::after {
     content: '';
     position: absolute;
@@ -106,7 +100,6 @@ h1, h3 {
     transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* --- HOVER: Mantenemos la apertura animada para los otros links --- */
 .nav-links a:hover {
     color: var(--gold);
 }
@@ -115,7 +108,6 @@ h1, h3 {
     width: 100%;
 }
 
-/* --- ESTADO "PINTADO": Seccion Actual --- */
 /* Esta es la clase que hace que el link ya aparezca marcado al entrar */
 .nav-links a.active {
     color: var(--gold);
@@ -156,10 +148,11 @@ h1, h3 {
 }
 
 .hero-overlay h1{
+    font-family: 'Playfair Display', serif;
     font-size: clamp(3rem, 10vw, 6rem);
     margin-bottom: 0.2rem;
-    color: var(--gold);
-    border-color: #ffcc6d;
+    color: var(--gold); 
+
 }
 
 .hero-overlay p {
