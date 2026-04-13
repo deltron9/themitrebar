@@ -1,0 +1,228 @@
+/* --- VARIABLES DE DISEÑO --- */
+:root {
+    --gold: #e2b04a;             
+    --gold-bright: #f0c36d;      
+    --black: #0a0a0a;            
+    --white: #ffffff;
+    --gray-muted: #666;
+    --navbar-height: 110px;
+}
+
+/* --- RESET & GENERAL --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--black);
+    color: var(--white);
+    line-height: 1.6;
+}
+
+h1, h3 {
+    font-family: 'Playfair Display', serif;
+}
+
+/* =========== NAVBAR =========== */
+.navbar {
+    background-color: rgba(10, 10, 10, 0.98);
+    border-bottom: 1px solid rgba(226, 176, 74, 0.4);
+    padding: 0.6rem 5%;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(8px);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+}
+
+.nav-logo {
+    height: 65px;
+    width: auto;
+    margin-bottom: 2px;
+}
+
+.logo-sub {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--gold);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2.5rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--white);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--gold);
+}
+
+.mobile-menu-icon {
+    display: none;
+}
+
+/* =========== HERO / INICIO =========== */
+.hero-section {
+    height: 100vh;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), 
+                url('../img/background-bar.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: var(--navbar-height);
+}
+
+.hero-overlay {
+    text-align: center;
+}
+
+.hero-overlay h1 {
+    font-size: clamp(3rem, 10vw, 6rem);
+    margin-bottom: 1rem;
+}
+
+.btn-cta {
+    display: inline-block;
+    padding: 1.2rem 3.5rem;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 600;
+    position: relative;
+    transition: all 0.4s ease;
+}
+
+.pulsed-btn {
+    animation: pulse-gold 2s infinite;
+}
+
+@keyframes pulse-gold {
+    0% { box-shadow: 0 0 0 0 rgba(226, 176, 74, 0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(226, 176, 74, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(226, 176, 74, 0); }
+}
+
+.btn-cta:hover {
+    background-color: var(--gold);
+    color: var(--black);
+    transform: scale(1.05);
+}
+
+/* =========== FOOTER =========== */
+.main-footer {
+    background-color: #050505;
+    padding: 0.2rem 2% 0rem; 
+    border-top: 1px solid rgba(226, 176, 74, 0.2);
+}
+
+.footer-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Filas del footer */
+.footer-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Fila de títulos h3 en footer */
+.titles-row {
+    color: var(--gold);
+}
+
+/* Fila de contenido de links y iconos*/
+.content-row {
+    padding-bottom: 0.1rem;
+}
+
+.footer-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-section h3 {
+    color: var(--gold);
+    text-transform: uppercase;
+    font-size: 0.75rem; 
+    letter-spacing: 2px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 20px;
+}
+
+.social-icons a {
+    color: var(--white);
+    font-size: 1.3rem; 
+    transition: 0.3s;
+}
+
+.contact-link {
+    color: var(--white);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem; 
+    transition: 0.3s;
+}
+
+.contact-link i {
+    font-size: 1rem; 
+    color: var(--gold);
+}
+
+.social-icons a:hover, 
+.contact-link:hover {
+    color: var(--gold-bright);
+    transform: translateY(-1px);
+}
+
+/* sector del copyright*/
+.footer-bottom {
+    text-align: center;
+    font-size: 0.55rem;
+    color: var(--gray-muted);
+    letter-spacing: 1px;
+}
