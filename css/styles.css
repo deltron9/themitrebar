@@ -74,7 +74,8 @@ body {
 
 /* =========== NAVBAR =========== */
 
-.nav-links a {
+.nav-links a, 
+.nav-links span {
     text-decoration: none;
     color: var(--white);
     font-size: 0.8rem;
@@ -84,11 +85,12 @@ body {
     transition: color 0.3s ease;
     position: relative;
     padding: 8px 0;
-    outline: none;
+    display: inline-block; 
 }
 
-/* El subrayado base escondido */
-.nav-links a::after {
+/* El subrayado para ambos */
+.nav-links a::after,
+.nav-links span::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -100,6 +102,18 @@ body {
     transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+/* Fijo y sin cursor de link */
+.nav-links .active {
+    color: var(--gold);
+    cursor: default;
+}
+
+.nav-links .active::after {
+    width: 100%;
+    transition: none;
+}
+
+/* Solo los links tienen hover */
 .nav-links a:hover {
     color: var(--gold);
 }
@@ -107,7 +121,6 @@ body {
 .nav-links a:hover::after {
     width: 100%;
 }
-
 /* Esta es la clase que hace que el link ya aparezca marcado al entrar */
 .nav-links a.active {
     color: var(--gold);
