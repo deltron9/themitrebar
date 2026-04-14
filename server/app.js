@@ -10,19 +10,24 @@ const cookieParser = require('cookie-parser');
 //configuración de EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '..', 'views'));
+
 //configuración de path para archivos estáticos
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 //si no se define en la ruta, no tira error
 app.use((req, res, next) => {
     res.locals.page = "";
     next();
 });
+
 //uso de rutas
 app.use('/', indexRoutes);
+
 //para poder leer las cookies
 app.use(cookieParser());
+
 // renderizado para error 404
 app.use((req, res) => {
     res.status(404).render('error', { page: 'error' });

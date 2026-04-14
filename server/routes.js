@@ -2,8 +2,22 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const express = require('express');
-const router = express.Router();
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+
+//configuración para almacenamiento mediante middleware multer
+const storage = multer.diskStorage({ destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, '..', 'public', 'assets', 'cartas'));
+}, filename: (req, file, cb) => {
+    const extension = path.extname(file.originalname);
+    cb(null,
+        req.body.nombreSeccion + extension);
+    
+    }
+});
+
+//multer inicia con la configuracion que esta arriba
+const upload = multer({ storage: storage});
 
 //JWT Middleware para proteger rutas de administrador
 const protectedAdmin = (req, res, next) => {
@@ -61,6 +75,13 @@ router.get('/logout', (req, res) => {
 //proteccion de ruta de admin
 router.get('/admin', protectedAdmin, (req, res) => {
     res.render('admin/index', { page: 'admin' });
+});
+
+router.post('/admin/upload', protectedAdmin, upload.single('imagen'), (req, res) => {
+    res.render('admin/index', {
+        page: 'admin',
+        mensaje: '¡Carta actualizada correctamente!'
+    });
 });
 
 module.exports = router;
