@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de actualizaciones</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/styles_admin.css">
+</head>
+<body>
+    <main class="admin-panel">
+    <div class="panel-card">
+        <h2>Actualizar Cartas</h2>
+        
+        <% if (locals.mensaje) { %>
+            <div class="alert success"><%= mensaje %></div>
+        <% } %>
+
+        <form action="/admin/upload" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>1. Seleccioná qué carta actualizar:</label>
+                <select name="nombreSeccion" required>
+                    <option value="carta-principal">Menú Principal</option>
+                    <option value="carta-vinos">Carta de Vinos</option>
+                    <option value="carta-tragos">Barra y Tragos</option>
+                    <option value="carta-postres">Postres y Café</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>2. Subir imagen (reemplazará la anterior):</label>
+                <input type="file" name="imagen" accept="image/*" required>
+            </div>
+
+            <button type="submit" class="btn-update">ACTUALIZAR CARTA</button>
+        </form>
+    </div>
+    <div class="logout-section">
+    <a href="/logout" class="link-exit">Cerrar Sesión Segura</a>
+</div>
+
+</main>
+
+</body>
+</html>
