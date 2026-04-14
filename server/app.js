@@ -22,11 +22,11 @@ app.use((req, res, next) => {
     next();
 });
 
-//uso de rutas
-app.use('/', indexRoutes);
-
 //para poder leer las cookies
 app.use(cookieParser());
+
+//uso de rutas
+app.use('/', indexRoutes);
 
 // renderizado para error 404
 app.use((req, res) => {
