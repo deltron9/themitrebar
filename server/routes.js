@@ -4,27 +4,28 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 
-//configuración para almacenamiento mediante middleware multer
-const storage = multer.diskStorage({ destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '..', 'public', 'assets', 'cartas'));
-}, filename: (req, file, cb) => {
-    const extension = path.extname(file.originalname);
-    cb(null,
-        req.body.nombreSeccion + extension);
-    
+// Configuración de almacenamiento Multer
+const storage = multer.diskStorage({ 
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, '..', 'public', 'assets', 'cartas'));
+    }, 
+    filename: (req, file, cb) => {
+        const extension = path.extname(file.originalname);
+        // Se usa el nombre del <select> para nombrar el archivo
+        cb(null, req.body.nombreSeccion + extension);
     }
 });
 
-//multer inicia con la configuracion que esta arriba
-const upload = multer({ storage: storage});
+const upload = multer({ storage: storage });
 
-//JWT Middleware para proteger rutas de administrador
+// Middleware para proteger rutas de administrador
 const protectedAdmin = (req, res, next) => {
     const token = req.cookies.adminToken;
     if (!token) return res.redirect('/login');
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secretomitre');
+        
+        const decoded = jwt.verify(token, process.env.JWT_SECRET|| 'clavemitrebar'); 
         req.user = decoded;
         next();
     } catch (err) {
@@ -33,7 +34,7 @@ const protectedAdmin = (req, res, next) => {
     }
 };
 
-//paginas publicas 
+//PAGINAS PUBLICAS
 router.get('/', (req, res) => {
     res.render('index', { page: 'inicio' });
 });
@@ -50,34 +51,34 @@ router.get('/ubicacion', (req, res) => {
     res.render('ubicacion_horarios', { page: 'ubicacion' });
 });
 
+//acceso y login
 router.get('/login', (req, res) => {
     res.render('admin/login', { page: 'login' });
 });
 
-//validación de credenciales de administrador
 router.post('/login', (req, res) => {
     const { user, pass } = req.body;
     if (user === process.env.ADMIN_USER && pass === process.env.ADMIN_PASS) {
-        const token = jwt.sign({ user }, process.env.JWT_SECRET || 'clavemitrebar', { expiresIn: '15m' }); //el token tarda 15 min en expirar
-        res.cookie('adminToken', token, { httpOnly: true, maxAge: 15 * 60 * 1000 }); //esto invalida la cookie despues de 15 min
+        const token = jwt.sign({ user }, process.env.JWT_SECRET || 'clavemitrebar', { expiresIn: '15m' });
+        res.cookie('adminToken', token, { httpOnly: true, maxAge: 15 * 60 * 1000 });
+        // CORRECCIÓN: Redirección con barra inicial a /admin
         return res.redirect('/admin');
     }
     res.render('admin/login', { page: 'login', error: 'Credenciales incorrectas' });
 });
 
-//ruta de cerrar sesion
 router.get('/logout', (req, res) => {
     res.clearCookie('adminToken');
     res.redirect('/login');
 });
 
-//proteccion de ruta de admin
+// --- PANEL DE ADMINISTRACIÓN (PROTEGIDO) ---
 router.get('/admin', protectedAdmin, (req, res) => {
-    res.render('admin/index', { page: 'admin' });
+    res.render('admin/panel', { page: 'admin' });
 });
 
 router.post('/admin/upload', protectedAdmin, upload.single('imagen'), (req, res) => {
-    res.render('admin/index', {
+    res.render('admin/panel', {
         page: 'admin',
         mensaje: '¡Carta actualizada correctamente!'
     });
