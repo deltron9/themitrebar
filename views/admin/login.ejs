@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Administración</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../public/css/styles.css">
+</head>
+<body class="admin-login-body">
+
+    <div class="login-container">
+        <div class="login-header">
+            <img src="/assets/logo_navbar.webp" alt="Logo the mitre bar" class="login-logo">
+            <h2>Panel de acceso</h2>
+        </div>
+
+        <form action="/login" method="POST" class="login-form">
+            <div class="input-group">
+                <label for="user">Usuario</label>
+                <input type="text" id="user" name="user" required placeholder="Ingresá el usuario">
+            </div>
+
+            <div class="input-group">
+                <label for="pass">Contraseña</label>
+                <input type="password" id="pass" name="pass" required placeholder="sarakatunga">
+            </div>
+            <% if (locals.error) { %>
+                <div class="error-message">
+                    <p><%=error %></p>
+                </div>
+            <% } %>
+
+            <button type="submit" class="login-btn">
+                <span>Ingresar</span>
+            </button>
+        </form>
+
+        <div class="login-footer"> 
+            <a href="/"> 
+                Volver al sitio 
+            </a>
+        </div>
+    </div>
+    
+</body>
+</html>
