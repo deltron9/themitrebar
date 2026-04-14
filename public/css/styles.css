@@ -373,3 +373,146 @@ body {
     letter-spacing: 1px;
     line-height: 1.6;
     }
+
+/* AJUSTES ESPECÍFICOS PARA LA PÁGINA DE CARTAS */
+
+.menu-page {
+    padding-top: var(--navbar-height);
+    background-color: var(--black);
+}
+
+.menu-header {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8));
+}
+
+.menu-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 5%;
+}
+
+.menu-item-card {
+    margin-bottom: 100px;
+    border-bottom: 1px solid rgba(226, 176, 74, 0.1);
+    padding-bottom: 60px;
+}
+
+.menu-content {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.menu-item-card.reverse .menu-content {
+    flex-direction: row-reverse;
+}
+
+.text-side {
+    flex: 1;
+}
+
+.text-side h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: var(--gold);
+    margin-bottom: 20px;
+}
+
+.text-side p {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 30px;
+    line-height: 1.8;
+}
+
+.image-side {
+    flex: 1;
+}
+
+.carta-img {
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+    border: 1px solid rgba(226, 176, 74, 0.2);
+    transition: transform 0.4s ease;
+}
+
+.carta-img:hover {
+    transform: scale(1.02) rotate(1deg);
+    border-color: var(--gold);
+}
+
+.chef-special-bg {
+    background: rgba(226, 176, 74, 0.05);
+    padding: 60px;
+    border-radius: 15px;
+    border: 1px dashed var(--gold);
+}
+
+/* CONTENEDOR DEL PDF */
+    .click-hint {
+        font-size: 0.75rem;
+        color: var(--gold);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-top: 15px;
+        opacity: 0.7;
+    }
+
+    /* Estilos para forzar el formato cuadrado */
+
+.square-box {
+    width: 100%;
+    max-width: 350px;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    border: 1px solid rgba(226, 176, 74, 0.4);
+    }
+
+.square-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    }
+
+.overlay-zoom {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: 0.3s;
+    color: #e2b04a;
+    font-size: 2rem;
+}
+
+.square-box:hover .overlay-zoom { opacity: 1; }
+
+    /* Modal superior */
+    .modal-zoom {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 99999; /* Muy alto para que nada lo tape */
+        background: rgba(0,0,0,0.95);
+    }
+    .modal-pdf-container {
+        width: 95%;
+        height: 90%;
+        margin: 2% auto;
+        background: white;
+    }
+    .close-zoom {
+        position: absolute;
+        top: 10px; right: 20px;
+        color: #e2b04a;
+        font-size: 50px;
+        cursor: pointer;
+        z-index: 100000;
+    }

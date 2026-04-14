@@ -10,11 +10,98 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="./css/styles.css">
+    <style>
+    </style>
 </head>
 <body>
-    <%- include('partials/_navbar') %>
-//TERMINAR EL MAIN DE LA CARTA, y recordar armar la logica para la subida de archivos.
-    <%- include('partials/_footer') %>
-    <script src="./js/script.js"></script>
-</body>
-</html>
+<%- include('partials/_navbar') %>
+
+<main class="menu-page">
+    <header class="menu-header">
+        <h1 class="hero-overlay">Nuestras Propuestas</h1>
+        <p class="hero-overlay">Un recorrido por los sabores que definen nuestra identidad en Adrogué</p>
+    </header>
+
+    <div class="menu-grid">
+        <section class="menu-item-card">
+            <div class="menu-content">
+                <div class="text-side">
+                    <h2>Carta Principal</h2>
+                    <p>Desde nuestras clásicas rabas con alioli hasta el inconfundible Bife de Chorizo Mitre. Disfrutá de una experiencia única con nuestros Ravioles Negros de Salmón o un Risotto al Fungi.</p>
+                </div>
+                <div class="image-side">
+                    <div class="preview-wrapper square-box" onclick="openPdfModal('/assets/cartas/carta-principal.pdf')">
+                        <img src="/assets/cartas/preview-cartaprincipal.webp" alt="Carta Principal" class="carta-img">
+                        <div class="overlay-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="menu-item-card reverse">
+            <div class="menu-content">
+                <div class="text-side">
+                    <h2>Menú Ejecutivo</h2>
+                    <p>Diseñado para una pausa distinguida. Nuestra propuesta incluye Bondiola agridulce, Lomito Mitre o Merluza a la romana. El equilibrio perfecto entre agilidad y sabor.</p>
+                </div>
+                <div class="image-side">
+                    <div class="preview-wrapper square-box" onclick="openPdfModal('/assets/cartas/menu-ejecutivo.pdf')">
+                        <img src="/assets/cartas/preview-menuejecutivo.webp" alt="Menú Ejecutivo" class="carta-img">
+                        <div class="overlay-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="menu-item-card">
+            <div class="menu-content">
+                <div class="text-side">
+                    <h2>Vinos y Tragos</h2>
+                    <p>Nuestra cava cuenta con etiquetas prestigiosas y coctelería clásica como el Negroni o el Gin Tonic Frutado, ideal para maridar nuestras propuestas.</p>
+                </div>
+                <div class="image-side">
+                    <div class="preview-wrapper square-box" onclick="openPdfModal('/assets/cartas/tragos.pdf')">
+                        <img src="/assets/cartas/preview-tragos.webp" alt="Vinos y Tragos" class="carta-img">
+                        <div class="overlay-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="pdfModal" class="modal-zoom">
+        <span class="close-zoom" onclick="closePdfModal()">&times;</span>
+        <div class="modal-pdf-container">
+            <iframe id="pdfFrame" src="" width="100%" height="100%" style="border: none;"></iframe>
+        </div>
+    </div>
+</main>
+
+<%- include('partials/_footer') %>
+
+<script>
+    function openPdfModal(path) {
+        const modal = document.getElementById('pdfModal');
+        const frame = document.getElementById('pdfFrame');
+        
+        // Agregamos un timestamp para evitar cache si el archivo cambió recientemente
+        frame.src = path + "?v=" + new Date().getTime();
+        
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closePdfModal() {
+        const modal = document.getElementById('pdfModal');
+        const frame = document.getElementById('pdfFrame');
+        
+        frame.src = ""; // Limpiamos para que no quede cargado
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    // Cerrar al clickear el fondo negro
+    window.onclick = function(e) {
+        if (e.target.id === 'pdfModal') closePdfModal();
+    }
+</script>
