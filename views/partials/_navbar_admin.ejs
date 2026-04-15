@@ -1,0 +1,31 @@
+<nav class="navbar admin-nav">
+    <div class="nav-container admin-flex">
+        <div class="nav-brand">
+            <div class="logo-area">
+                <img src="/assets/logo_navbar.webp" alt="The Mitre Bar" class="nav-logo">
+                <span class="logo-sub">Panel Admin</span>
+            </div>
+        </div>
+
+        <div class="nav-actions">
+            <ul class="nav-links">
+                <% if ( page == 'admin' && user) { %>
+                    <li>
+                        <a href="/nuestra-carta" target="_blank">Abrir Sector Cartas</a>
+                    </li>
+                    <li>
+                        <a href="/logout" class="btn-logout-nav">
+                            Cerrar Sesión <i class="fa-solid fa-right-from-bracket"></i>
+                        </a>
+                    </li>
+                <% } else { %>
+                    <li>
+                        <a href="/" class="link-back">
+                            <i class="fa-solid fa-arrow-left"></i> Volver al sitio
+                        </a>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</nav>
