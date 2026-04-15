@@ -1,45 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de actualizaciones</title>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <title>Admin | The Mitre</title>
     <link rel="stylesheet" href="/css/styles_admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <main class="admin-panel">
-    <div class="panel-card">
-        <h2>Actualizar Cartas</h2>
-        
-        <% if (locals.mensaje) { %>
-            <div class="alert success"><%= mensaje %></div>
-        <% } %>
+    <%- include('../partials/_navbar_admin') %>
 
-        <form action="/admin/upload" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label>1. Seleccioná qué carta actualizar:</label>
-                <select name="nombreSeccion" required>
-                    <option value="carta-principal">Menú Principal</option>
-                    <option value="carta-vinos">Carta de Vinos</option>
-                    <option value="carta-tragos">Barra y Tragos</option>
-                    <option value="carta-postres">Postres y Café</option>
-                </select>
-            </div>
+    <main class="admin-panel" style="padding-top: 130px;">
+        <div class="panel-card">
+            <h2 class="login-header">Gestionar Contenido</h2>
+            
+            <% if (locals.mensaje) { %>
+                <div id="success-alert" class="alert success">
+                    <i class="fa-solid fa-circle-check"></i> <%= mensaje %>
+                </div>
+            <% } %>
 
-            <div class="form-group">
-                <label>2. Subir imagen (reemplazará la anterior):</label>
-                <input type="file" name="imagen" accept="image/*" required>
-            </div>
+            <div id="js-warning" class="error-message" style="display: none; margin-bottom: 20px;"></div>
 
-            <button type="submit" class="btn-update">ACTUALIZAR CARTA</button>
-        </form>
-    </div>
-    <div class="logout-section">
-    <a href="/logout" class="link-exit">Cerrar Sesión Segura</a>
-</div>
+            <form id="adminForm" action="/admin/upload" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Seleccioná la sección:</label>
+                    <select name="nombreSeccion" required>
+                        <option value="carta-principal">Menú Principal</option>
+                        <option value="menu-ejecutivo">Menú Ejecutivo</option>
+                        <option value="carta-vinos">Vinos y Tragos</option>
+                        <option value="recomendacion-chef">Sugerencia del Chef</option>
+                    </select>
+                </div>
 
-</main>
+                <div class="form-group">
+                    <label>Nueva descripción (Opcional):</label>
+                    <textarea id="descText" name="descripcion" rows="4" placeholder="Escribí aquí el texto que aparecerá en la web..."></textarea>
+                </div>
 
+                <div class="form-group">
+                    <label>Imagen de Vista Previa (Opcional):</label>
+                    <input type="file" id="imgInput" name="imagenPreview" accept="image/*">
+                </div>
+
+                <div class="form-group">
+                    <label>Carta en formato PDF (Opcional):</label>
+                    <input type="file" id="pdfInput" name="archivoPdf" accept="application/pdf">
+                </div>
+
+                <button type="submit" class="btn-update">
+                    Guardar Cambios
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <script src="/js/script_admin.js"></script>
 </body>
 </html>
