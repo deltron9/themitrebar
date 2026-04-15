@@ -65,7 +65,7 @@ router.post('/login', (req, res) => {
         res.cookie('adminToken', token, { httpOnly: true, maxAge: 15 * 60 * 1000 });
         return res.redirect('/admin');
     }
-    res.render('admin/login', { page: 'login', error: 'Credenciales incorrectas' });
+    res.render('admin/login', { page: 'login', error: 'ERROR: usuario o contraseña incorrectos.' });
 });
 
 router.get('/logout', (req, res) => {
