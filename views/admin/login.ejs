@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Administración</title>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <title>Login Administración | The Mitre</title>
+    <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/css/styles_admin.css">
 </head>
 <body class="admin-login-body">
+
+    <%- include('../partials/_navbar_admin') %>
 
     <div class="login-container">
         <div class="login-header">
@@ -23,11 +25,12 @@
 
             <div class="input-group">
                 <label for="pass">Contraseña</label>
-                <input type="password" id="pass" name="pass" required placeholder="sarakatunga">
+                <input type="password" id="pass" name="pass" required placeholder="********">
             </div>
+
             <% if (locals.error) { %>
                 <div class="error-message">
-                    <p><%=error %></p>
+                    <p><%= error %></p>
                 </div>
             <% } %>
 
@@ -35,12 +38,6 @@
                 <span>Ingresar</span>
             </button>
         </form>
-
-        <div class="login-footer"> 
-            <a href="/"> 
-                Volver al sitio 
-            </a>
-        </div>
     </div>
     
 </body>
