@@ -432,13 +432,14 @@ body {
 /* =========== FOOTER =========== */
 .main-footer {
     background-color: #050505;
-    padding: 2rem 2% 1rem; 
-    border-top: 1px solid rgba(226, 176, 74, 0.2);
+    border-top: 1.5px solid var(--gold);
+    align-items: center;
 }
 
 .footer-wrapper {
     max-width: 1200px;
     margin: 0 auto;
+    margin-top: 10px;
 }
 
 .footer-row {
@@ -502,7 +503,6 @@ body {
     font-size: 0.55rem;
     color: var(--gray-muted);
     letter-spacing: 1px;
-    margin-top: 20px;
 }
 
 /* =========== PÁGINA DE ERROR =========== */
