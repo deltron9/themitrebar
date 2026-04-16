@@ -72,8 +72,6 @@ body {
     gap: 2.5rem;
 }
 
-/* =========== NAVBAR =========== */
-
 .nav-links a, 
 .nav-links span {
     text-decoration: none;
@@ -88,7 +86,6 @@ body {
     display: inline-block; 
 }
 
-/* El subrayado para ambos */
 .nav-links a::after,
 .nav-links span::after {
     content: '';
@@ -102,7 +99,6 @@ body {
     transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Fijo y sin cursor de link */
 .nav-links .active {
     color: var(--gold);
     cursor: default;
@@ -113,7 +109,6 @@ body {
     transition: none;
 }
 
-/* Solo los links tienen hover */
 .nav-links a:hover {
     color: var(--gold);
 }
@@ -121,7 +116,7 @@ body {
 .nav-links a:hover::after {
     width: 100%;
 }
-/* Esta es la clase que hace que el link ya aparezca marcado al entrar */
+
 .nav-links a.active {
     color: var(--gold);
 }
@@ -131,19 +126,11 @@ body {
     transition: none; 
 }
 
-.nav-links a:focus {
-    color: var(--gold);
-}
-
-.nav-links a:focus::after {
-    width: 100%;
-    transition: none;
-}
-
 .mobile-menu-icon {
     display: none;
 }
-/* =========== INICIO =========== */
+
+/* =========== INICIO (HERO) =========== */
 .hero-section {
     height: 100vh;
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.9)), 
@@ -160,23 +147,22 @@ body {
     text-align: center;
 }
 
-.hero-overlay h1{
+.hero-overlay h1 {
     font-family: 'Playfair Display', serif;
     font-size: clamp(3rem, 10vw, 6rem);
     margin-bottom: 0.2rem;
     color: var(--gold); 
-
 }
 
 .hero-overlay p {
     font-family: 'Montserrat', sans-serif;
     font-style: italic;
     font-size: clamp(1.2rem, 3vw, 1.8rem);
-    margin-bottom: 0.5rem; /* Distancia entre el texto y el botón */
+    margin-bottom: 0.5rem;
     color: var(--white);
 }
 
-/* ESTILO DEL BOTÓN  */
+/* BOTONES */
 .btn-cta {
     display: inline-block;
     padding: 1.2rem 3.5rem;
@@ -193,14 +179,8 @@ body {
     overflow: hidden;
 }
 
-/* Estilo Cápsula */
 .capsule-btn {
     border-radius: 50px;
-}
-
-.btn-cta span {
-    position: relative;
-    z-index: 2;
 }
 
 .btn-cta:hover {
@@ -210,9 +190,6 @@ body {
     box-shadow: 0 5px 20px rgba(226, 176, 74, 0.4);
 }
 
-/* ANIMACIONES DEL BOTON */
-
-/* Pulso */
 .pulsed-btn {
     animation: pulse-gold 4s infinite;
 }
@@ -223,7 +200,6 @@ body {
     100% { box-shadow: 0 0 0 0 rgba(226, 176, 74, 0); }
 }
 
-/* Brillo elegante keloke */
 .shiny-btn::after {
     content: '';
     position: absolute;
@@ -247,10 +223,216 @@ body {
     20% { left: 150%; } 
     100% { left: 150%; } 
 }
+
+/* PAGINA DE CARTAS */
+.menu-page {
+    padding-top: var(--navbar-height);
+    background-color: var(--black);
+    background: linear-gradient(rgba(10, 10, 10, 0.92), rgba(10, 10, 10, 0.92)), 
+                url('../assets/fondo-nuestracarta.webp') no-repeat center center fixed;
+    background-size: cover;
+    padding-bottom: 80px;
+    min-height: 100vh;
+}
+
+.menu-header {
+    text-align: center;
+}
+
+#title-header{
+    color: var(--gold);
+}
+
+.menu-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 5%;
+}
+
+/* ESTILO DE TARJETAS CON FONDO INDIVIDUAL*/
+.menu-item-card {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll; 
+    border-radius: 12px;
+    padding: 60px 40px;
+    margin-bottom: 80px;
+    overflow: hidden;
+    border: 1px solid rgba(226, 176, 74, 0.2);
+    z-index: 1;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/*capa oscura interna (overlay) */
+.menu-item-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.85));
+    z-index: -1;
+    transition: background 0.4s ease;
+}
+
+.menu-item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.menu-item-card:hover::before {
+    background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.75));
+}
+
+/* asignacion de imagenes de fondo a cada card*/
+.card-principal { background-image: url('/assets/img-cartaprincipal.webp'); }
+.card-ejecutivo { background-image: url('/assets/img-ejecutivo.webp'); }
+.card-vinos { background-image: url('/assets/img-barra.webp'); }
+.card-chef { background-image: url('/assets/img-sugerencia.webp'); }
+
+.menu-content {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.menu-item-card.reverse .menu-content {
+    flex-direction: row-reverse;
+}
+
+.text-side {
+    flex: 1;
+}
+
+.text-side h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: var(--gold);
+    margin-bottom: 15px;
+    position: relative;
+    display: inline-block;
+}
+
+.text-side h2::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 40px;
+    height: 2px;
+    background-color: var(--gold);
+}
+
+.menu-item-card.reverse .text-side h2::after {
+    left: auto;
+    right: 0; 
+}
+
+.text-side p {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 30px;
+    line-height: 1.8;
+}
+
+.category-tag {
+    color: var(--gold);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.image-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.square-box {
+    width: 100%;
+    max-width: 350px;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    border: 1px solid rgba(226, 176, 74, 0.4);
+}
+
+.square-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.square-box:hover img {
+    transform: scale(1.05);
+}
+
+.overlay-zoom {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: 0.3s;
+    color: var(--gold);
+    font-size: 2rem;
+}
+
+.square-box:hover .overlay-zoom { 
+    opacity: 1; 
+}
+
+.click-hint {
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 15px;
+    opacity: 0.7;
+}
+
+/* =========== MODAL PDF =========== */
+.modal-zoom {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(0,0,0,0.95);
+}
+
+.modal-pdf-container {
+    width: 95%;
+    height: 90%;
+    margin: 2% auto;
+    background: white;
+}
+
+.close-zoom {
+    position: absolute;
+    top: 10px; 
+    right: 20px;
+    color: var(--gold);
+    font-size: 50px;
+    cursor: pointer;
+    z-index: 100000;
+}
+
 /* =========== FOOTER =========== */
 .main-footer {
     background-color: #050505;
-    padding: 0.2rem 2% 0rem; 
+    padding: 2rem 2% 1rem; 
     border-top: 1px solid rgba(226, 176, 74, 0.2);
 }
 
@@ -259,7 +441,6 @@ body {
     margin: 0 auto;
 }
 
-/* Filas del footer */
 .footer-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -267,14 +448,8 @@ body {
     gap: 1rem;
 }
 
-/* Fila de títulos h3 en footer */
 .titles-row {
     color: var(--gold);
-}
-
-/* Fila de contenido de links y iconos*/
-.content-row {
-    padding-bottom: 0.1rem;
 }
 
 .footer-col {
@@ -322,30 +497,25 @@ body {
     transform: translateY(-1px);
 }
 
-/* sector del copyright*/
 .footer-bottom {
     text-align: center;
     font-size: 0.55rem;
     color: var(--gray-muted);
     letter-spacing: 1px;
+    margin-top: 20px;
 }
 
-/* =========== PAGINA DE ERROR =========== */
+/* =========== PÁGINA DE ERROR =========== */
 .error-hero {
     height: 100vh;
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     background: linear-gradient(rgba(10, 10, 10, 0.85), rgba(10, 10, 10, 0.95)), 
-                url('/assets/fondo_bienvenida.webp');
+                url('../assets/fondo_bienvenida.webp');
     background-size: cover;
     background-position: center;
     text-align: center;
-}
-
-.error-container {
-    padding: 20px;
 }
 
 .error-code {
@@ -370,148 +540,4 @@ body {
     max-width: 500px;
     margin: 0 auto 40px auto;
     font-size: 1rem;
-    letter-spacing: 1px;
-    line-height: 1.6;
-}
-
-/* AJUSTES ESPECÍFICOS PARA LA PÁGINA DE CARTAS */
-
-.menu-page {
-    padding-top: var(--navbar-height);
-    background-color: var(--black);
-}
-
-.menu-header {
-    text-align: center;
-    padding: 60px 20px;
-    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8));
-}
-
-.menu-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 5%;
-}
-
-.menu-item-card {
-    margin-bottom: 100px;
-    border-bottom: 1px solid rgba(226, 176, 74, 0.1);
-    padding-bottom: 60px;
-}
-
-.menu-content {
-    display: flex;
-    align-items: center;
-    gap: 50px;
-}
-
-.menu-item-card.reverse .menu-content {
-    flex-direction: row-reverse;
-}
-
-.text-side {
-    flex: 1;
-}
-
-.text-side h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 3rem;
-    color: var(--gold);
-    margin-bottom: 20px;
-}
-
-.text-side p {
-    font-size: 1.1rem;
-    color: rgba(255,255,255,0.8);
-    margin-bottom: 30px;
-    line-height: 1.8;
-}
-
-.image-side {
-    flex: 1;
-}
-
-.carta-img {
-    width: 100%;
-    border-radius: 4px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.7);
-    border: 1px solid rgba(226, 176, 74, 0.2);
-    transition: transform 0.4s ease;
-}
-
-.carta-img:hover {
-    transform: scale(1.02) rotate(1deg);
-    border-color: var(--gold);
-}
-
-.chef-special-bg {
-    background: rgba(226, 176, 74, 0.05);
-    padding: 60px;
-    border-radius: 15px;
-    border: 1px dashed var(--gold);
-}
-
-/* CONTENEDOR DEL PDF / CAJAS CUADRADAS INTEGRADO */
-
-.square-box {
-    width: 100%;
-    max-width: 350px;
-    aspect-ratio: 1 / 1;
-    position: relative;
-    cursor: pointer;
-    overflow: hidden;
-    border: 1px solid rgba(226, 176, 74, 0.4);
-}
-
-.square-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.overlay-zoom {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: 0.3s;
-    color: #e2b04a;
-    font-size: 2rem;
-}
-
-.square-box:hover .overlay-zoom { opacity: 1; }
-
-.click-hint {
-    font-size: 0.75rem;
-    color: #e2b04a;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-top: 15px;
-    opacity: 0.7;
-}
-
-/* Modal superior */
-.modal-zoom {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 99999; /* Muy alto para que nada lo tape */
-    background: rgba(0,0,0,0.95);
-}
-.modal-pdf-container {
-    width: 95%;
-    height: 90%;
-    margin: 2% auto;
-    background: white;
-}
-.close-zoom {
-    position: absolute;
-    top: 10px; right: 20px;
-    color: #e2b04a;
-    font-size: 50px;
-    cursor: pointer;
-    z-index: 100000;
 }
