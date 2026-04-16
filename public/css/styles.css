@@ -231,7 +231,7 @@ body {
     background: linear-gradient(rgba(10, 10, 10, 0.92), rgba(10, 10, 10, 0.92)), 
                 url('../assets/fondo-nuestracarta.webp') no-repeat center center fixed;
     background-size: cover;
-    padding-bottom: 80px;
+    padding-bottom: 20px;
     min-height: 100vh;
 }
 
@@ -239,8 +239,9 @@ body {
     text-align: center;
 }
 
-#title-header{
+.title-header{
     color: var(--gold);
+    font-family: 'Playfair Display', serif; 
 }
 
 .menu-grid {
@@ -540,4 +541,148 @@ body {
     max-width: 500px;
     margin: 0 auto 40px auto;
     font-size: 1rem;
+}
+
+/* PAGINA UBICACION/HORARIOS */
+.content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 5%;
+}
+
+.page-section {
+    padding: 20px 0;
+}
+
+.split-wrapper {
+    display: flex;
+    align-items: center; 
+    gap: 80px;
+}
+
+.split-wrapper.reverse {
+    flex-direction: row-reverse;
+}
+
+.side-visual {
+    flex: 1;
+}
+
+/* MAPA */
+.rectangle-box {
+    width: 100%;
+    height: 320px; 
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid rgba(226, 176, 74, 0.2);
+    position: relative;
+    background: transparent;
+}
+
+/* textos */
+.side-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.schedule-clean {
+    width: 100%;
+    margin: 30px 0;
+}
+
+.sch-item { 
+    margin-bottom: 25px; 
+}
+
+.sch-days { 
+    display: block; 
+    color: var(--gold); 
+    text-transform: uppercase; 
+    letter-spacing: 3px; 
+    font-size: 0.75rem; 
+}
+.sch-hours { 
+    font-size: 1.6rem; 
+    font-weight: 300; 
+    color: #ffe5d6ec; 
+}
+
+.elegant-description {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.8;
+    margin-bottom: 40px;
+}
+
+#orderBtn {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 1.2rem 3.5rem;
+    transition: all 0.4s ease;
+    outline: none;
+    display: inline-block;
+}
+
+#orderBtn:hover {
+    background-color: var(--gold) !important;
+    color: var(--black) !important;
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 5px 20px rgba(226, 176, 74, 0.4);
+}
+
+/* dropdown del boton de pedidos*/
+.dropdown-wrapper { position: relative; display: inline-block; }
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--gold);
+    border-radius: 15px;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.dropdown-menu.show { display: block; animation: fadeIn 0.3s ease; }
+
+.dropdown-menu a {
+    display: block;
+    padding: 15px;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.dropdown-menu a:hover { background: var(--gold); color: black; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/*separador de las dos secciones*/
+.separator-gold {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    width: 60%;
+    margin: 50px auto; 
+    opacity: 0.6;
 }
