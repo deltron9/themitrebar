@@ -1,4 +1,3 @@
-
 const sections = document.querySelectorAll("main[id], section[id]");
 const navLinks = document.querySelectorAll(".nav-links a");
 
@@ -45,6 +44,21 @@ function closePdfModal() {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto'; //devuelve el scroll
     }
+}
+
+/* LOGICA DEL BOTON DE PEDIDOS */
+const orderBtn = document.getElementById('orderBtn');
+const deliveryOptions = document.getElementById('deliveryOptions');
+
+if (orderBtn && deliveryOptions) {
+    orderBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        deliveryOptions.classList.toggle('show');
+    });
+
+    document.addEventListener('click', () => {
+        deliveryOptions.classList.remove('show');
+    });
 }
 
 /*logica para cierre de modal con pdf al hacer click fuera*/
