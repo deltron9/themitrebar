@@ -13,7 +13,73 @@
 </head>
 <body>
     <%- include('partials/_navbar') %>
-//proximamente agregar el main para ubicacion y horarios
+    <main class="menu-page">
+        <div class="content-container">
+            
+            <section class="page-section">
+                <div class="split-wrapper">
+                    <div class="side-text">
+                        <span class="category-tag">Visítanos</span>
+                        <h2 class="title-header">Horarios de Atención</h2>
+                        
+                        <div class="schedule-clean">
+                            <div class="sch-item">
+                                <span class="sch-days">Domingos a Jueves</span>
+                                <span class="sch-hours">09:00 am — 01:00 am</span>
+                            </div>
+                            <div class="sch-item">
+                                <span class="sch-days">Viernes y Sábados</span>
+                                <span class="sch-hours">09:00 am — 03:00 am</span>
+                            </div>
+                        </div>
+
+                        <a href="https://wa.me/5491173568460" class="btn-cta capsule-btn pulsed-btn">
+                            Contactar por WhatsApp
+                        </a>
+                    </div>
+
+                    <div class="side-visual">
+                        <div class="rectangle-box">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3276.3452620028575!2d-58.3917957!3d-34.797254599999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcd35b7331f607%3A0xee419d5b5c391fa9!2sThe%20Mitre%20Bar%20%26%20Restaurant!5e0!3m2!1ses-419!2sar!4v1776366156153!5m2!1ses-419!2sar" width="100%" height="100%" style="border:0; filter: grayscale(1) invert(0.9) opacity(0.6);" 
+                                allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                        <span class="category-tag"> <i class="fa-solid fa-location-dot"></i> Bartolomé Mitre 1171, Adrogué</span>
+                    </div>
+                </div>
+            </section>
+                <hr class="separator-gold">
+            <section class="page-section">
+                <div class="split-wrapper reverse">
+                    <div class="side-text">
+                        <span class="category-tag">Servicio a Domicilio</span>
+                        <h2 class="title-header">Solicita tu Pedido</h2>
+                        <p class="elegant-description">
+                            Disfrute de nuestra alta cocina en la privacidad de su hogar. Calidad impecable y presentación de lujo en cada entrega.
+                        </p>
+                        
+                        <div class="dropdown-wrapper">
+                            <button class="btn-cta capsule-btn shiny-btn" id="orderBtn">
+                                Realiza tu pedido
+                            </button>
+                            <div class="dropdown-menu" id="deliveryOptions">
+                                <!--Aca se pueden agregar mas items-->
+                            <!--<a href="aca va el link" target="_blank"></a>-->
+                                <a href="https://www.rappi.com.ar/restaurantes/139785-the-mitre-bar-restaurant" target="_blank">Rappi</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="side-visual">
+                        <div class="rectangle-box">
+                            <img src="assets/img-ejecutivo.webp" alt="Nuestra Comida" style="width:100%; height:100%; object-fit:cover;">
+                            <div class="overlay-zoom"><i class="fas fa-utensils"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
     <%- include('partials/_footer') %>
     <script src="./js/script.js"></script>
 </body>
