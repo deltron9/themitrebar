@@ -4,66 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Mitre | Nuestra Carta</title>
-    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="./css/styles.css">
-    <style>
-    </style>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body>
 <%- include('partials/_navbar') %>
 
 <main class="menu-page">
     <header class="menu-header">
-        <h1 class="hero-overlay">Nuestras Propuestas</h1>
+        <h1 class="hero-overlay" id="title-header"">Conozca Nuestras Propuestas</h1>
         <p class="hero-overlay">Un recorrido por los sabores que definen nuestra identidad en Adrogué</p>
     </header>
 
     <div class="menu-grid">
-        <section class="menu-item-card">
+        
+        <section class="menu-item-card card-principal">
             <div class="menu-content">
                 <div class="text-side">
+                    <span class="category-tag">Experiencia Mitre</span>
                     <h2>Carta Principal</h2>
-                    <p>Desde nuestras clásicas rabas con alioli hasta el inconfundible Bife de Chorizo Mitre. Disfrutá de una experiencia única con nuestros Ravioles Negros de Salmón o un Risotto al Fungi.</p>
+                    <p><%= textos['carta-principal'] || 'Desde nuestras clásicas rabas hasta el inconfundible Bife de Chorizo Mitre.' %></p>
+                    <div style="margin: 20px 0; color: rgba(255,255,255,0.6); font-size: 0.8rem;">
+                        <span style="margin-right: 15px;"><i class="fa-solid fa-utensils"></i> Cocina de Autor</span>
+                        <span><i class="fa-solid fa-clock"></i> Almuerzo y Cena</span>
+                    </div>
                 </div>
                 <div class="image-side">
-                    <div class="preview-wrapper square-box" onclick="openPdfModal('/assets/cartas/carta-principal.pdf')">
-                        <img src="/assets/cartas/preview-cartaprincipal.webp" alt="Carta Principal" class="carta-img">
+                    <div class="square-box" onclick="openPdfModal('/assets/cartas_pdf/carta-principal.pdf')">
+                        <img src="/assets/preview_cartas/preview-carta-principal.webp" alt="Carta Principal" class="carta-img">
                         <div class="overlay-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
                     </div>
+                    <p class="click-hint"><i class="fa-solid fa-expand"></i> Click para expandir carta</p>
                 </div>
             </div>
         </section>
 
-        <section class="menu-item-card reverse">
+        <section class="menu-item-card reverse card-ejecutivo">
             <div class="menu-content">
-                <div class="text-side">
+                <div class="text-side" style="text-align: right;">
+                    <span class="category-tag">Semanal</span>
                     <h2>Menú Ejecutivo</h2>
-                    <p>Diseñado para una pausa distinguida. Nuestra propuesta incluye Bondiola agridulce, Lomito Mitre o Merluza a la romana. El equilibrio perfecto entre agilidad y sabor.</p>
-                </div>
+                    <p><%= textos['menu-ejecutivo'] || 'Diseñado para una pausa distinguida en tu jornada laboral.' %></p>
+                    <div style="margin: 20px 0; color: rgba(255,255,255,0.6); font-size: 0.8rem;">
+                        <span style="margin-left: 15px;"><i class="fa-solid fa-briefcase"></i> Lunes a Viernes</span>
+                    </div>                </div>
                 <div class="image-side">
-                    <div class="preview-wrapper square-box" onclick="openPdfModal('/assets/cartas/menu-ejecutivo.pdf')">
-                        <img src="/assets/cartas/preview-menuejecutivo.webp" alt="Menú Ejecutivo" class="carta-img">
+                    <div class="square-box" onclick="openPdfModal('/assets/cartas_pdf/menu-ejecutivo.pdf')">
+                        <img src="/assets/preview_cartas/preview-menu-ejecutivo.webp" alt="Menú Ejecutivo" class="carta-img">
                         <div class="overlay-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
                     </div>
+                    <p class="click-hint">Click para expandir carta<i class="fa-solid fa-expand"></i></p>
                 </div>
             </div>
         </section>
 
-        <section class="menu-item-card">
+        <section class="menu-item-card card-vinos">
             <div class="menu-content">
                 <div class="text-side">
+                    <span class="category-tag">La Cava</span>
                     <h2>Vinos y Tragos</h2>
-                    <p>Nuestra cava cuenta con etiquetas prestigiosas y coctelería clásica como el Negroni o el Gin Tonic Frutado, ideal para maridar nuestras propuestas.</p>
+                    <p><%= textos['carta-vinos'] || 'Nuestra cava cuenta con etiquetas prestigiosas y coctelería clásica.' %></p>
+                    <div style="margin: 20px 0; color: rgba(255,255,255,0.6); font-size: 0.8rem;">
+                        <span style="margin-right: 15px;"><i class="fa-solid fa-wine-glass-half"></i> Sommelier</span>
+                        <span><i class="fa-solid fa-martini-glass-citrus"></i> Barra Premium</span>
+                    </div>
                 </div>
                 <div class="image-side">
-                    <div class="preview-wrapper square-box" onclick="openPdfModal('/assets/cartas/tragos.pdf')">
-                        <img src="/assets/cartas/preview-tragos.webp" alt="Vinos y Tragos" class="carta-img">
+                    <div class="square-box" onclick="openPdfModal('/assets/cartas_pdf/carta-vinos.pdf')">
+                        <img src="/assets/preview_cartas/preview-carta-vinos.webp" alt="Vinos y Tragos" class="carta-img">
                         <div class="overlay-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
                     </div>
+                    <p class="click-hint"><i class="fa-solid fa-expand"></i> Click para expandir carta</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="menu-item-card reverse card-chef">
+            <div class="menu-content">
+                <div class="text-side" style="text-align: right;">
+                    <span class="category-tag">Edición Limitada</span>
+                    <h2 class="gold-text">Sugerencia del Chef</h2>
+                    <p><%= textos['recomendacion-chef'] || 'Explorá el arte de nuestra cocina con creaciones exclusivas.' %></p>
+                    <div style="margin: 20px 0; color: var(--gold); font-size: 0.9rem; font-style: italic;">
+                        <i class="fa-solid fa-star"></i> Lo más destacado de la semana
+                    </div>
+                </div>
+                <div class="image-side">
+                    <div class="square-box" onclick="openPdfModal('/assets/cartas_pdf/recomendacion-chef.pdf')">
+                        <img src="/assets/preview_cartas/preview-recomendacion-chef.webp" alt="Sugerencia del Chef" class="carta-img">
+                        <div class="overlay-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                    </div>
+                    <p class="click-hint">Click para ver propuesta especial <i class="fa-solid fa-expand"></i></p>
                 </div>
             </div>
         </section>
@@ -79,29 +113,4 @@
 
 <%- include('partials/_footer') %>
 
-<script>
-    function openPdfModal(path) {
-        const modal = document.getElementById('pdfModal');
-        const frame = document.getElementById('pdfFrame');
-        
-        // Agregamos un timestamp para evitar cache si el archivo cambió recientemente
-        frame.src = path + "?v=" + new Date().getTime();
-        
-        modal.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closePdfModal() {
-        const modal = document.getElementById('pdfModal');
-        const frame = document.getElementById('pdfFrame');
-        
-        frame.src = ""; // Limpiamos para que no quede cargado
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-
-    // Cerrar al clickear el fondo negro
-    window.onclick = function(e) {
-        if (e.target.id === 'pdfModal') closePdfModal();
-    }
-</script>
+<script src="./js/script.js"></script>
