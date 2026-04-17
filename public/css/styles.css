@@ -5,6 +5,7 @@
     --black: #0a0a0a;            
     --white: #ffffff;
     --gray-muted: #666;
+    --gray-muted-description: #9c9a9a;
     --navbar-height: 110px;
 }
 
@@ -13,10 +14,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
 }
 
 body {
@@ -225,7 +222,7 @@ body {
 }
 
 /* PAGINA DE CARTAS */
-.menu-page {
+.page-background-main {
     padding-top: var(--navbar-height);
     background-color: var(--black);
     background: linear-gradient(rgba(10, 10, 10, 0.92), rgba(10, 10, 10, 0.92)), 
@@ -241,7 +238,7 @@ body {
 
 .title-header{
     color: var(--gold);
-    font-family: 'Playfair Display', serif;
+    font-family: 'Monserrat', serif;
     text-align: center;
 }
 
@@ -340,13 +337,12 @@ body {
     line-height: 1.8;
 }
 
-.category-tag {
+.span-category-tag {
     color: var(--gold);
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 4px;
     display: block;
-    margin-bottom: 10px;
     font-weight: 600;
 }
 
@@ -365,7 +361,7 @@ body {
     position: relative;
     cursor: pointer;
     overflow: hidden;
-    border: 1px solid rgba(226, 176, 74, 0.4);
+    border: 1px solid var(--gold)
 }
 
 .square-box img {
@@ -548,36 +544,43 @@ body {
 .content-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 60px 5%;
+    padding: 30px 5%;
 }
 
 .page-section {
-    padding: 20px 0;
+    padding: 10px 10px;
 }
 
+/*para contenedor de secciones*/
 .split-wrapper {
     display: flex;
     align-items: center; 
     gap: 80px;
 }
 
+/*invierte los lugares del split-wrapper*/
 .split-wrapper.reverse {
     flex-direction: row-reverse;
 }
 
-.side-visual {
-    flex: 1;
-}
-
 /* MAPA */
-.rectangle-box {
+.rectangle-box-map {
     width: 100%;
     height: 320px; 
     border-radius: 15px;
     overflow: hidden;
-    border: 1px solid rgba(226, 176, 74, 0.2);
+    border: 1px solid var(--gold);
     position: relative;
     background: transparent;
+}
+
+/*contenedor que envuelve el mapa y el span con la direccion en la pagina ubicacion*/
+.location-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
 }
 
 /* textos */
@@ -608,12 +611,13 @@ body {
 .sch-hours { 
     font-size: 1.6rem; 
     font-weight: 300; 
-    color: #ffe5d6ec; 
+    color: var(--white); 
 }
 
 .elegant-description {
+    font-family: 'Montserrat', sans-serif, serif;
     font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--gray-muted-description);
     line-height: 1.8;
     margin-bottom: 40px;
 }
@@ -687,12 +691,93 @@ body {
     margin: 50px auto; 
     opacity: 0.6;
 }
-
-.ubi-hs-intro {
+ /*parrafo introductorio al inicio de pagina de ubicacion*/
+.intro-text {
     text-align: center;
     font-family: 'Montserrat', sans-serif, serif;
     font-style: italic;
     max-width: 800px; 
-    margin: 0 auto 4rem auto; 
+    margin: 0 auto 0 auto; 
     padding: 0 1rem;
+}
+
+.home-main {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/*contenedor de imagenes con marco desvanecido que se combina con el carrusel de swiper*/
+.rectangle-box {
+    width: 100%;
+    max-width: 650px; 
+    aspect-ratio: 16 / 9;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    border: none;
+    /*efecto de borde desvanecido*/
+    mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent),
+                linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    mask-composite: intersect;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent),
+                        linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    -webkit-mask-composite: source-in;
+}
+
+/*configuracion para que la imagen dentro se amolde al rectangulo*/
+.rectangle-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
+    object-position: center;
+}
+
+/*estilos para carrusel de fotos con libreria Swiper*/
+
+/*estilo para darle mas espacio al contenedor de la imagen*/
+.side-visual {
+    flex: 1.5;
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*tamaño de los contenedores */
+.swiper-esencia, 
+.swiper-carta {
+    width: 100%;
+    max-width: 650px;
+    margin: 0;
+}
+
+/*wstilo de los puntos de paginacion en el carrusel de swiper*/
+.swiper-pagination-bullet {
+    background: var(--white);
+    opacity: 0.5;
+}
+.swiper-pagination-bullet-active {
+    background: var(--gold) !important;
+    opacity: 1;
+}
+
+/* correccin para el efecto fade */
+.swiper-fade .swiper-slide {
+    pointer-events: none;
+    transition-property: opacity;
+}
+
+.swiper-fade .swiper-slide-active {
+    pointer-events: auto;
+}
+
+/*asegura que las imagenes adentro del Swiper mantengan el estilo */
+.swiper-slide .rectangle-box,
+.swiper-slide{
+    margin: 0 auto; 
+}
+
+.swiper-pagination-bullet {
+    background: var(--white);
+    opacity: 0.5;
 }
