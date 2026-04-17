@@ -72,15 +72,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     //logica para carrusel de libreria swiper
-    const configFade = {
-        effect: 'fade', //animacion de desvanecimiento
-        fadeEffect: {
-            crossFade: true //cruza las opacidades de ambas fotos
-        },
+    const configFotos = {
+        effect: 'fade',
+        fadeEffect: { crossFade: true },
         loop: true,
-        speed: 2000, // Duración de la transición (2 segundo)
+        speed: 5000, 
         autoplay: {
-            delay: 3000, //tiempo que se queda fija la foto (3csegundos)
+            delay: 4000, // Se queda 4 segundos quieta
             disableOnInteraction: false,
         },
         pagination: {
@@ -89,15 +87,29 @@ document.addEventListener('DOMContentLoaded', () => {
         },
     };
 
-    if (document.querySelector('.swiper-esencia')) {
-        new Swiper('.swiper-esencia', configFade);
-    }
-    if (document.querySelector('.swiper-carta')) {
-        new Swiper('.swiper-carta', configFade);
+    const configVideos = {
+        ...configFotos, 
+        speed: 2000,
+        autoplay: {
+            delay: 8000,
+            disableOnInteraction: false,
+        },
+    };
+
+    if (document.querySelector('.swiper-esencia')) new Swiper('.swiper-esencia', configFotos);
+    if (document.querySelector('.swiper-carta')) new Swiper('.swiper-carta', configFotos);
+    if (document.querySelector('.swiper-eventos')) {
+        const swiperEventos = new Swiper('.swiper-eventos', configVideos);
+
+        //logica para que el video arranque al cambiar
+        swiperEventos.on('slideChangeTransitionEnd', function () {
+            const activeSlide = swiperEventos.slides[swiperEventos.activeIndex];
+            const video = activeSlide.querySelector('video');
+            if (video) video.play();
+        });
     }
 });
 
-/*LOGICA DEL MODAL PDF*/
 function openPdfModal(path) {
     const modal = document.getElementById('pdfModal');
     const frame = document.getElementById('pdfFrame');
