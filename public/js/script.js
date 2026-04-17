@@ -1,22 +1,44 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const sections = document.querySelectorAll("main[id], section[id]");
-    const navLinks = document.querySelectorAll(".nav-links a");
+    const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
+    const navMenu = document.querySelector('.nav-links');
 
-    /*LOGICA DE SCROLL*/
+    if (mobileMenuIcon && navMenu) {
+        mobileMenuIcon.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            
+            const icon = mobileMenuIcon.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-xmark');
+            }
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                const icon = mobileMenuIcon.querySelector('i');
+                if (icon) {
+                    icon.classList.add('fa-bars');
+                    icon.classList.remove('fa-xmark');
+                }
+            });
+        });
+    }
+
+    const sections = document.querySelectorAll("main[id], section[id]");
+    const navLinksList = document.querySelectorAll(".nav-links a");
+
     window.addEventListener("scroll", () => {
         let currentSection = "";
-
         sections.forEach((section) => {
             const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            
             if (window.pageYOffset >= sectionTop - 150) {
                 currentSection = section.getAttribute("id");
             }
         });
 
-        navLinks.forEach((link) => {
+        navLinksList.forEach((link) => {
             link.classList.remove("active");
             if (link.getAttribute("href") === `#${currentSection}`) {
                 link.classList.add("active");
@@ -24,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    /* LOGICA DEL BOTON DE PEDIDOS */
     const orderBtn = document.getElementById('orderBtn');
     const deliveryOptions = document.getElementById('deliveryOptions');
 
@@ -39,69 +60,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /*logica para cierre de modal con pdf al hacer click fuera*/
-    window.onclick = function(e) {
-        const modal = document.getElementById('pdfModal');
-        if (e.target === modal) {
-            closePdfModal();
-        }
-    };
-
     const logo = document.querySelector('.logo-area');
-    
     if (logo) {
         const currentPage = logo.getAttribute('data-page');
-
         if (currentPage === 'inicio') {
             let clickCount = 0;
             let clickTimer;
 
-            logo.addEventListener('click', () => {
+            logo.addEventListener('click', (e) => {
                 clickCount++;
-
                 clearTimeout(clickTimer);
-                clickTimer = setTimeout(() => {
-                    clickCount = 0;
-                }, 2000);
+                clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
 
                 if (clickCount === 5) {
+                    e.preventDefault();
                     window.location.href = '/login';
                 }
             });
         }
     }
 
-    //logica para carrusel de libreria swiper
     const configFotos = {
         effect: 'fade',
         fadeEffect: { crossFade: true },
         loop: true,
         speed: 5000, 
-        autoplay: {
-            delay: 4000, // Se queda 4 segundos quieta
-            disableOnInteraction: false,
-        },
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-    };
-
-    const configVideos = {
-        ...configFotos, 
-        speed: 2000,
-        autoplay: {
-            delay: 8000,
-            disableOnInteraction: false,
-        },
+        autoplay: { delay: 4000, disableOnInteraction: false },
+        pagination: { el: '.swiper-pagination', clickable: true },
     };
 
     if (document.querySelector('.swiper-esencia')) new Swiper('.swiper-esencia', configFotos);
     if (document.querySelector('.swiper-carta')) new Swiper('.swiper-carta', configFotos);
     if (document.querySelector('.swiper-eventos')) {
-        const swiperEventos = new Swiper('.swiper-eventos', configVideos);
+        const swiperEventos = new Swiper('.swiper-eventos', {
+            ...configFotos,
+            speed: 2000,
+            autoplay: { delay: 8000, disableOnInteraction: false },
+        });
 
-        //logica para que el video arranque al cambiar
         swiperEventos.on('slideChangeTransitionEnd', function () {
             const activeSlide = swiperEventos.slides[swiperEventos.activeIndex];
             const video = activeSlide.querySelector('video');
@@ -115,10 +111,9 @@ function openPdfModal(path) {
     const frame = document.getElementById('pdfFrame');
     
     if (modal && frame) {
-        //el timestamp (?v=) obliga al navegador a cargar el archivo nuevo aunque se llame igual
         frame.src = path + "?v=" + new Date().getTime();
         modal.style.display = 'block';
-        document.body.style.overflow = 'hidden'; //bloquea scroll del fondo
+        document.body.style.overflow = 'hidden';
     }
 }
 
@@ -127,8 +122,15 @@ function closePdfModal() {
     const frame = document.getElementById('pdfFrame');
     
     if (modal) {
-        if (frame) frame.src = ""; //limpia el frame para detener la carga
+        if (frame) frame.src = "";
         modal.style.display = 'none';
-        document.body.style.overflow = 'auto'; //devuelve el scroll
+        document.body.style.overflow = 'auto';
     }
 }
+
+window.addEventListener('click', (e) => {
+    const modal = document.getElementById('pdfModal');
+    if (e.target === modal) {
+        closePdfModal();
+    }
+});
