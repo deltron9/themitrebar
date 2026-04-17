@@ -10,11 +10,177 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 <body>
     <%- include('partials/_navbar') %>
-//añadir proximamente main para la seccion nosotros
+    <main class="page-background-main">
+        <div class="content-container">
+        <section class="intro-text">
+                <span class="span-category-tag">Lounge Experience</span>
+                <h2 class="title-header">The Mitre Bar</h2>
+                <p class="elegant-description">Donde la exclusividad encuentra su lugar</p>
+        </section>
+
+        <hr class="separator-gold">
+
+        <section class="page-section content-container">
+            <div class="split-wrapper">
+                <div class="side-text">
+                    <span class="span-category-tag">Nuestra Esencia</span>
+                    <h2 class="title-header">Más que un bar, un club social</h2>
+                    <p class="elegant-description">
+                        En The Mitre, la exclusividad no es un lujo, es nuestro estándar. Creamos una atmósfera íntima con iluminación tenue, mobiliario de diseño y una curaduría musical diseñada para la charla.
+                    </p>
+                </div>
+
+                <div class="side-visual">
+                    <div class="swiper swiper-esencia">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="rectangle-box">
+                                    <img src="/assets/img-ambiente-1.webp" alt="Ambiente 1">
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="rectangle-box">
+                                    <img src="/assets/img-ambiente-2.webp" alt="Ambiente 2">
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="rectangle-box">
+                                    <img src="/assets/img-ambiente-3.webp" alt="Ambiente 3">
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="rectangle-box">
+                                    <img src="/assets/img-ambiente-4.webp" alt="Ambiente 4">
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="rectangle-box">
+                                    <img src="/assets/img-ambiente-5.webp" alt="Ambiente 5">
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="rectangle-box">
+                                    <img src="/assets/fondo_bienvenida.webp" alt="Ambiente 6">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="separator-gold">
+
+        <section style="min-height: auto; padding: 60px 0;">
+            <div class="menu-grid">
+                <div class="menu-item-card card-chef" style="margin-bottom: 0;">
+                    <div class="menu-content">
+                        <div class="text-side">
+                            <span class="span-category-tag">Celebraciones</span>
+                            <h2>Eventos Privados</h2>
+                            <p>Lanzamientos, cenas corporativas o festejos íntimos. <br> Ponemos nuestro club a tu entera disposición.</p>
+                            <br>
+                            <a href="/eventos" class="btn-cta capsule-btn">Consultar disponibilidad</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="separator-gold">
+
+        <section class="page-section content-container">
+            <div class="split-wrapper reverse">
+                <div class="side-text">
+                    <span class="span-category-tag">Nuestra Carta</span>
+                    <h2 class="title-header"">Sabores con Identidad</h2>
+                    <p class="elegant-description">
+                        Desde cafetería artesanal y pastelería hasta una sofisticada propuesta de sushi nikkei y cocina de autor. Cada sabor está pensado para maridar con tu momento, ya sea con nuestra coctelería premium o una cava seleccionada.
+                    </p>
+                    <div>
+                        <a href="/nuestra-carta" class="btn-cta pulsed-btn capsule-btn shiny-btn">
+                            <span>VER CARTA</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="side-visual">
+                    <div class="swiper swiper-carta">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="rectangle-box">
+                                    <img src="/assets/img-plato-1.webp" alt="Platos 1">
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="rectangle-box">
+                                    <img src="/assets/img-plato-2.webp" alt="Platos 2">
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="rectangle-box">
+                                    <img src="/assets/img-sugerencia.webp" alt="Platos 3">
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="rectangle-box">
+                                    <img src="/assets/img-plato-3.webp" alt="Platos 4">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
     <%- include('partials/_footer') %>
+
+
+
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const configFade = {
+        effect: 'fade', // Activa el modo desvanecimiento
+        fadeEffect: {
+            crossFade: true // Cruza las opacidades de ambas fotos
+        },
+        loop: true,
+        speed: 5000, // Duración de la transición (1 segundo)
+        autoplay: {
+            delay: 4000, // Tiempo que se queda fija la foto (4 segundos)
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+    };
+
+    new Swiper('.swiper-esencia', configFade);
+    new Swiper('.swiper-carta', configFade);
+});
+    </script>
     <script src="./js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </body>
 </html>
+
+    <!-- Fragmento con carga de número por si se quiere implementar a futuro
+    <section class="ubi-hs-intro">
+        <hr class="separator-gold">
+        <h3 class="title-header" style="font-size: 1.5rem;">Unite a la Comunidad</h3>
+        <p class="elegant-description">Invitaciones a catas exclusivas y noches de jazz.</p>
+        <form style="margin-top: 2rem; display: flex; justify-content: center; gap: 10px;">
+            <input type="email" placeholder="Email" style="background: transparent; border: 1px solid var(--gold); padding: 10px 20px; color: white; border-radius: 50px; outline: none;">
+            <button type="submit" class="btn-cta capsule-btn" style="padding: 10px 30px;">OK</button>
+        </form>
+    </section>
+    -->
