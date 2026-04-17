@@ -791,3 +791,140 @@ body {
     object-fit: cover; /* Esto hace que el video llene el contenedor sin deformarse */
     display: block;
 }
+
+/*responsive*/
+@media (max-width: 768px) {
+    :root {
+        --navbar-height: 85px;
+    }
+
+    .mobile-menu-icon {
+        display: block;
+        font-size: 1.8rem;
+        color: var(--gold);
+        cursor: pointer;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: var(--navbar-height);
+        right: -100%;
+        width: 100%;
+        height: calc(100vh - var(--navbar-height));
+        background-color: rgba(10, 10, 10, 0.98);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        transition: 0.4s ease-in-out;
+        backdrop-filter: blur(15px);
+        z-index: 999;
+    }
+
+    .nav-links.active {
+        right: 0;
+    }
+
+    .nav-logo {
+        height: 50px;
+    }
+
+    .hero-section {
+        padding: 0 20px;
+    }
+
+    .hero-overlay h1 {
+        font-size: 3.5rem;
+    }
+
+    .menu-grid {
+        padding: 20px 3%;
+    }
+
+    .menu-item-card {
+        padding: 40px 20px;
+        margin-bottom: 40px;
+    }
+
+    .menu-content, 
+    .menu-item-card.reverse .menu-content {
+        flex-direction: column;
+        gap: 30px;
+        text-align: center;
+    }
+
+    .text-side h2 {
+        font-size: 2.2rem;
+    }
+
+    .text-side h2::after {
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%);
+    }
+
+    .image-side {
+        width: 100%;
+    }
+
+    .square-box {
+        max-width: 280px;
+    }
+
+    .split-wrapper, 
+    .split-wrapper.reverse {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .rectangle-box-map {
+        height: 250px;
+    }
+
+    .sch-hours {
+        font-size: 1.3rem;
+    }
+
+    .side-visual {
+        width: 100%;
+    }
+
+    .rectangle-box {
+        max-width: 100%;
+        aspect-ratio: 4 / 3;
+        mask-image: none;
+        -webkit-mask-image: none;
+        border: 1px solid rgba(226, 176, 74, 0.2);
+    }
+
+    .footer-row {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+
+    .footer-col {
+        flex-direction: column;
+    }
+
+    .modal-pdf-container {
+        width: 98%;
+        height: 85%;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-overlay h1 {
+        font-size: 2.8rem;
+    }
+    
+    .btn-cta {
+        padding: 1rem 2rem;
+        font-size: 0.8rem;
+    }
+
+    .logo-sub {
+        letter-spacing: 1.5px;
+        font-size: 0.6rem;
+    }
+}
