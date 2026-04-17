@@ -332,3 +332,105 @@ input[type="file"]::-webkit-file-upload-button:hover {
 .alert.success {
     animation: slideIn 0.5s ease-out forwards;
 }
+
+/*responsive*/
+@media (max-width: 768px) {
+    .admin-nav {
+        height: auto;
+        padding: 10px 0;
+    }
+
+    .admin-flex {
+        flex-direction: column;
+        gap: 15px;
+        padding: 0 20px;
+    }
+
+    .nav-logo {
+        height: 40px;
+    }
+
+    .nav-links {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-links a {
+        font-size: 0.7rem;
+    }
+
+    .btn-logout-nav {
+        padding: 6px 12px;
+        font-size: 0.7rem;
+    }
+
+    .admin-login-body {
+        padding-top: 140px;
+        height: auto;
+        min-height: 100vh;
+        align-items: flex-start;
+    }
+
+    .login-container {
+        width: 90%;
+        padding: 2rem 1.5rem;
+        margin-bottom: 30px;
+    }
+
+    .login-logo {
+        height: 60px;
+    }
+
+    .admin-panel {
+        padding: 120px 15px 30px 15px;
+    }
+
+    .panel-card {
+        padding: 25px 15px;
+        margin-bottom: 20px;
+    }
+
+    .login-header h2 {
+        font-size: 1rem;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    textarea,
+    select {
+        font-size: 16px; 
+    }
+
+    input[type="file"]::-webkit-file-upload-button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-flex {
+        padding: 0 10px;
+    }
+
+    .nav-links {
+        gap: 10px;
+    }
+
+    .nav-links a span {
+        display: none;
+    }
+
+    .nav-links a i {
+        font-size: 1.2rem;
+    }
+
+    .login-container {
+        padding: 1.5rem 1rem;
+    }
+
+    .login-btn, .btn-update {
+        padding: 12px;
+        font-size: 0.8rem;
+    }
+}
