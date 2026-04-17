@@ -793,21 +793,9 @@ body {
 }
 
 /*responsive*/
-/* =========== TODO EL RESPONSIVE =========== */
-
-@media (max-width: 768px) {
-    :root {
-        --navbar-height: 85px;
-    }
-
-    /* NAVBAR & NAVEGACIÓN */
-    .nav-container {
-        padding: 0 5%;
-    }
-
+@media (max-width: 992px) {
     .mobile-menu-icon {
         display: block;
-        order: 2;
         font-size: 1.8rem;
         color: var(--gold);
         cursor: pointer;
@@ -815,16 +803,16 @@ body {
 
     .nav-links {
         position: fixed;
-        top: var(--navbar-height);
+        top: 0;
         right: -100%;
         width: 100%;
-        height: calc(100vh - var(--navbar-height));
+        height: 100vh;
         background-color: rgba(10, 10, 10, 0.98);
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 2.5rem;
-        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        gap: 2rem;
+        transition: 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
         backdrop-filter: blur(15px);
         z-index: 999;
     }
@@ -833,44 +821,42 @@ body {
         right: 0;
     }
 
-    .nav-logo {
-        height: 50px;
+    .split-wrapper, .split-wrapper.reverse {
+        flex-direction: column;
+        gap: 40px;
     }
 
-    /* SECCIÓN HERO (INICIO) */
-    .hero-section {
-        padding: 0 20px;
+    .side-text, .side-visual {
+        width: 100%;
         text-align: center;
     }
 
-    .hero-overlay h1 {
-        font-size: 3.5rem;
-    }
+    .side-text { order: 1; }
+    .side-visual { order: 2; }
 
-    .hero-overlay p {
-        font-size: 1.3rem;
+    .rectangle-box {
+        max-width: 100%;
+        mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent),
+                    linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent),
+                            linear-gradient(to right, transparent, black 10%, black 90%, transparent);
     }
+}
 
-    /* PÁGINA DE CARTAS / MENÚ */
-    .menu-grid {
-        padding: 30px 5%;
+@media (max-width: 768px) {
+    .menu-content, .menu-item-card.reverse .menu-content {
+        flex-direction: column;
+        gap: 30px;
     }
 
     .menu-item-card {
         padding: 40px 20px;
-        margin-bottom: 50px;
+        margin-bottom: 40px;
     }
 
-    .menu-content, 
-    .menu-item-card.reverse .menu-content {
-        flex-direction: column;
-        text-align: center;
-        gap: 35px;
-    }
-
-    .text-side h2 {
-        font-size: 2.5rem;
-    }
+    .text-side h2 { font-size: 2.2rem; }
+    
+    .text-side, .text-side h2 { text-align: center !important; }
 
     .text-side h2::after {
         left: 50% !important;
@@ -878,145 +864,19 @@ body {
         transform: translateX(-50%);
     }
 
-    .text-side p {
-        font-size: 1rem;
-        margin-bottom: 20px;
-    }
-
-    .square-box {
-        max-width: 280px;
-        margin: 0 auto;
-    }
-
-    /* SECCIONES DIVIDIDAS (UBICACIÓN / NOSOTROS) */
-    .split-wrapper, 
-    .split-wrapper.reverse {
-        flex-direction: column;
-        gap: 40px;
-        text-align: center;
-    }
-
-    .side-text {
-        width: 100%;
-    }
-
-    .elegant-description {
-        font-size: 1rem;
-        margin-bottom: 30px;
-    }
-
-    /* MANTENER DESVANECIDO EN CARRUSELES */
-    .side-visual {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
-
-    .rectangle-box {
-        max-width: 550px;
-        width: 100%;
-        aspect-ratio: 16 / 9;
-        margin: 0 auto;
-        /* Preservación del desvanecido */
-        -webkit-mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent),
-                            linear-gradient(to right, transparent, black 12%, black 88%, transparent);
-        mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent),
-                    linear-gradient(to right, transparent, black 12%, black 88%, transparent);
-        -webkit-mask-composite: source-in;
-        mask-composite: intersect;
-    }
-
-    /* MAPA Y HORARIOS */
-    .rectangle-box-map {
-        height: 280px;
-        width: 100%;
-    }
-
-    .sch-hours {
-        font-size: 1.4rem;
-    }
-
-    /* FOOTER */
     .footer-row {
         grid-template-columns: 1fr;
-        gap: 2.5rem;
+        gap: 30px;
         text-align: center;
     }
 
-    .footer-col {
-        justify-content: center;
-    }
+    .titles-row { display: none; }
 
-    .footer-section h3 {
-        margin-bottom: 10px;
-    }
-
-    /* MODAL PDF */
-    .modal-pdf-container {
-        width: 95%;
-        height: 80%;
-        margin: 10% auto;
-    }
-
-    .close-zoom {
-        top: 5px;
-        right: 15px;
-        font-size: 40px;
-    }
-
-    /* ÁREA ADMIN (LOGIN Y PANEL) */
-    .admin-flex {
-        flex-direction: column;
-        gap: 15px;
-        padding: 10px 20px;
-    }
-
-    .admin-login-body {
-        padding-top: 100px;
-    }
-
-    .login-container {
-        width: 90%;
-        padding: 2rem 1.5rem;
-    }
-
-    .panel-card {
-        padding: 25px 20px;
-        width: 95%;
-    }
+    .footer-col { flex-direction: column; gap: 10px; }
 }
 
-/* AJUSTES PARA CELULARES MUY PEQUEÑOS */
 @media (max-width: 480px) {
-    .hero-overlay h1 {
-        font-size: 2.5rem;
-    }
-
-    .hero-overlay p {
-        font-size: 1.1rem;
-    }
-
-    .btn-cta {
-        padding: 1rem 2rem;
-        font-size: 0.8rem;
-    }
-
-    .text-side h2 {
-        font-size: 2rem;
-    }
-
-    .rectangle-box {
-        /* Desvanecido más sutil para no perder detalle en pantallas mínimas */
-        -webkit-mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent),
-                            linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-    }
-
-    .sch-hours {
-        font-size: 1.1rem;
-    }
-
-    .logo-sub {
-        letter-spacing: 1.5px;
-        font-size: 0.6rem;
-    }
+    .hero-overlay h1 { font-size: 3.5rem; }
+    .btn-cta { padding: 1rem 2.5rem; width: 90%; }
+    .modal-pdf-container { height: 80%; margin-top: 20%; }
 }

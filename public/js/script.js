@@ -2,21 +2,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
     const navMenu = document.querySelector('.nav-links');
+    const body = document.body;
 
+    // --- MENU MOBILE ---
     if (mobileMenuIcon && navMenu) {
         mobileMenuIcon.addEventListener('click', () => {
             navMenu.classList.toggle('active');
+            const isOpened = navMenu.classList.contains('active');
             
             const icon = mobileMenuIcon.querySelector('i');
             if (icon) {
-                icon.classList.toggle('fa-bars');
-                icon.classList.toggle('fa-xmark');
+                icon.classList.toggle('fa-bars', !isOpened);
+                icon.classList.toggle('fa-xmark', isOpened);
             }
+            // Bloquea scroll al abrir menu
+            body.style.overflow = isOpened ? 'hidden' : 'auto';
         });
 
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navMenu.classList.remove('active');
+                body.style.overflow = 'auto';
                 const icon = mobileMenuIcon.querySelector('i');
                 if (icon) {
                     icon.classList.add('fa-bars');
@@ -26,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- SCROLL ACTIVE LINKS ---
     const sections = document.querySelectorAll("main[id], section[id]");
     const navLinksList = document.querySelectorAll(".nav-links a");
 
@@ -46,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // --- PEDIDOS DROPDOWN ---
     const orderBtn = document.getElementById('orderBtn');
     const deliveryOptions = document.getElementById('deliveryOptions');
 
@@ -60,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- LOGO HIDDEN LOGIN ---
     const logo = document.querySelector('.logo-area');
     if (logo) {
         const currentPage = logo.getAttribute('data-page');
@@ -80,17 +89,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- SWIPER CONFIGURACIÓN ---
     const configFotos = {
         effect: 'fade',
         fadeEffect: { crossFade: true },
         loop: true,
-        speed: 5000, 
+        speed: 2000, 
         autoplay: { delay: 4000, disableOnInteraction: false },
-        pagination: { el: '.swiper-pagination', clickable: true },
+        pagination: { 
+            el: '.swiper-pagination', 
+            clickable: true,
+            dynamicBullets: true 
+        },
+        grabCursor: true
     };
 
     if (document.querySelector('.swiper-esencia')) new Swiper('.swiper-esencia', configFotos);
     if (document.querySelector('.swiper-carta')) new Swiper('.swiper-carta', configFotos);
+    
     if (document.querySelector('.swiper-eventos')) {
         const swiperEventos = new Swiper('.swiper-eventos', {
             ...configFotos,
@@ -106,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// --- MODAL PDF FUNCTIONS ---
 function openPdfModal(path) {
     const modal = document.getElementById('pdfModal');
     const frame = document.getElementById('pdfFrame');
