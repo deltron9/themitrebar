@@ -68,3 +68,29 @@ window.onclick = function(e) {
         closePdfModal();
     }
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+    const logo = document.querySelector('.logo-area');
+    
+    if (logo) {
+        const currentPage = logo.getAttribute('data-page');
+
+        if (currentPage === 'inicio') {
+            let clickCount = 0;
+            let clickTimer;
+
+            logo.addEventListener('click', () => {
+                clickCount++;
+
+                clearTimeout(clickTimer);
+                clickTimer = setTimeout(() => {
+                    clickCount = 0;
+                }, 2000);
+
+                if (clickCount === 5) {
+                    window.location.href = '/login';
+                }
+            });
+        }
+    }
+});
