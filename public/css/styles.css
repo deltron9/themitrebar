@@ -259,7 +259,7 @@ body {
     padding: 60px 40px;
     margin-bottom: 80px;
     overflow: hidden;
-    border: 1px solid rgba(226, 176, 74, 0.2);
+    border: 1px solid var(--gold);
     z-index: 1;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
@@ -691,8 +691,9 @@ body {
     margin: 50px auto; 
     opacity: 0.6;
 }
- /*parrafo introductorio al inicio de pagina de ubicacion*/
+ /*parrafo o frase introductoria al inicio de pagina*/
 .intro-text {
+    color: var(--gold);
     text-align: center;
     font-family: 'Montserrat', sans-serif, serif;
     font-style: italic;
@@ -715,12 +716,13 @@ body {
     cursor: pointer;
     overflow: hidden;
     border: none;
-    /*efecto de borde desvanecido*/
+
     mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent),
-                linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+                linear-gradient(to right, transparent, black 25%, black 75%, transparent);
     mask-composite: intersect;
+
     -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent),
-                        linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+                        linear-gradient(to right, transparent, black 25%, black 75%, transparent);
     -webkit-mask-composite: source-in;
 }
 

@@ -78,9 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
             crossFade: true //cruza las opacidades de ambas fotos
         },
         loop: true,
-        speed: 5000, // Duración de la transición (2 segundo)
+        speed: 2000, // Duración de la transición (2 segundo)
         autoplay: {
-            delay: 4000, //tiempo que se queda fija la foto (3csegundos)
+            delay: 3000, //tiempo que se queda fija la foto (3csegundos)
             disableOnInteraction: false,
         },
         pagination: {

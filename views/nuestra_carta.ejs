@@ -5,112 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Mitre | Nuestra Carta</title>
     <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/css/styles.css">
 </head>
-<%- include('partials/_navbar') %>
-
-<main class="menu-page">
-    <header class="menu-header">
-        <h1 class="title-header" ">Conozca Nuestras Propuestas</h1>
-        <p class="hero-overlay">Un recorrido por los sabores que definen nuestra identidad en Adrogué</p>
+<body>
+    <header>
+        <%- include('partials/_navbar') %>
     </header>
 
-    <div class="menu-grid">
-        
-        <section class="menu-item-card card-principal">
-            <div class="menu-content">
-                <div class="text-side">
-                    <span class="category-tag">Experiencia Mitre</span>
-                    <h2>Carta Principal</h2>
-                    <p><%= textos['carta-principal'] || 'Desde nuestras clásicas rabas hasta el inconfundible Bife de Chorizo Mitre.' %></p>
-                    <div style="margin: 20px 0; color: rgba(255,255,255,0.6); font-size: 0.8rem;">
-                        <span style="margin-right: 15px;"><i class="fa-solid fa-utensils"></i> Cocina de Autor</span>
-                        <span><i class="fa-solid fa-clock"></i> Almuerzo y Cena</span>
-                    </div>
-                </div>
-                <div class="image-side">
-                    <div class="square-box" onclick="openPdfModal('/assets/cartas_pdf/carta-principal.pdf')">
-                        <img src="/assets/preview_cartas/preview-carta-principal.webp" alt="Carta Principal" class="carta-img">
-                        <div class="overlay-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
-                    </div>
-                    <p class="click-hint"><i class="fa-solid fa-expand"></i> Click para expandir carta</p>
-                </div>
-            </div>
-        </section>
+    <main class="page-background-main">
+        <div class="content-container">
+            
+            <section class="intro-text">
+                <h1 class="title-header">Conozca Nuestras Propuestas</h1>
+                <p>Un recorrido por los sabores que definen nuestra identidad en Adrogué</p>
+            </section>
 
-        <section class="menu-item-card reverse card-ejecutivo">
-            <div class="menu-content">
-                <div class="text-side" style="text-align: right;">
-                    <span class="category-tag">Semanal</span>
-                    <h2>Menú Ejecutivo</h2>
-                    <p><%= textos['menu-ejecutivo'] || 'Diseñado para una pausa distinguida en tu jornada laboral.' %></p>
-                    <div style="margin: 20px 0; color: rgba(255,255,255,0.6); font-size: 0.8rem;">
-                        <span style="margin-left: 15px;"><i class="fa-solid fa-briefcase"></i> Lunes a Viernes</span>
-                    </div>                </div>
-                <div class="image-side">
-                    <div class="square-box" onclick="openPdfModal('/assets/cartas_pdf/menu-ejecutivo.pdf')">
-                        <img src="/assets/preview_cartas/preview-menu-ejecutivo.webp" alt="Menú Ejecutivo" class="carta-img">
-                        <div class="overlay-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+            <div class="menu-grid">
+                
+                <section class="menu-item-card card-principal">
+                    <div class="menu-content">
+                        <div class="text-side">
+                            <span class="span-category-tag">Experiencia Mitre</span>
+                            <h2>Carta Principal</h2>
+                            <p class="elegant-description"><%= textos['carta-principal'] || 'Desde nuestras clásicas rabas hasta el inconfundible Bife de Chorizo Mitre.' %></p>
+                            <div style="margin: 20px 0; color: rgba(255,255,255,0.6); font-size: 0.8rem;">
+                                <span style="margin-right: 15px;"><i class="fa-solid fa-utensils"></i> Cocina de Autor</span>
+                                <span><i class="fa-solid fa-clock"></i> Desayuno, Almuerzo y Cena</span>
+                            </div>
+                        </div>
+                        <div class="image-side">
+                            <div class="square-box" onclick="openPdfModal('/assets/cartas_pdf/carta-principal.pdf')">
+                                <img src="/assets/preview_cartas/preview-carta-principal.webp" alt="Carta Principal" class="carta-img">
+                                <div class="overlay-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                            </div>
+                            <p class="click-hint"><i class="fa-solid fa-expand"></i> Click para expandir carta</p>
+                        </div>
                     </div>
-                    <p class="click-hint"><i class="fa-solid fa-expand"></i> Click para expandir carta</p>
-                </div>
-            </div>
-        </section>
+                </section>
 
-        <section class="menu-item-card card-vinos">
-            <div class="menu-content">
-                <div class="text-side">
-                    <span class="category-tag">La Cava</span>
-                    <h2>Vinos y Tragos</h2>
-                    <p><%= textos['carta-vinos'] || 'Nuestra cava cuenta con etiquetas prestigiosas y coctelería clásica.' %></p>
-                    <div style="margin: 20px 0; color: rgba(255,255,255,0.6); font-size: 0.8rem;">
-                        <span style="margin-right: 15px;"><i class="fa-solid fa-wine-glass-half"></i> Sommelier</span>
-                        <span><i class="fa-solid fa-martini-glass-citrus"></i> Barra Premium</span>
+                <section class="menu-item-card reverse card-ejecutivo">
+                    <div class="menu-content">
+                        <div class="text-side" style="text-align: right;">
+                            <span class="span-category-tag">Semanal</span>
+                            <h2>Menú Ejecutivo</h2>
+                            <p class="elegant-description"><%= textos['menu-ejecutivo'] || 'Diseñado para una pausa distinguida en tu jornada laboral.' %></p>
+                            <div style="margin: 20px 0; color: rgba(255,255,255,0.6); font-size: 0.8rem;">
+                                <span style="margin-left: 15px;"><i class="fa-solid fa-briefcase"></i> Lunes a Viernes</span>
+                            </div>
+                        </div>
+                        <div class="image-side">
+                            <div class="square-box" onclick="openPdfModal('/assets/cartas_pdf/menu-ejecutivo.pdf')">
+                                <img src="/assets/preview_cartas/preview-menu-ejecutivo.webp" alt="Menú Ejecutivo" class="carta-img">
+                                <div class="overlay-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                            </div>
+                            <p class="click-hint"><i class="fa-solid fa-expand"></i> Click para expandir carta</p>
+                        </div>
                     </div>
-                </div>
-                <div class="image-side">
-                    <div class="square-box" onclick="openPdfModal('/assets/cartas_pdf/carta-vinos.pdf')">
-                        <img src="/assets/preview_cartas/preview-carta-vinos.webp" alt="Vinos y Tragos" class="carta-img">
-                        <div class="overlay-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
-                    </div>
-                    <p class="click-hint"><i class="fa-solid fa-expand"></i> Click para expandir carta</p>
-                </div>
-            </div>
-        </section>
+                </section>
 
-        <section class="menu-item-card reverse card-chef">
-            <div class="menu-content">
-                <div class="text-side" style="text-align: right;">
-                    <span class="category-tag">Edición Limitada</span>
-                    <h2 class="gold-text">Sugerencia del Chef</h2>
-                    <p><%= textos['recomendacion-chef'] || 'Explorá el arte de nuestra cocina con creaciones exclusivas.' %></p>
-                    <div style="margin: 20px 0; color: var(--gold); font-size: 0.9rem; font-style: italic;">
-                        <i class="fa-solid fa-star"></i> Lo más destacado de la semana
+                <section class="menu-item-card card-vinos">
+                    <div class="menu-content">
+                        <div class="text-side">
+                            <span class="span-category-tag">La Cava</span>
+                            <h2>Vinos y Tragos</h2>
+                            <p><%= textos['carta-vinos'] || 'Nuestra cava cuenta con etiquetas prestigiosas y coctelería clásica.' %></p>
+                            <div style="margin: 20px 0; color: rgba(255,255,255,0.6); font-size: 0.8rem;">
+                                <span style="margin-right: 15px;"><i class="fa-solid fa-wine-glass-half"></i> Sommelier</span>
+                                <span><i class="fa-solid fa-martini-glass-citrus"></i> Barra Premium</span>
+                            </div>
+                        </div>
+                        <div class="image-side">
+                            <div class="square-box" onclick="openPdfModal('/assets/cartas_pdf/carta-vinos.pdf')">
+                                <img src="/assets/preview_cartas/preview-carta-vinos.webp" alt="Vinos y Tragos" class="carta-img">
+                                <div class="overlay-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                            </div>
+                            <p class="click-hint"><i class="fa-solid fa-expand"></i> Click para expandir carta</p>
+                        </div>
                     </div>
-                </div>
-                <div class="image-side">
-                    <div class="square-box" onclick="openPdfModal('/assets/cartas_pdf/recomendacion-chef.pdf')">
-                        <img src="/assets/preview_cartas/preview-recomendacion-chef.webp" alt="Sugerencia del Chef" class="carta-img">
-                        <div class="overlay-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
-                    </div>
-                    <p class="click-hint">Click para ver propuesta especial <i class="fa-solid fa-expand"></i></p>
-                </div>
-            </div>
-        </section>
-    </div>
+                </section>
 
-    <div id="pdfModal" class="modal-zoom">
-        <span class="close-zoom" onclick="closePdfModal()">&times;</span>
-        <div class="modal-pdf-container">
-            <iframe id="pdfFrame" src="" width="100%" height="100%" style="border: none;"></iframe>
+                <section class="menu-item-card reverse card-chef">
+                    <div class="menu-content">
+                        <div class="text-side" style="text-align: right;">
+                            <span class="span-category-tag">Edición Limitada</span>
+                            <h2 class="gold-text">Sugerencia del Chef</h2>
+                            <p><%= textos['recomendacion-chef'] || 'Explorá el arte de nuestra cocina con creaciones exclusivas.' %></p>
+                            <div style="margin: 20px 0; color: var(--gold); font-size: 0.9rem; font-style: italic;">
+                                <i class="fa-solid fa-star"></i> Lo más destacado de la semana
+                            </div>
+                        </div>
+                        <div class="image-side">
+                            <div class="square-box" onclick="openPdfModal('/assets/cartas_pdf/recomendacion-chef.pdf')">
+                                <img src="/assets/preview_cartas/preview-recomendacion-chef.webp" alt="Sugerencia del Chef" class="carta-img">
+                                <div class="overlay-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                            </div>
+                            <p class="click-hint"><i class="fa-solid fa-expand"></i> Click para ver propuesta especial</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div> 
+        <div id="pdfModal" class="modal-zoom">
+            <span class="close-zoom" onclick="closePdfModal()">&times;</span>
+            <div class="modal-pdf-container">
+                <iframe id="pdfFrame" src="" width="100%" height="100%" style="border: none;"></iframe>
+            </div>
         </div>
-    </div>
-</main>
+    </main>
 
-<%- include('partials/_footer') %>
-
-<script src="./js/script.js"></script>
+    <%- include('partials/_footer') %>
+    <script src="/js/script.js"></script>
+</body>
+</html>
