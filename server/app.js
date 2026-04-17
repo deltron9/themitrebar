@@ -33,6 +33,6 @@ app.use((req, res) => {
     res.status(404).render('error', { page: 'error' });
 });
 
-app.listen(PORT, '0.0.0.0' () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor de The Mitre corriendo en http://localhost:${PORT}`);
 });
