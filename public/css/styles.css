@@ -794,11 +794,29 @@ body {
 
 /*responsive*/
 @media (max-width: 992px) {
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .logo-area {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .nav-logo {
+        height: 50px;
+    }
+
     .mobile-menu-icon {
         display: block;
         font-size: 1.8rem;
         color: var(--gold);
         cursor: pointer;
+        z-index: 1001;
     }
 
     .nav-links {
@@ -811,10 +829,10 @@ body {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 2rem;
+        gap: 2.5rem;
         transition: 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
         backdrop-filter: blur(15px);
-        z-index: 999;
+        z-index: 1000;
     }
 
     .nav-links.active {
@@ -840,6 +858,8 @@ body {
                     linear-gradient(to right, transparent, black 10%, black 90%, transparent);
         -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent),
                             linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        mask-composite: intersect;
+        -webkit-mask-composite: source-in;
     }
 }
 
@@ -852,11 +872,17 @@ body {
     .menu-item-card {
         padding: 40px 20px;
         margin-bottom: 40px;
+        background-attachment: scroll;
     }
 
-    .text-side h2 { font-size: 2.2rem; }
-    
-    .text-side, .text-side h2 { text-align: center !important; }
+    .text-side h2 {
+        font-size: 2.2rem;
+        text-align: center;
+    }
+
+    .text-side {
+        text-align: center !important;
+    }
 
     .text-side h2::after {
         left: 50% !important;
@@ -870,13 +896,30 @@ body {
         text-align: center;
     }
 
-    .titles-row { display: none; }
+    .titles-row {
+        display: none;
+    }
 
-    .footer-col { flex-direction: column; gap: 10px; }
+    .footer-col {
+        flex-direction: column;
+        gap: 10px;
+    }
 }
 
 @media (max-width: 480px) {
-    .hero-overlay h1 { font-size: 3.5rem; }
-    .btn-cta { padding: 1rem 2.5rem; width: 90%; }
-    .modal-pdf-container { height: 80%; margin-top: 20%; }
+    .hero-overlay h1 {
+        font-size: 3.2rem;
+    }
+
+    .btn-cta {
+        padding: 1rem 2rem;
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .modal-pdf-container {
+        width: 100%;
+        height: 85%;
+        margin-top: 15%;
+    }
 }
