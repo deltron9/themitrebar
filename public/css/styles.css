@@ -241,7 +241,8 @@ body {
 
 .title-header{
     color: var(--gold);
-    font-family: 'Playfair Display', serif; 
+    font-family: 'Playfair Display', serif;
+    text-align: center;
 }
 
 .menu-grid {
@@ -685,4 +686,13 @@ body {
     width: 60%;
     margin: 50px auto; 
     opacity: 0.6;
+}
+
+.ubi-hs-intro {
+    text-align: center;
+    font-family: 'Montserrat', sans-serif, serif;
+    font-style: italic;
+    max-width: 800px; 
+    margin: 0 auto 4rem auto; 
+    padding: 0 1rem;
 }
