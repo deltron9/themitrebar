@@ -1,41 +1,43 @@
 <nav class="navbar">
     <div class="nav-container">
-        <div class="logo-area" data-page="<%= page %>">
+        <a href="/" class="logo-area" data-page="<%= page %>">
             <img src="/assets/logo_navbar.webp" alt="The Mitre Bar Logo" class="nav-logo">
             <span class="logo-sub">Bar | Restaurant</span>
-        </div>
-            <ul class="nav-links">
-                <li>
-                    <% if (page === 'inicio') { %>
-                        <span class="active">Inicio</span>
-                    <% } else { %>
-                        <a href="/">Inicio</a>
-                    <% } %>
-                </li>
-                <li>
-                    <% if (page === 'carta') { %>
-                        <span class="active">Nuestra Carta</span>
-                    <% } else { %>
-                        <a href="/nuestra-carta">Nuestra Carta</a>
-                    <% } %>
-                </li>
-                <li>
-                    <% if (page === 'ubicacion') { %>
-                        <span class="active">Ubicación y Horarios</span>
-                    <% } else { %>
-                        <a href="/ubicacion">Ubicación y Horarios</a>
-                    <% } %>
-                </li>
-                <li>
-                    <% if (page === 'nosotros') { %>
-                        <span class="active">Nosotros</span>
-                    <% } else { %>
-                        <a href="/nosotros">Nosotros</a>
-                    <% } %>
-                </li>
-            </ul>
-        <div class="mobile-menu-icon">
+        </a>
+
+        <div class="mobile-menu-icon" id="mobile-toggle">
             <i class="fa-solid fa-bars"></i>
         </div>
+
+        <ul class="nav-links" id="nav-menu">
+            <li>
+                <% if (page === 'inicio') { %>
+                    <span class="active">Inicio</span>
+                <% } else { %>
+                    <a href="/">Inicio</a>
+                <% } %>
+            </li>
+            <li>
+                <% if (page === 'carta') { %>
+                    <span class="active">Nuestra Carta</span>
+                <% } else { %>
+                    <a href="/nuestra-carta">Nuestra Carta</a>
+                <% } %>
+            </li>
+            <li>
+                <% if (page === 'ubicacion') { %>
+                    <span class="active">Ubicación y Horarios</span>
+                <% } else { %>
+                    <a href="/ubicacion">Ubicación y Horarios</a>
+                <% } %>
+            </li>
+            <li>
+                <% if (page === 'nosotros') { %>
+                    <span class="active">Nosotros</span>
+                <% } else { %>
+                    <a href="/nosotros">Nosotros</a>
+                <% } %>
+            </li>
+        </ul>
     </div>
 </nav>
