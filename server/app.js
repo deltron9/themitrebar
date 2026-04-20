@@ -1,6 +1,6 @@
-require('dotenv').config();
-const express = require('express');
 const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+const express = require('express');
 const app = express();
 const indexRoutes = require('./routes'); 
 const PORT = process.env.PORT || 3000;
@@ -28,11 +28,16 @@ app.use(cookieParser());
 //uso de rutas
 app.use('/', indexRoutes);
 
+//ruta de encuesta
+app.get('/encuesta-privada-mitre', (req, res) => {
+    res.render('encuesta');
+});
+
 // renderizado para error 404
 app.use((req, res) => {
     res.status(404).render('error', { page: 'error' });
 });
 
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, () => {
     console.log(`Servidor de The Mitre corriendo en http://localhost:${PORT}`);
 });

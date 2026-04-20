@@ -1,13 +1,45 @@
 const express = require('express');
-const router = express.Router();
 const path = require('path');
+const axios = require('axios');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const fs = require('fs');
 const sharp = require('sharp');
+const router = express.Router();
 
 //el sistema guarda los archivos en 'temp' primero para luego renombrarlos y moverlos
 const upload = multer({ dest: path.join(__dirname, '..', 'public', 'assets', 'temp') });
+
+//ruta para encuesta mediante QR
+router.get('/encuesta', (req, res) => {
+    const { acceso, source } = req.query;
+    if (acceso === 'mitre-vip') {
+        res.render('encuesta', { source: source || 'directo' });
+    } else {
+        res.redirect('/');
+    }
+});
+
+// envio de encuesta al back
+router.post('/enviar-encuesta', async (req, res) => {
+    const SCRIPT_URL = process.env.GOOGLE_URL_KEY;
+
+    try {
+        //los datos recibidos se alojan en el body
+        const datos = req.body;
+
+        // se agrega validateStatus para evitar que el 302 de Google dispare el catch
+        await axios.get(SCRIPT_URL, { 
+            params: datos,
+            validateStatus: (status) => status >= 200 && status <= 302 
+        });
+
+        res.status(200).json({ success: true, message: 'Datos guardados correctamente' });
+    } catch (error) {
+        console.error('Error en el servidor:', error);
+        res.status(500).json({ success: false, message: 'Error al conectar con el servidor de datos' });
+    }
+});
 
 //protección de rutas de administrador
 const protectedAdmin = (req, res, next) => {
@@ -114,7 +146,7 @@ router.post('/admin/upload', protectedAdmin, upload.fields([
         //se direcciona a la carpeta 'preview_cartas'
         const targetPath = path.join(__dirname, '..', 'public', 'assets', 'preview_cartas', nombreFijo);
         
-        // Procesamiento con Sharp para convertir a WebP y optimizar
+        // Procesamiento con Sharp para convertir a WebP
         await sharp(file.path)
             .webp({ quality: 80 })
             .toFile(targetPath);
@@ -136,7 +168,6 @@ router.post('/admin/upload', protectedAdmin, upload.fields([
         fs.renameSync(file.path, targetPath);
     }
 
-    // Al renderizar de nuevo, es CRÍTICO volver a pasar el objeto user para mantener la Navbar
     res.render('admin/panel', {
         page: 'admin',
         user: req.user,
