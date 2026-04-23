@@ -12,7 +12,17 @@ const upload = multer({ dest: path.join(__dirname, '..', 'public', 'assets', 'te
 
 //ruta para encuesta mediante QR
 router.get('/encuesta', (req, res) => {
+    // esto evita que el navegador use la versión guardada (atrás/adelante)
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+    
     const { acceso, source } = req.query;
+
+    if (req.cookies && req.cookies.encuesta_completada === 'true') {
+        return res.redirect('/');
+    }
+
     if (acceso === 'mitre-vip') {
         res.render('encuesta', { source: source || 'directo' });
     } else {
@@ -20,7 +30,7 @@ router.get('/encuesta', (req, res) => {
     }
 });
 
-// envio de encuesta al back
+// envio de encuesta al back ya validada 
 router.post('/enviar-encuesta', async (req, res) => {
     const SCRIPT_URL = process.env.GOOGLE_URL_KEY;
 
@@ -34,6 +44,12 @@ router.post('/enviar-encuesta', async (req, res) => {
             validateStatus: (status) => status >= 200 && status <= 302 
         });
 
+        res.cookie('encuesta_completada', 'true', { 
+            maxAge: 24 * 60 * 60 * 1000, 
+            httpOnly: true,
+            sameSite: 'lax'
+        });
+
         res.status(200).json({ success: true, message: 'Datos guardados correctamente' });
     } catch (error) {
         console.error('Error en el servidor:', error);
@@ -43,6 +59,10 @@ router.post('/enviar-encuesta', async (req, res) => {
 
 //protección de rutas de administrador
 const protectedAdmin = (req, res, next) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+
     const token = req.cookies.adminToken;
     if (!token) return res.redirect('/login');
 
@@ -101,6 +121,7 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
     res.clearCookie('adminToken');
     res.redirect('/login');
 });
