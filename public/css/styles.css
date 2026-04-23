@@ -25,12 +25,13 @@ body {
 
 /* =========== NAVBAR =========== */
 .navbar {
-    background-color: rgba(10, 10, 10, 0.98);
-    border-bottom: 1px solid rgba(226, 176, 74, 0.4);
+background-color: var(--black);
+    border-bottom: 1px solid var(--gold);
     padding: 0.6rem 5%;
     position: fixed;
     width: 100%;
     top: 0;
+    left: 0;
     z-index: 1000;
     backdrop-filter: blur(8px);
 }
@@ -181,8 +182,8 @@ body {
 }
 
 .btn-cta:hover {
-    background-color: var(--gold);
-    color: var(--black);
+    background-color: var(--gold) !important;
+    color: var(--black) !important;
     transform: scale(1.05) translateY(-2px);
     box-shadow: 0 5px 20px rgba(226, 176, 74, 0.4);
 }
@@ -622,6 +623,7 @@ body {
     margin-bottom: 40px;
 }
 
+/*estilo para boton de delivery*/
 #orderBtn {
     background: transparent;
     color: var(--gold);
@@ -638,12 +640,6 @@ body {
     display: inline-block;
 }
 
-#orderBtn:hover {
-    background-color: var(--gold) !important;
-    color: var(--black) !important;
-    transform: scale(1.05) translateY(-2px);
-    box-shadow: 0 5px 20px rgba(226, 176, 74, 0.4);
-}
 
 /* dropdown del boton de pedidos*/
 .dropdown-wrapper { position: relative; display: inline-block; }
@@ -788,138 +784,248 @@ body {
 .video-slide {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Esto hace que el video llene el contenedor sin deformarse */
+    object-fit: cover;
     display: block;
 }
 
-/*responsive*/
-@media (max-width: 992px) {
-    .nav-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        padding: 0 10px;
-    }
-
-    .logo-area {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .nav-logo {
-        height: 50px;
-    }
-
-    .mobile-menu-icon {
-        display: block;
-        font-size: 1.8rem;
-        color: var(--gold);
-        cursor: pointer;
-        z-index: 1001;
-    }
-
-    .nav-links {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 100%;
-        height: 100vh;
-        background-color: rgba(10, 10, 10, 0.98);
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 2.5rem;
-        transition: 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
-        backdrop-filter: blur(15px);
-        z-index: 1000;
-    }
-
-    .nav-links.active {
-        right: 0;
-    }
-
-    .split-wrapper, .split-wrapper.reverse {
-        flex-direction: column;
-        gap: 40px;
-    }
-
-    .side-text, .side-visual {
-        width: 100%;
-        text-align: center;
-    }
-
-    .side-text { order: 1; }
-    .side-visual { order: 2; }
-
-    .rectangle-box {
-        max-width: 100%;
-        mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent),
-                    linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-        -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent),
-                            linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-        mask-composite: intersect;
-        -webkit-mask-composite: source-in;
-    }
+/*estilo para el fondo de página de la encuesta */
+.body-survey{
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.911), rgba(10, 10, 10, 0.788)), 
+        url('../assets/fondo-encuesta.webp'); 
+    background-size: cover;
+    background-position:center ;
+    background-repeat: no-repeat;
 }
 
-@media (max-width: 768px) {
-    .menu-content, .menu-item-card.reverse .menu-content {
-        flex-direction: column;
-        gap: 30px;
-    }
-
-    .menu-item-card {
-        padding: 40px 20px;
-        margin-bottom: 40px;
-        background-attachment: scroll;
-    }
-
-    .text-side h2 {
-        font-size: 2.2rem;
-        text-align: center;
-    }
-
-    .text-side {
-        text-align: center !important;
-    }
-
-    .text-side h2::after {
-        left: 50% !important;
-        right: auto !important;
-        transform: translateX(-50%);
-    }
-
-    .footer-row {
-        grid-template-columns: 1fr;
-        gap: 30px;
-        text-align: center;
-    }
-
-    .titles-row {
-        display: none;
-    }
-
-    .footer-col {
-        flex-direction: column;
-        gap: 10px;
-    }
+/*estilo para el placeholder general*/
+::placeholder {
+    color: var(--gray-muted);
+    font-style: italic;
 }
 
-@media (max-width: 480px) {
-    .hero-overlay h1 {
-        font-size: 3.2rem;
-    }
+/* contenedor de la encuesta */
+.mitre-survey {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-top: 50px;
+}
 
-    .btn-cta {
-        padding: 1rem 2rem;
-        width: 100%;
-        max-width: 280px;
-    }
+/*header de la encuesta*/
+.mitre-survey__header {
+    width: 100%;
+    text-align: center;
+    padding-top: 120px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-    .modal-pdf-container {
-        width: 100%;
-        height: 85%;
-        margin-top: 15%;
-    }
+/* FORMULARIO ENCUESTA */
+.mitre-form__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+}
+
+.mitre-form__group {
+    display: flex;
+    flex-direction: column;
+}
+
+.mitre-form__group--full {
+    grid-column: span 2;
+    margin-top: 20px;
+}
+
+.mitre-form__label {
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+/*inputs del form*/
+.mitre-form__input {
+    width: 100%;
+    padding: 12px 5px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: all 0.4s ease;
+    background-color: rgba(20, 20, 20, 0.6) !important;
+    border: 1px solid rgba(226, 176, 74, 0.2) !important;
+    color: var(--white) !important;
+    border-radius: 12px;
+}
+
+.mitre-form__input--textarea {
+    resize: none;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.mitre-form__phone-row {
+    display: flex;
+    gap: 15px;
+}
+
+.mitre-form__input--prefix {
+    flex: 0 0 80px;
+    text-align: center;
+}
+
+.mitre-search {
+    position: relative;
+}
+
+.mitre-search__results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 250px;
+    background: var(--black);
+    border: 0.1rem solid var(--gold);
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.mitre-search__results.is-visible {
+    display: block;
+}
+
+.option-item:hover{
+    background-color: var(--gold-bright);
+    color: var(--black);
+}
+
+/* contenedor de los rating con estrellas */
+.ratings-container{
+    margin: 80px 0px;
+}
+
+.rating-label {
+    font-weight: 700;
+    text-align: center;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    display: block;
+    margin-bottom: 15px;
+    background: var(--gold-bright);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* contenedor para cada rating */
+.rating-item{
+    margin: 15px 0px;
+}
+
+/* estilo para las estrellas */
+.stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: 15px;
+}
+
+.stars input {
+    display: none;
+}
+
+.stars label {
+    font-size: 2.5rem;
+    cursor: pointer
+}
+
+.stars label i {
+    color: var(--gray-muted);
+}
+
+.stars input:checked ~ label i,
+.stars label:hover i,
+.stars label:hover ~ label i {
+    background: var(--gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 8px rgba(197, 160, 89, 0.5));
+}
+
+/* sector de critica opcional*/
+/* Contenedor principal */
+.critic-optional {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 2rem;
+}
+
+/* Estilo del Label */
+.text-gold-form {
+    color: var(--gold);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+/*texto entre parentesis "opcional"*/
+.optional-tag {
+    font-size: 0.7rem;
+    color: var(--gold);
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0;
+    opacity: 0.6;
+}
+
+/* Wrapper para posicionar el contador */
+.textarea-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* area del texto de la critica*/
+.feedback-input {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: rgba(20, 20, 20, 0.6) !important;
+    border: 1px solid rgba(226, 176, 74, 0.2) !important;
+    color: var(--white) !important;
+    border-radius: 4px;
+    padding: 1.2rem;
+    font-size: 1rem;
+    transition: all 0.4s ease;
+    resize: none;
+}
+
+/*efecto de transicion al presionar para escribir en inputs y comentario*/
+.mitre-form__input:focus,
+.feedback-input:focus {
+    background-color: var(--black) !important;
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 15px rgba(226, 176, 74, 0.1) !important;
+    outline: none;
+}
+
+/* contador de letras*/
+.letter-counter {
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--gold);
+    margin-top: 8px;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+/* contenedor del boton de enviar encuesta*/
+.mitre-form__actions {
+    text-align: center;
+    margin: 10px 0 50px 0;
 }
