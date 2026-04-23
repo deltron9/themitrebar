@@ -333,7 +333,28 @@ input[type="file"]::-webkit-file-upload-button:hover {
     animation: slideIn 0.5s ease-out forwards;
 }
 
-/*responsive*/
+
+/* tablets */
+@media (max-width: 992px) {
+    .admin-flex {
+        padding: 0 20px;
+    }
+
+    .panel-card {
+        max-width: 90%;
+        padding: 30px;
+    }
+
+    .nav-links {
+        gap: 15px;
+    }
+
+    .nav-links a {
+        font-size: 0.75rem;
+    }
+}
+
+/* celulares grandes */
 @media (max-width: 768px) {
     .admin-nav {
         height: auto;
@@ -343,21 +364,22 @@ input[type="file"]::-webkit-file-upload-button:hover {
     .admin-flex {
         flex-direction: column;
         gap: 15px;
-        padding: 0 20px;
+        text-align: center;
     }
 
-    .nav-logo {
-        height: 40px;
+    /*ajuste del area principal para no quedar tapada por la nav */
+    .admin-panel {
+        padding-top: 160px !important;
+    }
+
+    .admin-login-body {
+        padding-top: 150px;
     }
 
     .nav-links {
-        gap: 15px;
-        flex-wrap: wrap;
+        width: 100%;
         justify-content: center;
-    }
-
-    .nav-links a {
-        font-size: 0.7rem;
+        flex-wrap: wrap;
     }
 
     .btn-logout-nav {
@@ -365,72 +387,87 @@ input[type="file"]::-webkit-file-upload-button:hover {
         font-size: 0.7rem;
     }
 
-    .admin-login-body {
-        padding-top: 140px;
-        height: auto;
-        min-height: 100vh;
-        align-items: flex-start;
-    }
-
     .login-container {
-        width: 90%;
-        padding: 2rem 1.5rem;
-        margin-bottom: 30px;
-    }
-
-    .login-logo {
-        height: 60px;
-    }
-
-    .admin-panel {
-        padding: 120px 15px 30px 15px;
-    }
-
-    .panel-card {
-        padding: 25px 15px;
-        margin-bottom: 20px;
-    }
-
-    .login-header h2 {
-        font-size: 1rem;
-    }
-
-    input[type="text"],
-    input[type="password"],
-    textarea,
-    select {
-        font-size: 16px; 
-    }
-
-    input[type="file"]::-webkit-file-upload-button {
-        width: 100%;
-        margin-bottom: 10px;
+        max-width: 90%;
+        padding: 2rem;
     }
 }
 
+/* celulares chicos */
 @media (max-width: 480px) {
-    .admin-flex {
-        padding: 0 10px;
+    /* Navbar compacta */
+    .nav-logo {
+        height: 40px;
+    }
+    
+    .logo-sub {
+        font-size: 0.55rem;
     }
 
     .nav-links {
         gap: 10px;
     }
 
-    .nav-links a span {
-        display: none;
+    .nav-links a {
+        font-size: 0.7rem;
+        letter-spacing: 0;
     }
 
-    .nav-links a i {
-        font-size: 1.2rem;
+    /*formulario para celulares*/
+    .panel-card {
+        padding: 20px 15px;
+        border-radius: 4px;
     }
 
-    .login-container {
-        padding: 1.5rem 1rem;
+    .login-header h2 {
+        font-size: 1rem;
     }
 
-    .login-btn, .btn-update {
+    /* Inputs y botones mas faciles de tocar con el dedo */
+    input[type="text"], 
+    input[type="password"], 
+    textarea, 
+    select,
+    .login-btn,
+    .btn-update {
         padding: 12px;
-        font-size: 0.8rem;
+        font-size: 14px; 
+    }
+
+    /* boton para subir archivo version celular*/
+    input[type="file"]::-webkit-file-upload-button {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .admin-panel {
+        padding-top: 180px !important;
+    }
+}
+
+/*ajuste para pantallas grandes de pc*/
+@media (min-width: 1400px) {
+    .panel-card {
+        max-width: 700px; 
+    }
+
+    .admin-flex {
+        max-width: 1400px !important;
+        margin: 0 auto !important;
+    }
+}
+
+/* modo landscape */
+@media (max-height: 500px) and (orientation: landscape) {
+    .admin-login-body {
+        height: auto;
+        padding: 120px 20px 50px;
+    }
+    
+    .admin-panel {
+        height: auto;
+        padding-top: 120px;
     }
 }
