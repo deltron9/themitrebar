@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- variables y selectores ---
+    // --- Variables y selectores ---
     const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
     const navMenu = document.querySelector('.nav-links');
     const body = document.body;
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hiddenInput = document.getElementById('localidad-value');
     let localidadesRaw = [];
 
-    // --- menu mobile ---
+    // --- Menu mobile ---
     if (mobileMenuIcon && navMenu) {
         mobileMenuIcon.addEventListener('click', () => {
             navMenu.classList.toggle('active');
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- scroll active links ---
+    // --- Scroll active links ---
     const sections = document.querySelectorAll("main[id], section[id]");
     const navLinksList = document.querySelectorAll(".nav-links a");
 
@@ -60,10 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- pedidos dropdown ---
+    // --- Pedidos dropdown (Corregido para evitar conflictos en la encuesta) ---
     const orderBtn = document.getElementById('orderBtn');
     const deliveryOptions = document.getElementById('deliveryOptions');
 
+    // Solo ejecuta esta lógica si AMBOS elementos existen (Página de inicio/carta)
     if (orderBtn && deliveryOptions) {
         orderBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -75,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Logo Click (Acceso admin) ---
     const logo = document.querySelector('.logo-area');
     if (logo) {
         const currentPage = logo.getAttribute('data-page');
@@ -95,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- configuración sweetalert ---
+    // --- Configuración SweetAlert ---
     const MitreAlert = typeof Swal !== 'undefined' ? Swal.mixin({
         timer: 3000,
         timerProgressBar: true,
@@ -106,13 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
             popup.style.border = '2px solid #e2b04a';
             popup.style.boxShadow = '0 0 15px rgba(226, 176, 74, 0.3)';
             const timerBar = popup.querySelector('.swal2-timer-progress-bar');
-            if (timerBar) {
-                timerBar.style.backgroundColor = '#e2b04a';
-            }
+            if (timerBar) timerBar.style.backgroundColor = '#e2b04a';
         }
     }) : null;
 
-    // --- funciones auxiliares encuesta ---
+    // --- Funciones auxiliares encuesta ---
     const cleanString = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
     const updateList = (list) => {
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- carga de localidades ---
+    // --- Carga de localidades ---
     const cargarLocalidades = async () => {
         try {
             const [resBA, resCABA] = await Promise.all([
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (searchInput) cargarLocalidades();
 
-    // --- filtros de entrada ---
+    // --- Filtros de entrada ---
     const setupFilter = (id, regex) => {
         const el = document.getElementById(id);
         if (el) {
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupFilter('prefijo', /[0-9]/);
     setupFilter('numero', /[0-9]/);
 
-    // --- buscador de localidades ---
+    // --- Buscador de localidades ---
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             const term = cleanString(e.target.value);
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- validacion y envio de encuesta ---
+    // --- Validacion y envio de encuesta ---
     const alertAndFocus = (msg, elementId) => {
         if (!MitreAlert) return;
         MitreAlert.fire({ title: 'Atención', text: msg, icon: 'warning' }).then(() => {
@@ -215,25 +215,23 @@ document.addEventListener('DOMContentLoaded', () => {
         form.addEventListener('submit', async (e) => {
             e.preventDefault(); 
 
-            // Datos personales
             const nombre = form.nombre.value.trim();
             const apellido = form.apellido.value.trim();
             const nacInput = document.getElementById('nacimiento');
-            const prefijo = form.prefijo.value.trim();
-            const numero = form.numero.value.trim();
+            const prefijo = document.getElementById('prefijo').value.trim();
+            const numero = document.getElementById('numero').value.trim();
             const localidadVal = hiddenInput ? hiddenInput.value : "";
 
-            // Calificaciones (estrellas)
             const platos = form.platos.value;
             const atencion = form.atencion.value;
             const ambiente = form.ambiente.value;
             const invitar = form.invitar.value;
 
-            // --- Validaciones de datos personales ---
+            // Validaciones
             if (!nombre) return alertAndFocus('Falta el nombre.', 'nombre');
             if (!apellido) return alertAndFocus('Falta el apellido.', 'apellido');
-
             if (!nacInput || !nacInput.value) return alertAndFocus("Por favor, ingresá tu fecha de nacimiento.", 'nacimiento');
+            
             const nacDate = new Date(nacInput.value);
             const hoy = new Date();
             let edad = hoy.getFullYear() - nacDate.getFullYear();
@@ -244,29 +242,22 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!numero || numero.length < 6) return alertAndFocus('El número de teléfono es muy corto.', 'numero');
             if (!localidadVal) return alertAndFocus('Seleccioná tu barrio de la lista.', 'localidad-search');
 
-            // --- Validaciones de Estrellas (Obligatorias) ---
-            if (!platos) return alertAndFocus('Por favor, calificá la calidad de los platos.', 'survey-form');
-            if (!atencion) return alertAndFocus('Por favor, calificá la atención recibida.', 'survey-form');
-            if (!ambiente) return alertAndFocus('Por favor, calificá el ambiente del lugar.', 'survey-form');
-            if (!invitar) return alertAndFocus('Por favor, indicanos si volverías o invitarías a alguien.', 'survey-form');
+            if (!platos) return alertAndFocus('Por favor, calificá los platos.', 'survey-form');
+            if (!atencion) return alertAndFocus('Por favor, calificá la atención.', 'survey-form');
+            if (!ambiente) return alertAndFocus('Por favor, calificá el ambiente.', 'survey-form');
+            if (!invitar) return alertAndFocus('Por favor, indicanos si volverías.', 'survey-form');
 
-            // Si todo está ok (el comentario es opcional por defecto ya que no se valida)
             try {
                 if (typeof Swal !== 'undefined') {
                     Swal.fire({ title: 'Enviando...', background: '#0a0a0a', showConfirmButton: false, didOpen: () => Swal.showLoading() });
                 }
 
                 const payload = {
-                    nombre: nombre,
-                    apellido: apellido,
-                    nacimiento: nacInput.value,
+                    nombre, apellido, nacimiento: nacInput.value,
                     whatsapp: `${prefijo}${numero}`,
                     localidad: localidadVal,
-                    platos: platos,
-                    atencion: atencion,
-                    ambiente: ambiente,
-                    invitar: invitar,
-                    comentario: form.critica.value.trim() // Opcional
+                    platos, atencion, ambiente, invitar,
+                    comentario: form.critica.value.trim()
                 };
 
                 const response = await fetch('/enviar-encuesta', {
@@ -288,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- swiper configuración ---
+    // --- Swiper configuración ---
     if (typeof Swiper !== 'undefined') {
         const configFotos = {
             effect: 'fade',
@@ -309,8 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 autoplay: { delay: 8000, disableOnInteraction: false },
                 on: {
                     slideChangeTransitionEnd: function () {
-                        const activeSlide = this.slides[this.activeIndex];
-                        const video = activeSlide.querySelector('video');
+                        const video = this.slides[this.activeIndex].querySelector('video');
                         if (video) video.play();
                     }
                 }
@@ -319,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// --- modal pdf functions ---
+// --- Modal PDF functions ---
 function openPdfModal(path) {
     const modal = document.getElementById('pdfModal');
     const frame = document.getElementById('pdfFrame');
