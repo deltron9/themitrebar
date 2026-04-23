@@ -7,22 +7,24 @@ const fs = require('fs');
 const sharp = require('sharp');
 const router = express.Router();
 
-//el sistema guarda los archivos en 'temp' primero para luego renombrarlos y moverlos
 const upload = multer({ dest: path.join(__dirname, '..', 'public', 'assets', 'temp') });
 
-//ruta para encuesta mediante QR
 router.get('/encuesta', (req, res) => {
-    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-    res.set('Pragma', 'no-cache');
-    res.set('Expires', '0');
-    
+    // Seguridad estricta de headers para anular BFCache (historial)
+    res.header('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.header('Pragma', 'no-cache');
+    res.header('Expires', '0');
+    res.header('Surrogate-Control', 'no-store');
+
     const { acceso, source } = req.query;
 
+    // Si entra con el link del QR, le permitimos re-entrar limpiando bloqueos previos
     if (acceso === 'mitre-vip') {
         res.clearCookie('encuesta_completada');
         return res.render('encuesta', { source: source || 'directo' });
     }
 
+    // Bloqueo por cookie si ya completó y no viene desde el QR
     if (req.cookies && req.cookies.encuesta_completada === 'true') {
         return res.redirect('/');
     }
@@ -30,7 +32,6 @@ router.get('/encuesta', (req, res) => {
     res.redirect('/');
 });
 
-// envio de encuesta al back ya validada 
 router.post('/enviar-encuesta', async (req, res) => {
     const SCRIPT_URL = process.env.GOOGLE_URL_KEY;
 
@@ -45,7 +46,8 @@ router.post('/enviar-encuesta', async (req, res) => {
         res.cookie('encuesta_completada', 'true', { 
             maxAge: 24 * 60 * 60 * 1000, 
             httpOnly: true,
-            sameSite: 'lax'
+            sameSite: 'lax',
+            secure: true // Asegura que solo viaje por HTTPS (Railway lo soporta)
         });
 
         res.status(200).json({ success: true, message: 'Datos guardados correctamente' });
@@ -55,11 +57,10 @@ router.post('/enviar-encuesta', async (req, res) => {
     }
 });
 
-//protección de rutas de administrador
 const protectedAdmin = (req, res, next) => {
-    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-    res.set('Pragma', 'no-cache');
-    res.set('Expires', '0');
+    res.header('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.header('Pragma', 'no-cache');
+    res.header('Expires', '0');
 
     const token = req.cookies.adminToken;
     if (!token) return res.redirect('/login');
@@ -74,7 +75,6 @@ const protectedAdmin = (req, res, next) => {
     }
 };
 
-//rutas públicas del sitio
 router.get('/', (req, res) => {
     res.render('index', { page: 'inicio' });
 });
@@ -98,7 +98,6 @@ router.get('/ubicacion', (req, res) => {
     res.render('ubicacion_horarios', { page: 'ubicacion' });
 });
 
-//logeo de administrador
 router.get('/login', (req, res) => {
     res.render('admin/login', { page: 'login' });
 });
@@ -114,12 +113,11 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.header('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.clearCookie('adminToken');
     res.redirect('/login');
 });
 
-//ruta de panel de administracion, protegida por el middleware de autenticación
 router.get('/admin', protectedAdmin, (req, res) => {
     res.render('admin/panel', { 
         page: 'admin', 
@@ -127,7 +125,6 @@ router.get('/admin', protectedAdmin, (req, res) => {
     });
 });
 
-//ruta para subir archivos y actualizar textos desde el panel de administración
 router.post('/admin/upload', protectedAdmin, upload.fields([
     { name: 'imagenPreview', maxCount: 1 },
     { name: 'archivoPdf', maxCount: 1 }
