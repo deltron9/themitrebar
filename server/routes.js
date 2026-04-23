@@ -12,7 +12,7 @@ const upload = multer({ dest: path.join(__dirname, '..', 'public', 'assets', 'te
 
 // ruta para encuesta mediante qr
 router.get('/encuesta', (req, res) => {
-    // esto evita que el navegador use la version guardada (atras/adelante)
+    // encabezados para que el navegador no guarde la pagina en memoria
     res.header('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.header('Pragma', 'no-cache');
     res.header('Expires', '0');
@@ -20,34 +20,38 @@ router.get('/encuesta', (req, res) => {
 
     const { acceso, source } = req.query;
 
+    // si el usuario viene con el link del qr (acceso=mitre-vip)
     if (acceso === 'mitre-vip') {
+        // borramos la cookie de bloqueo anterior para permitir una nueva encuesta
         res.clearCookie('encuesta_completada');
         return res.render('encuesta', { source: source || 'directo' });
     }
 
+    // si intenta volver atras (sin el acceso en la url) y ya la completo, se va al inicio
     if (req.cookies && req.cookies.encuesta_completada === 'true') {
         return res.redirect('/');
     }
 
+    // si no tiene acceso ni cookie (intento de entrada manual), al inicio
     res.redirect('/');
 });
 
-// envio de encuesta al back ya validada 
+// envio de encuesta al back con validaciones de seguridad
 router.post('/enviar-encuesta', async (req, res) => {
     const SCRIPT_URL = process.env.GOOGLE_URL_KEY;
 
     try {
-        // los datos recibidos se alojan en el body
         const { nombre, apellido, nacimiento, whatsapp, localidad, platos, atencion, ambiente, invitar } = req.body;
 
-        // validaciones de seguridad en el servidor
+        // validaciones de longitud en el servidor
         if (!nombre || nombre.length > 15) {
-            return res.status(400).json({ success: false, message: 'nombre invalido o demasiado largo.' });
+            return res.status(400).json({ success: false, message: 'nombre demasiado largo o vacio.' });
         }
         if (!apellido || apellido.length > 15) {
-            return res.status(400).json({ success: false, message: 'apellido invalido o demasiado largo.' });
+            return res.status(400).json({ success: false, message: 'apellido demasiado largo o vacio.' });
         }
 
+        // validacion de edad minima
         const nacDate = new Date(nacimiento + 'T00:00:00');
         const hoy = new Date();
         let edad = hoy.getFullYear() - nacDate.getFullYear();
@@ -58,6 +62,7 @@ router.post('/enviar-encuesta', async (req, res) => {
             return res.status(400).json({ success: false, message: 'fecha de nacimiento invalida.' });
         }
 
+        // validacion de campos requeridos
         if (!whatsapp || !localidad || !platos || !atencion || !ambiente || !invitar) {
             return res.status(400).json({ success: false, message: 'faltan campos obligatorios.' });
         }
@@ -68,6 +73,7 @@ router.post('/enviar-encuesta', async (req, res) => {
             validateStatus: (status) => status >= 200 && status <= 302 
         });
 
+        // creamos la cookie que servira para bloquear el boton atras
         res.cookie('encuesta_completada', 'true', { 
             maxAge: 24 * 60 * 60 * 1000, 
             httpOnly: true,
@@ -133,8 +139,6 @@ router.get('/login', (req, res) => {
 });
 
 // validacion de logeo
-// las credenciales estan alojadas en variables de entorno
-// el token de autentificacion dura 15 min y luego se cierra la sesion y te devuelve al login
 router.post('/login', (req, res) => {
     const { user, pass } = req.body;
     if (user === process.env.ADMIN_USER && pass === process.env.ADMIN_PASS) {
@@ -151,25 +155,23 @@ router.get('/logout', (req, res) => {
     res.redirect('/login');
 });
 
-// ruta de panel de administracion, protegida por el middleware de autenticacion
+// ruta de panel de administracion protegida
 router.get('/admin', protectedAdmin, (req, res) => {
-    // pasamos explicitamente el objeto req.user para que locals.user sea verdadero
     res.render('admin/panel', { 
         page: 'admin', 
         user: req.user 
     });
 });
 
-// ruta para subir archivos y actualizar textos desde el panel de administracion
+// ruta para subir archivos y actualizar textos
 router.post('/admin/upload', protectedAdmin, upload.fields([
     { name: 'imagenPreview', maxCount: 1 },
     { name: 'archivoPdf', maxCount: 1 }
 ]), async (req, res) => {
-    // nombreseccion identifica cual de las 4 cartas se esta tocando
     const { nombreSeccion, descripcion } = req.body;
     const files = req.files;
 
-    // guardado de la descripcion en un json para cada seccion
+    // guardado de descripcion en json
     if (descripcion && descripcion.trim() !== "") {
         const rutaDir = path.join(__dirname, '..', 'data');
         const rutaData = path.join(rutaDir, 'textos.json');
@@ -177,40 +179,29 @@ router.post('/admin/upload', protectedAdmin, upload.fields([
         if (!fs.existsSync(rutaDir)) fs.mkdirSync(rutaDir);
 
         let textos = fs.existsSync(rutaData) ? JSON.parse(fs.readFileSync(rutaData, 'utf-8')) : {};
-        
-        // se guarda el texto usando el nombre de la seccion como clave para independencia de las 4 cartas
         textos[nombreSeccion] = descripcion;
         fs.writeFileSync(rutaData, JSON.stringify(textos, null, 2));
     }
 
-    // procesamiento de imagen de preview (renombrado automatico y ubicacion en carpeta correspondiente)
+    // procesamiento de imagen con sharp
     if (files['imagenPreview']) {
         const file = files['imagenPreview'][0];
-        
-        // se genera el nombre basado en la seccion seleccionada (ej: preview-menu-ejecutivo.webp)
         const nombreFijo = `preview-${nombreSeccion}.webp`;
-        // se direcciona a la carpeta preview_cartas
         const targetPath = path.join(__dirname, '..', 'public', 'assets', 'preview_cartas', nombreFijo);
         
-        // procesamiento con sharp para convertir a webp
         await sharp(file.path)
             .webp({ quality: 80 })
             .toFile(targetPath);
             
-        // eliminar el archivo temporal original
         fs.unlinkSync(file.path);
     }
 
-    // procesamiento de archivo pdf (renombrado automatico y ubicacion en carpeta cartas_pdf)
+    // procesamiento de archivo pdf
     if (files['archivoPdf']) {
         const file = files['archivoPdf'][0];
-        
-        // se fuerza el nombre del archivo pdf segun la seccion (ej: recomendacion-chef.pdf)
         const nombrePdfFijo = `${nombreSeccion}.pdf`;
-        // se direcciona a la carpeta cartas_pdf
         const targetPath = path.join(__dirname, '..', 'public', 'assets', 'cartas_pdf', nombrePdfFijo);
         
-        // mover y renombrar fisicamente (sobrescribe la version anterior automaticamente)
         fs.renameSync(file.path, targetPath);
     }
 
