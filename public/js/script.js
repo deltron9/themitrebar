@@ -96,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- configuración sweetalert ---
-    // Usamos una verificación por si Swal no está cargado en alguna página
     const MitreAlert = typeof Swal !== 'undefined' ? Swal.mixin({
         timer: 3000,
         timerProgressBar: true,
@@ -214,34 +213,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (form) {
         form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!form.nombre.value.trim()) return alertAndFocus('Falta el nombre.', 'nombre');
-            if (!form.apellido.value.trim()) return alertAndFocus('Falta el apellido.', 'apellido');
+            e.preventDefault(); 
 
+            // Datos personales
+            const nombre = form.nombre.value.trim();
+            const apellido = form.apellido.value.trim();
             const nacInput = document.getElementById('nacimiento');
+            const prefijo = form.prefijo.value.trim();
+            const numero = form.numero.value.trim();
+            const localidadVal = hiddenInput ? hiddenInput.value : "";
+
+            // Calificaciones (estrellas)
+            const platos = form.platos.value;
+            const atencion = form.atencion.value;
+            const ambiente = form.ambiente.value;
+            const invitar = form.invitar.value;
+
+            // --- Validaciones de datos personales ---
+            if (!nombre) return alertAndFocus('Falta el nombre.', 'nombre');
+            if (!apellido) return alertAndFocus('Falta el apellido.', 'apellido');
+
+            if (!nacInput || !nacInput.value) return alertAndFocus("Por favor, ingresá tu fecha de nacimiento.", 'nacimiento');
             const nacDate = new Date(nacInput.value);
             const hoy = new Date();
             let edad = hoy.getFullYear() - nacDate.getFullYear();
             if (hoy.getMonth() < nacDate.getMonth() || (hoy.getMonth() === nacDate.getMonth() && hoy.getDate() < nacDate.getDate())) edad--;
+            if (edad < 16 || edad > 95) return alertAndFocus("Edad no válida.", 'nacimiento');
 
-            if (!nacInput.value || edad < 16 || edad > 95) return alertAndFocus("Edad no válida.", 'nacimiento');
-            if (!form.prefijo.value || form.prefijo.value.length < 2) return alertAndFocus('Revisá el prefijo.', 'prefijo');
-            if (!form.numero.value || form.numero.value.length < 6) return alertAndFocus('Número corto.', 'numero');
-            if (!hiddenInput.value) return alertAndFocus('Seleccioná tu barrio.', 'localidad-search');
+            if (!prefijo || prefijo.length < 2) return alertAndFocus('Revisá el prefijo de área.', 'prefijo');
+            if (!numero || numero.length < 6) return alertAndFocus('El número de teléfono es muy corto.', 'numero');
+            if (!localidadVal) return alertAndFocus('Seleccioná tu barrio de la lista.', 'localidad-search');
 
+            // --- Validaciones de Estrellas (Obligatorias) ---
+            if (!platos) return alertAndFocus('Por favor, calificá la calidad de los platos.', 'survey-form');
+            if (!atencion) return alertAndFocus('Por favor, calificá la atención recibida.', 'survey-form');
+            if (!ambiente) return alertAndFocus('Por favor, calificá el ambiente del lugar.', 'survey-form');
+            if (!invitar) return alertAndFocus('Por favor, indicanos si volverías o invitarías a alguien.', 'survey-form');
+
+            // Si todo está ok (el comentario es opcional por defecto ya que no se valida)
             try {
-                Swal.fire({ title: 'Enviando...', background: '#0a0a0a', showConfirmButton: false, didOpen: () => Swal.showLoading() });
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({ title: 'Enviando...', background: '#0a0a0a', showConfirmButton: false, didOpen: () => Swal.showLoading() });
+                }
+
                 const payload = {
-                    nombre: form.nombre.value.trim(),
-                    apellido: form.apellido.value.trim(),
-                    nacimiento: form.nacimiento.value,
-                    whatsapp: `${form.prefijo.value}${form.numero.value}`,
-                    localidad: hiddenInput.value,
-                    platos: form.platos.value,
-                    atencion: form.atencion.value,
-                    ambiente: form.ambiente.value,
-                    invitar: form.invitar.value,
-                    comentario: form.critica.value.trim()
+                    nombre: nombre,
+                    apellido: apellido,
+                    nacimiento: nacInput.value,
+                    whatsapp: `${prefijo}${numero}`,
+                    localidad: localidadVal,
+                    platos: platos,
+                    atencion: atencion,
+                    ambiente: ambiente,
+                    invitar: invitar,
+                    comentario: form.critica.value.trim() // Opcional
                 };
 
                 const response = await fetch('/enviar-encuesta', {
@@ -252,11 +277,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const res = await response.json();
                 if (res.success) {
-                    MitreAlert.fire('¡Enviado!', '¡Gracias!', 'success').then(() => window.location.href = '/');
+                    MitreAlert.fire('¡Enviado!', '¡Gracias por participar!', 'success').then(() => window.location.href = '/');
                     form.reset();
-                } else { throw new Error(); }
+                } else { 
+                    throw new Error(); 
+                }
             } catch (err) {
-                MitreAlert.fire('Error', 'No se pudo enviar.', 'error');
+                MitreAlert.fire('Error', 'No se pudo enviar la encuesta.', 'error');
             }
         });
     }
@@ -277,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (document.querySelector('.swiper-carta')) new Swiper('.swiper-carta', configFotos);
         
         if (document.querySelector('.swiper-eventos')) {
-            const swiperEventos = new Swiper('.swiper-eventos', {
+            new Swiper('.swiper-eventos', {
                 ...configFotos,
                 autoplay: { delay: 8000, disableOnInteraction: false },
                 on: {
