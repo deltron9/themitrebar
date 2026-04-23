@@ -1098,6 +1098,15 @@ background-color: var(--black);
         width: 100%;
     }
 
+    /*Truncado de texto en carta para no ser extensos */
+    .text-side p {
+        display: -webkit-box;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     /* formulario de encuesta*/
     .mitre-form__grid {
         grid-template-columns: 1fr; /*todos los elementos del formulario se presentan en columna*/
@@ -1108,15 +1117,26 @@ background-color: var(--black);
         grid-column: span 1;
     }
 
-/*Footer*/
+    /*Footer*/
     .footer-row {
         grid-template-columns: 1fr;
         gap: 2rem;
         text-align: center;
     }
 
+    /* ORden de footer: Título primero, luego links */
     .footer-col {
         flex-direction: column;
+        display: flex;
+    }
+
+    .footer-section h3 {
+        order: 1;
+        margin-bottom: 15px;
+    }
+
+    .social-icons, .contact-link, .location-info {
+        order: 2;
     }
 
     .text-side h2::after {
@@ -1135,8 +1155,13 @@ background-color: var(--black);
         --navbar-height: 90px;
     }
 
+    /* AGREGADO: Logo y texto de nav más chicos */
     .nav-logo {
-        height: 50px;
+        height: 40px;
+    }
+
+    .logo-sub {
+        font-size: 0.5rem;
     }
 
     .hero-section {
@@ -1164,6 +1189,11 @@ background-color: var(--black);
 
     .text-side h2 {
         font-size: 1.8rem;
+    }
+
+    /* AGREGADO: Texto de carta reducido a 2 líneas en pantallas mínimas */
+    .text-side p {
+        -webkit-line-clamp: 2;
     }
 
     .sch-hours {
