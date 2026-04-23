@@ -1057,14 +1057,17 @@ background-color: var(--black);
         color: var(--gold);
         font-size: 2rem;
         cursor: pointer;
-        z-index: 1100; /* Elevado para que el icono de cierre no quede debajo del menú */
+        /* INTEGRADO: Z-index superior para que la X no quede bajo el menú */
+        position: relative;
+        z-index: 1100; 
     }
 
     .nav-links {
         position: fixed;
         top: 0;
+        /* INTEGRADO: Ocupa el 100% para evitar que se vea el contenido de fondo mezclado */
         right: -100%;
-        width: 70%;
+        width: 100%; 
         height: 100vh;
         background: rgba(10, 10, 10, 0.98);
         flex-direction: column;
@@ -1072,7 +1075,9 @@ background-color: var(--black);
         align-items: center;
         transition: 0.4s ease-in-out;
         backdrop-filter: blur(15px);
-        border-left: 1px solid var(--gold);
+        /* Quitamos el borde lateral al ser full width */
+        border-left: none;
+        z-index: 1050;
     }
 
     /* INTEGRADO: Clase coincidente con tu JavaScript para abrir el menú */
@@ -1081,7 +1086,8 @@ background-color: var(--black);
     }
 
     .nav-links a {
-        font-size: 1.1rem;
+        font-size: 1.3rem; /* Un poco más grande para facilitar el toque */
+        margin: 10px 0;
     }
 
     /*transiciones*/
@@ -1157,7 +1163,7 @@ background-color: var(--black);
 
     /* INTEGRADO: Logo y texto de nav más chicos solicitado */
     .nav-logo {
-        height: 40px;
+        height: 45px; /* Un poco más grande que 40px para legibilidad */
     }
 
     .logo-sub {
