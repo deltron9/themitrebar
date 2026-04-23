@@ -337,3 +337,13 @@ function closePdfModal() {
         document.body.style.overflow = 'auto';
     }
 }
+
+(function() {
+    if (window.location.pathname.includes('/encuesta')) {
+        window.onpageshow = function(event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                window.location.reload();
+            }
+        };
+    }
+})();
