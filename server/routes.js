@@ -7,10 +7,12 @@ const fs = require('fs');
 const sharp = require('sharp');
 const router = express.Router();
 
+// el sistema guarda los archivos en temp primero para luego renombrarlos y moverlos
 const upload = multer({ dest: path.join(__dirname, '..', 'public', 'assets', 'temp') });
 
+// ruta para encuesta mediante qr
 router.get('/encuesta', (req, res) => {
-    // Seguridad estricta de headers para anular BFCache (historial)
+    // esto evita que el navegador use la version guardada (atras/adelante)
     res.header('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.header('Pragma', 'no-cache');
     res.header('Expires', '0');
@@ -18,13 +20,11 @@ router.get('/encuesta', (req, res) => {
 
     const { acceso, source } = req.query;
 
-    // Si entra con el link del QR, le permitimos re-entrar limpiando bloqueos previos
     if (acceso === 'mitre-vip') {
         res.clearCookie('encuesta_completada');
         return res.render('encuesta', { source: source || 'directo' });
     }
 
-    // Bloqueo por cookie si ya completó y no viene desde el QR
     if (req.cookies && req.cookies.encuesta_completada === 'true') {
         return res.redirect('/');
     }
@@ -32,14 +32,39 @@ router.get('/encuesta', (req, res) => {
     res.redirect('/');
 });
 
+// envio de encuesta al back ya validada 
 router.post('/enviar-encuesta', async (req, res) => {
     const SCRIPT_URL = process.env.GOOGLE_URL_KEY;
 
     try {
-        const datos = req.body;
+        // los datos recibidos se alojan en el body
+        const { nombre, apellido, nacimiento, whatsapp, localidad, platos, atencion, ambiente, invitar } = req.body;
 
+        // validaciones de seguridad en el servidor
+        if (!nombre || nombre.length > 15) {
+            return res.status(400).json({ success: false, message: 'nombre invalido o demasiado largo.' });
+        }
+        if (!apellido || apellido.length > 15) {
+            return res.status(400).json({ success: false, message: 'apellido invalido o demasiado largo.' });
+        }
+
+        const nacDate = new Date(nacimiento + 'T00:00:00');
+        const hoy = new Date();
+        let edad = hoy.getFullYear() - nacDate.getFullYear();
+        const m = hoy.getMonth() - nacDate.getMonth();
+        if (m < 0 || (m === 0 && hoy.getDate() < nacDate.getDate())) edad--;
+
+        if (isNaN(nacDate.getTime()) || edad < 13 || edad > 100) {
+            return res.status(400).json({ success: false, message: 'fecha de nacimiento invalida.' });
+        }
+
+        if (!whatsapp || !localidad || !platos || !atencion || !ambiente || !invitar) {
+            return res.status(400).json({ success: false, message: 'faltan campos obligatorios.' });
+        }
+
+        // se agrega validatestatus para evitar que el 302 de google dispare el catch
         await axios.get(SCRIPT_URL, { 
-            params: datos,
+            params: req.body,
             validateStatus: (status) => status >= 200 && status <= 302 
         });
 
@@ -47,16 +72,17 @@ router.post('/enviar-encuesta', async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000, 
             httpOnly: true,
             sameSite: 'lax',
-            secure: true // Asegura que solo viaje por HTTPS (Railway lo soporta)
+            secure: true 
         });
 
-        res.status(200).json({ success: true, message: 'Datos guardados correctamente' });
+        res.status(200).json({ success: true, message: 'datos guardados correctamente' });
     } catch (error) {
-        console.error('Error en el servidor:', error);
-        res.status(500).json({ success: false, message: 'Error al conectar con el servidor de datos' });
+        console.error('error en el servidor:', error);
+        res.status(500).json({ success: false, message: 'error al conectar con el servidor de datos' });
     }
 });
 
+// proteccion de rutas de administrador
 const protectedAdmin = (req, res, next) => {
     res.header('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.header('Pragma', 'no-cache');
@@ -75,11 +101,13 @@ const protectedAdmin = (req, res, next) => {
     }
 };
 
+// rutas publicas del sitio
 router.get('/', (req, res) => {
     res.render('index', { page: 'inicio' });
 });
 
 router.get('/nuestra-carta', (req, res) => {
+    // lectura de datos dinamicos para la carta desde un json
     const rutaData = path.join(__dirname, '..', 'data', 'textos.json');
     let textos = {};
     
@@ -87,6 +115,7 @@ router.get('/nuestra-carta', (req, res) => {
         textos = JSON.parse(fs.readFileSync(rutaData, 'utf-8'));
     }
     
+    // se pasan los textos dinamicos a la vista para que cada una de las 4 secciones los use
     res.render('nuestra_carta', { page: 'carta', textos: textos });
 });
 
@@ -98,10 +127,14 @@ router.get('/ubicacion', (req, res) => {
     res.render('ubicacion_horarios', { page: 'ubicacion' });
 });
 
+// logeo de administrador
 router.get('/login', (req, res) => {
     res.render('admin/login', { page: 'login' });
 });
 
+// validacion de logeo
+// las credenciales estan alojadas en variables de entorno
+// el token de autentificacion dura 15 min y luego se cierra la sesion y te devuelve al login
 router.post('/login', (req, res) => {
     const { user, pass } = req.body;
     if (user === process.env.ADMIN_USER && pass === process.env.ADMIN_PASS) {
@@ -109,7 +142,7 @@ router.post('/login', (req, res) => {
         res.cookie('adminToken', token, { httpOnly: true, maxAge: 15 * 60 * 1000 });
         return res.redirect('/admin');
     }
-    res.render('admin/login', { page: 'login', error: 'ERROR: usuario o contraseña incorrectos.' });
+    res.render('admin/login', { page: 'login', error: 'error: usuario o contraseña incorrectos.' });
 });
 
 router.get('/logout', (req, res) => {
@@ -118,20 +151,25 @@ router.get('/logout', (req, res) => {
     res.redirect('/login');
 });
 
+// ruta de panel de administracion, protegida por el middleware de autenticacion
 router.get('/admin', protectedAdmin, (req, res) => {
+    // pasamos explicitamente el objeto req.user para que locals.user sea verdadero
     res.render('admin/panel', { 
         page: 'admin', 
         user: req.user 
     });
 });
 
+// ruta para subir archivos y actualizar textos desde el panel de administracion
 router.post('/admin/upload', protectedAdmin, upload.fields([
     { name: 'imagenPreview', maxCount: 1 },
     { name: 'archivoPdf', maxCount: 1 }
 ]), async (req, res) => {
+    // nombreseccion identifica cual de las 4 cartas se esta tocando
     const { nombreSeccion, descripcion } = req.body;
     const files = req.files;
 
+    // guardado de la descripcion en un json para cada seccion
     if (descripcion && descripcion.trim() !== "") {
         const rutaDir = path.join(__dirname, '..', 'data');
         const rutaData = path.join(rutaDir, 'textos.json');
@@ -140,34 +178,46 @@ router.post('/admin/upload', protectedAdmin, upload.fields([
 
         let textos = fs.existsSync(rutaData) ? JSON.parse(fs.readFileSync(rutaData, 'utf-8')) : {};
         
+        // se guarda el texto usando el nombre de la seccion como clave para independencia de las 4 cartas
         textos[nombreSeccion] = descripcion;
         fs.writeFileSync(rutaData, JSON.stringify(textos, null, 2));
     }
 
+    // procesamiento de imagen de preview (renombrado automatico y ubicacion en carpeta correspondiente)
     if (files['imagenPreview']) {
         const file = files['imagenPreview'][0];
+        
+        // se genera el nombre basado en la seccion seleccionada (ej: preview-menu-ejecutivo.webp)
         const nombreFijo = `preview-${nombreSeccion}.webp`;
+        // se direcciona a la carpeta preview_cartas
         const targetPath = path.join(__dirname, '..', 'public', 'assets', 'preview_cartas', nombreFijo);
         
+        // procesamiento con sharp para convertir a webp
         await sharp(file.path)
             .webp({ quality: 80 })
             .toFile(targetPath);
             
+        // eliminar el archivo temporal original
         fs.unlinkSync(file.path);
     }
 
+    // procesamiento de archivo pdf (renombrado automatico y ubicacion en carpeta cartas_pdf)
     if (files['archivoPdf']) {
         const file = files['archivoPdf'][0];
+        
+        // se fuerza el nombre del archivo pdf segun la seccion (ej: recomendacion-chef.pdf)
         const nombrePdfFijo = `${nombreSeccion}.pdf`;
+        // se direcciona a la carpeta cartas_pdf
         const targetPath = path.join(__dirname, '..', 'public', 'assets', 'cartas_pdf', nombrePdfFijo);
         
+        // mover y renombrar fisicamente (sobrescribe la version anterior automaticamente)
         fs.renameSync(file.path, targetPath);
     }
 
     res.render('admin/panel', {
         page: 'admin',
         user: req.user,
-        mensaje: `La sección "${nombreSeccion}" se actualizó correctamente.`
+        mensaje: `la seccion "${nombreSeccion}" se actualizo correctamente.`
     });
 });
 
