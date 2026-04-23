@@ -38,13 +38,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Scroll active links ---
+    const sections = document.querySelectorAll("main[id], section[id]");
+    const navLinksList = document.querySelectorAll(".nav-links a");
+
+    if (sections.length > 0) {
+        window.addEventListener("scroll", () => {
+            let currentSection = "";
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                if (window.pageYOffset >= sectionTop - 150) {
+                    currentSection = section.getAttribute("id");
+                }
+            });
+
+            navLinksList.forEach((link) => {
+                link.classList.remove("active");
+                if (link.getAttribute("href") === `#${currentSection}`) {
+                    link.classList.add("active");
+                }
+            });
+        });
+    }
+
     // --- Pedidos dropdown ---
     const orderBtn = document.getElementById('orderBtn');
     const deliveryOptions = document.getElementById('deliveryOptions');
 
     if (orderBtn && deliveryOptions) {
         orderBtn.addEventListener('click', (e) => {
-            e.preventDefault();
             e.stopPropagation();
             deliveryOptions.classList.toggle('show');
         });
@@ -52,6 +74,27 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('click', () => {
             deliveryOptions.classList.remove('show');
         });
+    }
+
+    // --- Logo Click (Acceso admin) ---
+    const logo = document.querySelector('.logo-area');
+    if (logo) {
+        const currentPage = logo.getAttribute('data-page');
+        if (currentPage === 'inicio') {
+            let clickCount = 0;
+            let clickTimer;
+
+            logo.addEventListener('click', (e) => {
+                clickCount++;
+                clearTimeout(clickTimer);
+                clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
+
+                if (clickCount === 5) {
+                    e.preventDefault();
+                    window.location.href = '/login';
+                }
+            });
+        }
     }
 
     // --- Configuración SweetAlert ---
@@ -85,6 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 fetch('https://apis.datos.gob.ar/georef/api/localidades?provincia=06&max=5000&campos=nombre'),
                 fetch('https://apis.datos.gob.ar/georef/api/localidades?provincia=02&max=1000&campos=nombre')
             ]);
+
             const dataBA = await resBA.json();
             const dataCABA = await resCABA.json();
 
@@ -104,14 +148,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (searchInput) cargarLocalidades();
 
-    // --- Filtros de entrada (Regex) ---
+    // --- Filtros de entrada optimizados para PC y Móvil ---
     const setupFilter = (id, regex) => {
         const el = document.getElementById(id);
         if (el) {
             el.addEventListener('input', (e) => {
-                const val = e.target.value;
-                const filtered = val.split('').filter(char => regex.test(char)).join('');
-                if (val !== filtered) e.target.value = filtered;
+                const originalValue = e.target.value;
+                const newValue = originalValue.split('').filter(char => regex.test(char)).join('');
+                if (originalValue !== newValue) {
+                    e.target.value = newValue;
+                }
             });
         }
     };
@@ -127,11 +173,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const filtered = localidadesRaw.filter(loc => cleanString(loc).includes(term));
             
             if (term.length > 0) {
-                optionsList.classList.add('is-visible');
                 if (filtered.length > 0) {
                     updateList(filtered.slice(0, 100));
+                    optionsList.classList.add('is-visible');
                 } else {
                     optionsList.innerHTML = '<li class="option-item">No se encontró esa localidad</li>';
+                    optionsList.classList.add('is-visible');
                 }
             } else {
                 optionsList.classList.remove('is-visible');
@@ -139,7 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (hiddenInput) hiddenInput.value = ""; 
         });
 
-        // Cerrar lista al clickear fuera (importante en móvil)
         document.addEventListener('click', (e) => {
             if (!searchInput.contains(e.target) && !optionsList.contains(e.target)) {
                 optionsList.classList.remove('is-visible');
@@ -155,16 +201,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 searchInput.value = selected;
                 if (hiddenInput) hiddenInput.value = selected;
                 optionsList.classList.remove('is-visible');
-                // Forzar el cierre del teclado en móvil
                 searchInput.blur();
             }
         });
     }
 
-    // --- Validación y envío de encuesta ---
+    // --- Validacion y envio de encuesta ---
     const alertAndFocus = (msg, elementId) => {
         if (!MitreAlert) return;
-        MitreAlert.fire({ title: 'Atención', text: msg, icon: 'warning', timer: 2000 });
+        MitreAlert.fire({ title: 'Atención', text: msg, icon: 'warning' });
         const el = document.getElementById(elementId);
         if (el) {
             setTimeout(() => {
@@ -184,8 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const nacInput = document.getElementById('nacimiento');
             const prefijo = document.getElementById('prefijo').value.trim();
             const numero = document.getElementById('numero').value.trim();
-            
-            // Fallback para localidad en móvil
             const localidadVal = (hiddenInput && hiddenInput.value) ? hiddenInput.value : searchInput.value.trim();
 
             // Calificaciones
@@ -194,25 +237,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const ambiente = form.querySelector('input[name="ambiente"]:checked')?.value;
             const invitar = form.querySelector('input[name="invitar"]:checked')?.value;
 
-            // --- Validaciones Críticas ---
+            // Validaciones
             if (!nombre) return alertAndFocus('Falta el nombre.', 'nombre');
             if (!apellido) return alertAndFocus('Falta el apellido.', 'apellido');
+            if (!nacInput || !nacInput.value) return alertAndFocus("Por favor, ingresá tu fecha de nacimiento.", 'nacimiento');
             
-            // Corrección de Fecha para Móviles
-            if (!nacInput || !nacInput.value) return alertAndFocus("Ingresá tu fecha de nacimiento.", 'nacimiento');
-            const nacDate = new Date(nacInput.value + 'T00:00:00'); 
+            const nacDate = new Date(nacInput.value + 'T00:00:00');
             const hoy = new Date();
             let edad = hoy.getFullYear() - nacDate.getFullYear();
             const m = hoy.getMonth() - nacDate.getMonth();
             if (m < 0 || (m === 0 && hoy.getDate() < nacDate.getDate())) edad--;
-            if (isNaN(nacDate.getTime()) || edad < 13 || edad > 100) return alertAndFocus("Fecha de nacimiento no válida.", 'nacimiento');
+            if (isNaN(nacDate.getTime()) || edad < 13 || edad > 100) return alertAndFocus("Edad no válida.", 'nacimiento');
 
-            if (!prefijo || prefijo.length < 2) return alertAndFocus('Revisá el prefijo.', 'prefijo');
-            if (!numero || numero.length < 6) return alertAndFocus('Número incompleto.', 'numero');
-            if (!localidadVal) return alertAndFocus('Seleccioná tu localidad.', 'localidad-search');
+            if (!prefijo || prefijo.length < 2) return alertAndFocus('Revisá el prefijo de área.', 'prefijo');
+            if (!numero || numero.length < 6) return alertAndFocus('El número de teléfono es muy corto.', 'numero');
+            if (!localidadVal) return alertAndFocus('Seleccioná tu localidad de la lista.', 'localidad-search');
 
             if (!platos || !atencion || !ambiente || !invitar) {
-                return MitreAlert.fire({ title: 'Atención', text: 'Por favor, completa todas las calificaciones con estrellas.', icon: 'warning' });
+                return MitreAlert.fire({ title: 'Atención', text: 'Por favor, completa todas las calificaciones.', icon: 'warning' });
             }
 
             try {
@@ -227,11 +269,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 const payload = {
-                    nombre, apellido,
+                    nombre,
+                    apellido,
                     nacimiento: nacInput.value,
                     whatsapp: `${prefijo}${numero}`,
                     localidad: localidadVal,
-                    platos, atencion, ambiente, invitar,
+                    platos,
+                    atencion,
+                    ambiente,
+                    invitar,
                     comentario: form.critica.value.trim()
                 };
 
@@ -243,19 +289,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const res = await response.json();
                 if (res.success) {
-                    await MitreAlert.fire('¡Enviado!', 'Gracias por tu opinión.', 'success');
+                    await MitreAlert.fire('¡Enviado!', '¡Gracias por participar!', 'success');
                     window.location.href = '/';
                 } else { 
-                    throw new Error(res.message || 'Error en servidor'); 
+                    throw new Error(); 
                 }
             } catch (err) {
-                console.error("Error en envío:", err);
-                MitreAlert.fire('Error', 'No se pudo enviar. Intenta nuevamente.', 'error');
+                MitreAlert.fire('Error', 'No se pudo enviar la encuesta. Intente nuevamente.', 'error');
             }
         });
     }
 
-    // --- Swiper ---
+    // --- Swiper configuración ---
     if (typeof Swiper !== 'undefined') {
         const configFotos = {
             effect: 'fade',
@@ -272,7 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// --- Modal PDF ---
+// --- Modal PDF functions ---
 function openPdfModal(path) {
     const modal = document.getElementById('pdfModal');
     const frame = document.getElementById('pdfFrame');
