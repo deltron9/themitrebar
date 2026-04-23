@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- Variables y selectores ---
+    // --- variables y selectores ---
     const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
     const navMenu = document.querySelector('.nav-links');
     const body = document.body;
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hiddenInput = document.getElementById('localidad-value');
     let localidadesRaw = [];
 
-    // --- Menu mobile ---
+    // --- menu mobile ---
     if (mobileMenuIcon && navMenu) {
         mobileMenuIcon.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Scroll active links ---
+    // --- scroll active links ---
     const sections = document.querySelectorAll("main[id], section[id]");
     const navLinksList = document.querySelectorAll(".nav-links a");
 
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Pedidos dropdown ---
+    // --- pedidos dropdown ---
     const orderBtn = document.getElementById('orderBtn');
     const deliveryOptions = document.getElementById('deliveryOptions');
 
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Logo Click (Acceso admin) ---
+    // --- logo click (acceso admin) ---
     const logo = document.querySelector('.logo-area');
     if (logo) {
         const currentPage = logo.getAttribute('data-page');
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Configuración SweetAlert ---
+    // --- configuracion sweetalert ---
     const MitreAlert = typeof Swal !== 'undefined' ? Swal.mixin({
         timer: 3000,
         timerProgressBar: true,
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }) : null;
 
-    // --- Funciones auxiliares encuesta ---
+    // --- funciones auxiliares encuesta ---
     const cleanString = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
     const updateList = (list) => {
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- Carga de localidades ---
+    // --- carga de localidades ---
     const cargarLocalidades = async () => {
         try {
             const [resBA, resCABA] = await Promise.all([
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (searchInput) cargarLocalidades();
 
-    // --- Filtros de entrada optimizados para PC y Móvil ---
+    // --- filtros de entrada optimizados para pc y movil ---
     const setupFilter = (id, regex) => {
         const el = document.getElementById(id);
         if (el) {
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupFilter('prefijo', /[0-9]/);
     setupFilter('numero', /[0-9]/);
 
-    // --- Buscador de localidades ---
+    // --- buscador de localidades ---
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             const term = cleanString(e.target.value);
@@ -206,10 +206,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Validacion y envio de encuesta ---
+    // --- validacion y envio de encuesta ---
     const alertAndFocus = (msg, elementId) => {
         if (!MitreAlert) return;
-        MitreAlert.fire({ title: 'Atención', text: msg, icon: 'warning' });
+        MitreAlert.fire({ title: 'atención', text: msg, icon: 'warning' });
         const el = document.getElementById(elementId);
         if (el) {
             setTimeout(() => {
@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
         form.addEventListener('submit', async (e) => {
             e.preventDefault(); 
 
-            // Datos personales
+            // datos personales
             const nombre = form.nombre.value.trim();
             const apellido = form.apellido.value.trim();
             const nacInput = document.getElementById('nacimiento');
@@ -231,40 +231,40 @@ document.addEventListener('DOMContentLoaded', () => {
             const numero = document.getElementById('numero').value.trim();
             const localidadVal = (hiddenInput && hiddenInput.value) ? hiddenInput.value : searchInput.value.trim();
 
-            // Calificaciones
+            // calificaciones
             const platos = form.querySelector('input[name="platos"]:checked')?.value;
             const atencion = form.querySelector('input[name="atencion"]:checked')?.value;
             const ambiente = form.querySelector('input[name="ambiente"]:checked')?.value;
             const invitar = form.querySelector('input[name="invitar"]:checked')?.value;
 
-            // Validaciones
-            if (!nombre) return alertAndFocus('Falta el nombre.', 'nombre');
-            if (nombre.length > 15) return alertAndFocus('El nombre no puede superar las 15 letras.', 'nombre');
+            // validaciones
+            if (!nombre) return alertAndFocus('falta el nombre.', 'nombre');
+            if (nombre.length > 15) return alertAndFocus('el nombre no puede superar las 15 letras.', 'nombre');
 
-            if (!apellido) return alertAndFocus('Falta el apellido.', 'apellido');
-            if (apellido.length > 15) return alertAndFocus('El apellido no puede superar las 15 letras.', 'apellido');
+            if (!apellido) return alertAndFocus('falta el apellido.', 'apellido');
+            if (apellido.length > 15) return alertAndFocus('el apellido no puede superar las 15 letras.', 'apellido');
 
-            if (!nacInput || !nacInput.value) return alertAndFocus("Por favor, ingresá tu fecha de nacimiento.", 'nacimiento');
+            if (!nacInput || !nacInput.value) return alertAndFocus("por favor, ingresa tu fecha de nacimiento.", 'nacimiento');
             
             const nacDate = new Date(nacInput.value + 'T00:00:00');
             const hoy = new Date();
             let edad = hoy.getFullYear() - nacDate.getFullYear();
             const m = hoy.getMonth() - nacDate.getMonth();
             if (m < 0 || (m === 0 && hoy.getDate() < nacDate.getDate())) edad--;
-            if (isNaN(nacDate.getTime()) || edad < 13 || edad > 100) return alertAndFocus("Edad no válida.", 'nacimiento');
+            if (isNaN(nacDate.getTime()) || edad < 13 || edad > 100) return alertAndFocus("edad no valida.", 'nacimiento');
 
-            if (!prefijo || prefijo.length < 2) return alertAndFocus('Revisá el prefijo de área.', 'prefijo');
-            if (!numero || numero.length < 6) return alertAndFocus('El número de teléfono es muy corto.', 'numero');
-            if (!localidadVal) return alertAndFocus('Seleccioná tu localidad de la lista.', 'localidad-search');
+            if (!prefijo || prefijo.length < 2) return alertAndFocus('revisa el prefijo de area.', 'prefijo');
+            if (!numero || numero.length < 6) return alertAndFocus('el numero de telefono es muy corto.', 'numero');
+            if (!localidadVal) return alertAndFocus('selecciona tu localidad de la lista.', 'localidad-search');
 
             if (!platos || !atencion || !ambiente || !invitar) {
-                return MitreAlert.fire({ title: 'Atención', text: 'Por favor, completa todas las calificaciones.', icon: 'warning' });
+                return MitreAlert.fire({ title: 'atención', text: 'por favor, completa todas las calificaciones.', icon: 'warning' });
             }
 
             try {
                 if (typeof Swal !== 'undefined') {
                     Swal.fire({ 
-                        title: 'Enviando...', 
+                        title: 'enviando...', 
                         background: '#0a0a0a', 
                         showConfirmButton: false, 
                         allowOutsideClick: false,
@@ -293,18 +293,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const res = await response.json();
                 if (res.success) {
-                    await MitreAlert.fire('¡Enviado!', '¡Gracias por participar!', 'success');
+                    await MitreAlert.fire('¡enviado!', '¡gracias por participar!', 'success');
                     window.location.href = '/';
                 } else { 
                     throw new Error(); 
                 }
             } catch (err) {
-                MitreAlert.fire('Error', 'No se pudo enviar la encuesta. Intente nuevamente.', 'error');
+                MitreAlert.fire('error', 'no se pudo enviar la encuesta. intente nuevamente.', 'error');
             }
         });
     }
 
-    // --- Swiper configuración ---
+    // --- swiper configuracion ---
     if (typeof Swiper !== 'undefined') {
         const configFotos = {
             effect: 'fade',
@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// --- Modal PDF functions ---
+// --- modal pdf functions ---
 function openPdfModal(path) {
     const modal = document.getElementById('pdfModal');
     const frame = document.getElementById('pdfFrame');
@@ -342,11 +342,13 @@ function closePdfModal() {
     }
 }
 
-// --- Bloqueo de Historial (Solo para Encuesta) ---
+// --- manejo estricto de historial para la encuesta ---
 (function() {
     if (window.location.pathname.includes('/encuesta')) {
         window.onpageshow = function(event) {
+            
             if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                document.cookie = "encuesta_completada=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 window.location.reload();
             }
         };
