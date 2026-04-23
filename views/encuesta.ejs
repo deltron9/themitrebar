@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Mitre Bar - Encuesta de Satisfacción</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="body-survey" >
+    <header class="mitre-survey__header">
+            <%- include('partials/_navbar') %>
+            <span class="span-category-tag">Feedback de Autor</span>
+            <h1 class="title-header">Su experiencia en Mitre</h1>
+            <p class="intro-text">Diseñamos cada nota y sabor para usted. Su opinión culmina nuestra obra.</p>
+    </header>
+    <main>
+        <section class="mitre-survey">
+            <form id="survey-form" class="mitre-form" novalidate>
+                <div class="mitre-form__grid">
+                    <div class="mitre-form__group">
+                        <label class="mitre-form__label" for="nombre">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Juan" required class="mitre-form__input">
+                    </div>
+                    
+                    <div class="mitre-form__group">
+                        <label class="mitre-form__label" for="apellido">Apellido</label>
+                        <input type="text" id="apellido" name="apellido" placeholder="Pérez" required class="mitre-form__input">
+                    </div>
+
+                    <div class="mitre-form__group">
+                        <label class="mitre-form__label" for="nacimiento">Fecha de Nacimiento</label>
+                        <input type="date" id="nacimiento" name="nacimiento" required class="mitre-form__input">
+                    </div>
+
+                    <div class="mitre-form__group">
+                        <label class="mitre-form__label">WhatsApp</label>
+                        <div class="mitre-form__phone-row">
+                            <input type="text" id="prefijo" placeholder="11" maxlength="3" required class="mitre-form__input mitre-form__input--prefix">
+                            <input type="text" id="numero" placeholder="12345678" maxlength="8" required class="mitre-form__input mitre-form__input--number">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mitre-form__group mitre-form__group--full">
+                    <label class="mitre-form__label" for="localidad-search">Localidad</label>
+                    <div class="mitre-search" id="localidad-wrapper">
+                        <input type="text" id="localidad-search" placeholder="ej: José Mármol" autocomplete="off" class="mitre-form__input">
+                        <ul class="mitre-search__results" id="localidad-options">
+                            <li class="mitre-search__item">Cargando barrios...</li>
+                        </ul>
+                        <input type="hidden" id="localidad-value" name="localidad" required>
+                    </div>
+                </div>
+                        <section class="ratings-container">
+                            <div class="rating-item">
+                                <span class="rating-label">¿Cómo calificaría la calidad de nuestros platos?</span>
+                                <div class="stars">
+                                    <input type="radio" name="platos" id="p5" value="5"><label for="p5"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="platos" id="p4" value="4"><label for="p4"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="platos" id="p3" value="3"><label for="p3"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="platos" id="p2" value="2"><label for="p2"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="platos" id="p1" value="1"><label for="p1"><i class="fas fa-star"></i></label>
+                                </div>
+                            </div>
+
+                            <div class="rating-item">
+                                <span class="rating-label">¿Qué tan satisfactorio fue el servicio del mozo?</span>
+                                <div class="stars">
+                                    <input type="radio" name="atencion" id="a5" value="5"><label for="a5"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="atencion" id="a4" value="4"><label for="a4"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="atencion" id="a3" value="3"><label for="a3"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="atencion" id="a2" value="2"><label for="a2"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="atencion" id="a1" value="1"><label for="a1"><i class="fas fa-star"></i></label>
+                                </div>
+                            </div>
+
+                            <div class="rating-item">
+                                <span class="rating-label">¿Qué tan satisfactorio fue el ambiente?</span>
+                                <div class="stars">
+                                    <input type="radio" name="ambiente" id="am5" value="5"><label for="am5"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="ambiente" id="am4" value="4"><label for="am4"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="ambiente" id="am3" value="3"><label for="am3"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="ambiente" id="am2" value="2"><label for="am2"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="ambiente" id="am1" value="1"><label for="am1"><i class="fas fa-star"></i></label>
+                                </div>
+                            </div>
+
+                            <div class="rating-item">
+                                <span class="rating-label">¿Qué posibilidad hay de recomendarnos a sus allegados?</span>
+                                <div class="stars">
+                                    <input type="radio" name="invitar" id="i5" value="5"><label for="i5"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="invitar" id="i4" value="4"><label for="i4"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="invitar" id="i3" value="3"><label for="i3"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="invitar" id="i2" value="2"><label for="i2"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="invitar" id="i1" value="1"><label for="i1"><i class="fas fa-star"></i></label>
+                                </div>
+                            </div>
+                        </section>
+
+                <div class="critic-optional">
+                    <label for="critica" class="text-gold-form">Observaciones de autor <span class="optional-tag">(Opcional)</span></label>
+                    
+                    <div class="textarea-wrapper">
+                        <textarea id="critica" name="critica" class="form-control feedback-input" 
+                            rows="4" maxlength="500" placeholder="Comparta sus impresiones..." 
+                            oninput="document.getElementById('letter-counter').innerText = this.value.length + ' / 500'"></textarea>
+                        
+                        <div id="letter-counter" class="letter-counter">0 / 500</div>
+                    </div>
+                </div>
+
+                <div class="mitre-form__actions">
+                    <button type="submit" id="orderBtn" class="btn-cta capsule-btn">
+                        Enviar Encuesta
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+    <%- include('partials/_footer') %>
+    <script src="/js/script.js"></script>
+</body>
+</html>
