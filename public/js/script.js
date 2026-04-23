@@ -60,11 +60,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Pedidos dropdown (Corregido para evitar conflictos en la encuesta) ---
+    // --- Pedidos dropdown ---
     const orderBtn = document.getElementById('orderBtn');
     const deliveryOptions = document.getElementById('deliveryOptions');
 
-    // Solo ejecuta esta lógica si AMBOS elementos existen (Página de inicio/carta)
     if (orderBtn && deliveryOptions) {
         orderBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -148,12 +147,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (searchInput) cargarLocalidades();
 
-    // --- Filtros de entrada ---
+    // --- Filtros de entrada optimizados para PC y Móvil ---
     const setupFilter = (id, regex) => {
         const el = document.getElementById(id);
         if (el) {
-            el.addEventListener('keypress', (e) => {
-                if (!regex.test(e.key)) e.preventDefault();
+            el.addEventListener('input', (e) => {
+                const originalValue = e.target.value;
+                const newValue = originalValue.split('').filter(char => regex.test(char)).join('');
+                if (originalValue !== newValue) {
+                    e.target.value = newValue;
+                }
             });
         }
     };
@@ -215,13 +218,16 @@ document.addEventListener('DOMContentLoaded', () => {
         form.addEventListener('submit', async (e) => {
             e.preventDefault(); 
 
+            // Datos personales
             const nombre = form.nombre.value.trim();
             const apellido = form.apellido.value.trim();
             const nacInput = document.getElementById('nacimiento');
             const prefijo = document.getElementById('prefijo').value.trim();
             const numero = document.getElementById('numero').value.trim();
-            const localidadVal = hiddenInput ? hiddenInput.value : "";
+            // Corrección para móvil: si no eligió de la lista, intentamos tomar el texto del buscador
+            const localidadVal = (hiddenInput && hiddenInput.value) ? hiddenInput.value : searchInput.value.trim();
 
+            // Calificaciones
             const platos = form.platos.value;
             const atencion = form.atencion.value;
             const ambiente = form.ambiente.value;
@@ -240,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!prefijo || prefijo.length < 2) return alertAndFocus('Revisá el prefijo de área.', 'prefijo');
             if (!numero || numero.length < 6) return alertAndFocus('El número de teléfono es muy corto.', 'numero');
-            if (!localidadVal) return alertAndFocus('Seleccioná tu barrio de la lista.', 'localidad-search');
+            if (!localidadVal) return alertAndFocus('Seleccioná tu localidad de la lista.', 'localidad-search');
 
             if (!platos) return alertAndFocus('Por favor, calificá los platos.', 'survey-form');
             if (!atencion) return alertAndFocus('Por favor, calificá la atención.', 'survey-form');
@@ -249,14 +255,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 if (typeof Swal !== 'undefined') {
-                    Swal.fire({ title: 'Enviando...', background: '#0a0a0a', showConfirmButton: false, didOpen: () => Swal.showLoading() });
+                    Swal.fire({ 
+                        title: 'Enviando...', 
+                        background: '#0a0a0a', 
+                        showConfirmButton: false, 
+                        allowOutsideClick: false,
+                        didOpen: () => Swal.showLoading() 
+                    });
                 }
 
                 const payload = {
-                    nombre, apellido, nacimiento: nacInput.value,
+                    nombre,
+                    apellido,
+                    nacimiento: nacInput.value,
                     whatsapp: `${prefijo}${numero}`,
                     localidad: localidadVal,
-                    platos, atencion, ambiente, invitar,
+                    platos,
+                    atencion,
+                    ambiente,
+                    invitar,
                     comentario: form.critica.value.trim()
                 };
 
@@ -274,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error(); 
                 }
             } catch (err) {
-                MitreAlert.fire('Error', 'No se pudo enviar la encuesta.', 'error');
+                MitreAlert.fire('Error', 'No se pudo enviar la encuesta. Intente nuevamente.', 'error');
             }
         });
     }
@@ -300,7 +317,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 autoplay: { delay: 8000, disableOnInteraction: false },
                 on: {
                     slideChangeTransitionEnd: function () {
-                        const video = this.slides[this.activeIndex].querySelector('video');
+                        const activeSlide = this.slides[this.activeIndex];
+                        const video = activeSlide.querySelector('video');
                         if (video) video.play();
                     }
                 }
