@@ -1029,3 +1029,171 @@ background-color: var(--black);
     text-align: center;
     margin: 10px 0 50px 0;
 }
+
+/*------------ DIseño responsive------------------*/
+/* pantallas grandes */
+@media (max-width: 1024px) {
+    .nav-links {
+        gap: 1.5rem;
+    }
+    
+    .split-wrapper {
+        gap: 40px;
+    }
+
+    .menu-item-card {
+        padding: 40px 30px;
+    }
+
+    .text-side h2 {
+        font-size: 2.5rem;
+    }
+}
+
+/*tablets y celulares grandes*/
+@media (max-width: 768px) {
+    .mobile-menu-icon {
+        display: block;
+        color: var(--gold);
+        font-size: 2rem;
+        cursor: pointer;
+        z-index: 1001;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: rgba(10, 10, 10, 0.98);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: 0.4s ease-in-out;
+        backdrop-filter: blur(15px);
+        border-left: 1px solid var(--gold);
+    }
+
+    /* clase que activa el menu de la nav */
+    .nav-links.active-menu {
+        right: 0;
+    }
+
+    .nav-links a {
+        font-size: 1.1rem;
+    }
+
+    /*transiciones*/
+    .split-wrapper, 
+    .split-wrapper.reverse,
+    .menu-content,
+    .menu-item-card.reverse .menu-content {
+        flex-direction: column !important;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .side-visual, .text-side, .image-side {
+        width: 100%;
+    }
+
+    /* formulario de encuesta*/
+    .mitre-form__grid {
+        grid-template-columns: 1fr; /*todos los elementos del formulario se presentan en columna*/
+        gap: 20px;
+    }
+
+    .mitre-form__group--full {
+        grid-column: span 1;
+    }
+
+/*Footer*/
+    .footer-row {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+
+    .footer-col {
+        flex-direction: column;
+    }
+
+    .text-side h2::after {
+        left: 50% !important;
+        transform: translateX(-50%);
+    }
+
+    .hero-overlay h1 {
+        font-size: 3.5rem;
+    }
+}
+
+/*celulares chicos*/
+@media (max-width: 480px) {
+    :root {
+        --navbar-height: 90px;
+    }
+
+    .nav-logo {
+        height: 50px;
+    }
+
+    .hero-section {
+        padding-top: 120px;
+    }
+
+    .hero-overlay h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-overlay p {
+        font-size: 1rem;
+    }
+
+    .btn-cta {
+        padding: 1rem 2rem;
+        font-size: 0.8rem;
+        width: 90%; /*botones casi full width para facilitar el click */
+    }
+
+    .menu-item-card {
+        margin-bottom: 40px;
+        padding: 30px 15px;
+    }
+
+    .text-side h2 {
+        font-size: 1.8rem;
+    }
+
+    .sch-hours {
+        font-size: 1.3rem;
+    }
+
+    .stars label {
+        font-size: 2rem;
+        gap: 8px;
+    }
+
+    .mitre-survey__header {
+        padding-top: 100px;
+    }
+    
+    /*ajuste al modal del pdf*/
+    .modal-pdf-container {
+        width: 100%;
+        height: 85%;
+        margin: 15% 0 0 0;
+    }
+}
+
+/*ajuste de hover para pantallas tactiles*/
+@media (hover: none) {
+    .menu-item-card:hover {
+        transform: none; /*le saca la animacion de agrandado*/
+    }
+    
+    .btn-cta:hover {
+        transform: scale(1);
+    }
+}
