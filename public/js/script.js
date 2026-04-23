@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Menu mobile ---
     if (mobileMenuIcon && navMenu) {
-        mobileMenuIcon.addEventListener('click', () => {
+        mobileMenuIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
             navMenu.classList.toggle('active');
             const isOpened = navMenu.classList.contains('active');
             
@@ -37,35 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Scroll active links ---
-    const sections = document.querySelectorAll("main[id], section[id]");
-    const navLinksList = document.querySelectorAll(".nav-links a");
-
-    if (sections.length > 0) {
-        window.addEventListener("scroll", () => {
-            let currentSection = "";
-            sections.forEach((section) => {
-                const sectionTop = section.offsetTop;
-                if (window.pageYOffset >= sectionTop - 150) {
-                    currentSection = section.getAttribute("id");
-                }
-            });
-
-            navLinksList.forEach((link) => {
-                link.classList.remove("active");
-                if (link.getAttribute("href") === `#${currentSection}`) {
-                    link.classList.add("active");
-                }
-            });
-        });
-    }
-
     // --- Pedidos dropdown ---
     const orderBtn = document.getElementById('orderBtn');
     const deliveryOptions = document.getElementById('deliveryOptions');
 
     if (orderBtn && deliveryOptions) {
         orderBtn.addEventListener('click', (e) => {
+            e.preventDefault();
             e.stopPropagation();
             deliveryOptions.classList.toggle('show');
         });
@@ -73,27 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('click', () => {
             deliveryOptions.classList.remove('show');
         });
-    }
-
-    // --- Logo Click (Acceso admin) ---
-    const logo = document.querySelector('.logo-area');
-    if (logo) {
-        const currentPage = logo.getAttribute('data-page');
-        if (currentPage === 'inicio') {
-            let clickCount = 0;
-            let clickTimer;
-
-            logo.addEventListener('click', (e) => {
-                clickCount++;
-                clearTimeout(clickTimer);
-                clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
-
-                if (clickCount === 5) {
-                    e.preventDefault();
-                    window.location.href = '/login';
-                }
-            });
-        }
     }
 
     // --- Configuración SweetAlert ---
@@ -116,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const updateList = (list) => {
         if (optionsList) {
-            optionsList.innerHTML = list.map(name => `<li class="option-item">${name}</li>`).join('');
+            optionsList.innerHTML = list.map(name => `<li class="option-item" style="cursor:pointer; touch-action:manipulation;">${name}</li>`).join('');
         }
     };
 
@@ -127,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 fetch('https://apis.datos.gob.ar/georef/api/localidades?provincia=06&max=5000&campos=nombre'),
                 fetch('https://apis.datos.gob.ar/georef/api/localidades?provincia=02&max=1000&campos=nombre')
             ]);
-
             const dataBA = await resBA.json();
             const dataCABA = await resCABA.json();
 
@@ -147,16 +104,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (searchInput) cargarLocalidades();
 
-    // --- Filtros de entrada optimizados para PC y Móvil ---
+    // --- Filtros de entrada (Regex) ---
     const setupFilter = (id, regex) => {
         const el = document.getElementById(id);
         if (el) {
             el.addEventListener('input', (e) => {
-                const originalValue = e.target.value;
-                const newValue = originalValue.split('').filter(char => regex.test(char)).join('');
-                if (originalValue !== newValue) {
-                    e.target.value = newValue;
-                }
+                const val = e.target.value;
+                const filtered = val.split('').filter(char => regex.test(char)).join('');
+                if (val !== filtered) e.target.value = filtered;
             });
         }
     };
@@ -172,46 +127,51 @@ document.addEventListener('DOMContentLoaded', () => {
             const filtered = localidadesRaw.filter(loc => cleanString(loc).includes(term));
             
             if (term.length > 0) {
+                optionsList.classList.add('is-visible');
                 if (filtered.length > 0) {
                     updateList(filtered.slice(0, 100));
-                    optionsList.classList.add('is-visible');
                 } else {
                     optionsList.innerHTML = '<li class="option-item">No se encontró esa localidad</li>';
-                    optionsList.classList.add('is-visible');
                 }
             } else {
                 optionsList.classList.remove('is-visible');
             }
             if (hiddenInput) hiddenInput.value = ""; 
         });
-    }
 
-    if (optionsList) {
-        optionsList.addEventListener('click', (e) => {
-            if (e.target.classList.contains('option-item') && e.target.innerText !== "No se encontró esa localidad") {
-                const selected = e.target.innerText;
-                searchInput.value = selected;
-                if (hiddenInput) hiddenInput.value = selected;
+        // Cerrar lista al clickear fuera (importante en móvil)
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !optionsList.contains(e.target)) {
                 optionsList.classList.remove('is-visible');
             }
         });
     }
 
-    // --- Validacion y envio de encuesta ---
-    const alertAndFocus = (msg, elementId) => {
-        if (!MitreAlert) return;
-        MitreAlert.fire({ title: 'Atención', text: msg, icon: 'warning' }).then(() => {
-            const el = document.getElementById(elementId);
-            if (el) {
-                const targetY = el.getBoundingClientRect().top + window.pageYOffset - 150;
-                window.scrollTo({ top: targetY, behavior: 'smooth' });
-                setTimeout(() => {
-                    el.focus({ preventScroll: true });
-                    el.classList.add('input-error-shake');
-                    setTimeout(() => el.classList.remove('input-error-shake'), 1000);
-                }, 850);
+    if (optionsList) {
+        optionsList.addEventListener('click', (e) => {
+            const item = e.target.closest('.option-item');
+            if (item && item.innerText !== "No se encontró esa localidad") {
+                const selected = item.innerText;
+                searchInput.value = selected;
+                if (hiddenInput) hiddenInput.value = selected;
+                optionsList.classList.remove('is-visible');
+                // Forzar el cierre del teclado en móvil
+                searchInput.blur();
             }
         });
+    }
+
+    // --- Validación y envío de encuesta ---
+    const alertAndFocus = (msg, elementId) => {
+        if (!MitreAlert) return;
+        MitreAlert.fire({ title: 'Atención', text: msg, icon: 'warning', timer: 2000 });
+        const el = document.getElementById(elementId);
+        if (el) {
+            setTimeout(() => {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                el.focus({ preventScroll: true });
+            }, 500);
+        }
     };
 
     if (form) {
@@ -224,34 +184,36 @@ document.addEventListener('DOMContentLoaded', () => {
             const nacInput = document.getElementById('nacimiento');
             const prefijo = document.getElementById('prefijo').value.trim();
             const numero = document.getElementById('numero').value.trim();
-            // Corrección para móvil: si no eligió de la lista, intentamos tomar el texto del buscador
+            
+            // Fallback para localidad en móvil
             const localidadVal = (hiddenInput && hiddenInput.value) ? hiddenInput.value : searchInput.value.trim();
 
             // Calificaciones
-            const platos = form.platos.value;
-            const atencion = form.atencion.value;
-            const ambiente = form.ambiente.value;
-            const invitar = form.invitar.value;
+            const platos = form.querySelector('input[name="platos"]:checked')?.value;
+            const atencion = form.querySelector('input[name="atencion"]:checked')?.value;
+            const ambiente = form.querySelector('input[name="ambiente"]:checked')?.value;
+            const invitar = form.querySelector('input[name="invitar"]:checked')?.value;
 
-            // Validaciones
+            // --- Validaciones Críticas ---
             if (!nombre) return alertAndFocus('Falta el nombre.', 'nombre');
             if (!apellido) return alertAndFocus('Falta el apellido.', 'apellido');
-            if (!nacInput || !nacInput.value) return alertAndFocus("Por favor, ingresá tu fecha de nacimiento.", 'nacimiento');
             
-            const nacDate = new Date(nacInput.value);
+            // Corrección de Fecha para Móviles
+            if (!nacInput || !nacInput.value) return alertAndFocus("Ingresá tu fecha de nacimiento.", 'nacimiento');
+            const nacDate = new Date(nacInput.value + 'T00:00:00'); 
             const hoy = new Date();
             let edad = hoy.getFullYear() - nacDate.getFullYear();
-            if (hoy.getMonth() < nacDate.getMonth() || (hoy.getMonth() === nacDate.getMonth() && hoy.getDate() < nacDate.getDate())) edad--;
-            if (edad < 16 || edad > 95) return alertAndFocus("Edad no válida.", 'nacimiento');
+            const m = hoy.getMonth() - nacDate.getMonth();
+            if (m < 0 || (m === 0 && hoy.getDate() < nacDate.getDate())) edad--;
+            if (isNaN(nacDate.getTime()) || edad < 13 || edad > 100) return alertAndFocus("Fecha de nacimiento no válida.", 'nacimiento');
 
-            if (!prefijo || prefijo.length < 2) return alertAndFocus('Revisá el prefijo de área.', 'prefijo');
-            if (!numero || numero.length < 6) return alertAndFocus('El número de teléfono es muy corto.', 'numero');
-            if (!localidadVal) return alertAndFocus('Seleccioná tu localidad de la lista.', 'localidad-search');
+            if (!prefijo || prefijo.length < 2) return alertAndFocus('Revisá el prefijo.', 'prefijo');
+            if (!numero || numero.length < 6) return alertAndFocus('Número incompleto.', 'numero');
+            if (!localidadVal) return alertAndFocus('Seleccioná tu localidad.', 'localidad-search');
 
-            if (!platos) return alertAndFocus('Por favor, calificá los platos.', 'survey-form');
-            if (!atencion) return alertAndFocus('Por favor, calificá la atención.', 'survey-form');
-            if (!ambiente) return alertAndFocus('Por favor, calificá el ambiente.', 'survey-form');
-            if (!invitar) return alertAndFocus('Por favor, indicanos si volverías.', 'survey-form');
+            if (!platos || !atencion || !ambiente || !invitar) {
+                return MitreAlert.fire({ title: 'Atención', text: 'Por favor, completa todas las calificaciones con estrellas.', icon: 'warning' });
+            }
 
             try {
                 if (typeof Swal !== 'undefined') {
@@ -265,15 +227,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 const payload = {
-                    nombre,
-                    apellido,
+                    nombre, apellido,
                     nacimiento: nacInput.value,
                     whatsapp: `${prefijo}${numero}`,
                     localidad: localidadVal,
-                    platos,
-                    atencion,
-                    ambiente,
-                    invitar,
+                    platos, atencion, ambiente, invitar,
                     comentario: form.critica.value.trim()
                 };
 
@@ -285,18 +243,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const res = await response.json();
                 if (res.success) {
-                    MitreAlert.fire('¡Enviado!', '¡Gracias por participar!', 'success').then(() => window.location.href = '/');
-                    form.reset();
+                    await MitreAlert.fire('¡Enviado!', 'Gracias por tu opinión.', 'success');
+                    window.location.href = '/';
                 } else { 
-                    throw new Error(); 
+                    throw new Error(res.message || 'Error en servidor'); 
                 }
             } catch (err) {
-                MitreAlert.fire('Error', 'No se pudo enviar la encuesta. Intente nuevamente.', 'error');
+                console.error("Error en envío:", err);
+                MitreAlert.fire('Error', 'No se pudo enviar. Intenta nuevamente.', 'error');
             }
         });
     }
 
-    // --- Swiper configuración ---
+    // --- Swiper ---
     if (typeof Swiper !== 'undefined') {
         const configFotos = {
             effect: 'fade',
@@ -304,30 +263,16 @@ document.addEventListener('DOMContentLoaded', () => {
             loop: true,
             speed: 2000, 
             autoplay: { delay: 4000, disableOnInteraction: false },
-            pagination: { el: '.swiper-pagination', clickable: true, dynamicBullets: true },
+            pagination: { el: '.swiper-pagination', clickable: true },
             grabCursor: true
         };
 
         if (document.querySelector('.swiper-esencia')) new Swiper('.swiper-esencia', configFotos);
         if (document.querySelector('.swiper-carta')) new Swiper('.swiper-carta', configFotos);
-        
-        if (document.querySelector('.swiper-eventos')) {
-            new Swiper('.swiper-eventos', {
-                ...configFotos,
-                autoplay: { delay: 8000, disableOnInteraction: false },
-                on: {
-                    slideChangeTransitionEnd: function () {
-                        const activeSlide = this.slides[this.activeIndex];
-                        const video = activeSlide.querySelector('video');
-                        if (video) video.play();
-                    }
-                }
-            });
-        }
     }
 });
 
-// --- Modal PDF functions ---
+// --- Modal PDF ---
 function openPdfModal(path) {
     const modal = document.getElementById('pdfModal');
     const frame = document.getElementById('pdfFrame');
