@@ -345,12 +345,13 @@ function closePdfModal() {
 // --- manejo estricto de historial para la encuesta ---
 (function() {
     if (window.location.pathname.includes('/encuesta')) {
-        window.onpageshow = function(event) {
-            
+        // este evento corre incluso antes de que la pagina se muestre del todo
+        window.addEventListener('pageshow', (event) => {
             if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
-                document.cookie = "encuesta_completada=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                window.location.reload();
+                document.body.innerHTML = "";
+                
+                window.location.replace(window.location.href);
             }
-        };
+        });
     }
 })();

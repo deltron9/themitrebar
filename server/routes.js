@@ -12,30 +12,20 @@ const upload = multer({ dest: path.join(__dirname, '..', 'public', 'assets', 'te
 
 // ruta para encuesta mediante qr
 router.get('/encuesta', (req, res) => {
-    // encabezados para que el navegador no guarde la pagina en memoria
     res.header('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.header('Pragma', 'no-cache');
-    res.header('Expires', '0');
-    res.header('Surrogate-Control', 'no-store');
 
-    const { acceso, source } = req.query;
-
-    // si el usuario viene con el link del qr (acceso=mitre-vip)
-    if (acceso === 'mitre-vip') {
-        // borramos la cookie de bloqueo anterior para permitir una nueva encuesta
-        res.clearCookie('encuesta_completada');
-        return res.render('encuesta', { source: source || 'directo' });
-    }
-
-    // si intenta volver atras (sin el acceso en la url) y ya la completo, se va al inicio
     if (req.cookies && req.cookies.encuesta_completada === 'true') {
         return res.redirect('/');
     }
 
-    // si no tiene acceso ni cookie (intento de entrada manual), al inicio
+    const { acceso, source } = req.query;
+
+    if (acceso === 'mitre-vip') {
+        return res.render('encuesta', { source: source || 'directo' });
+    }
+
     res.redirect('/');
 });
-
 // envio de encuesta al back con validaciones de seguridad
 router.post('/enviar-encuesta', async (req, res) => {
     const SCRIPT_URL = process.env.GOOGLE_URL_KEY;
