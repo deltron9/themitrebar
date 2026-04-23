@@ -1057,7 +1057,7 @@ background-color: var(--black);
         color: var(--gold);
         font-size: 2rem;
         cursor: pointer;
-        z-index: 1001;
+        z-index: 1100; /* Elevado para que el icono de cierre no quede debajo del menú */
     }
 
     .nav-links {
@@ -1075,8 +1075,8 @@ background-color: var(--black);
         border-left: 1px solid var(--gold);
     }
 
-    /* clase que activa el menu de la nav */
-    .nav-links.active-menu {
+    /* INTEGRADO: Clase coincidente con tu JavaScript para abrir el menú */
+    .nav-links.active {
         right: 0;
     }
 
@@ -1098,10 +1098,10 @@ background-color: var(--black);
         width: 100%;
     }
 
-    /*Truncado de texto en carta para no ser extensos */
+    /* INTEGRADO: Truncado de texto en carta para no ser extensos */
     .text-side p {
         display: -webkit-box;
-        line-clamp: 3;
+        -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -1109,7 +1109,7 @@ background-color: var(--black);
 
     /* formulario de encuesta*/
     .mitre-form__grid {
-        grid-template-columns: 1fr; /*todos los elementos del formulario se presentan en columna*/
+        grid-template-columns: 1fr; 
         gap: 20px;
     }
 
@@ -1124,7 +1124,7 @@ background-color: var(--black);
         text-align: center;
     }
 
-    /* ORden de footer: Título primero, luego links */
+    /* INTEGRADO: Orden de footer: Título primero, luego links */
     .footer-col {
         flex-direction: column;
         display: flex;
@@ -1155,7 +1155,7 @@ background-color: var(--black);
         --navbar-height: 90px;
     }
 
-    /* AGREGADO: Logo y texto de nav más chicos */
+    /* INTEGRADO: Logo y texto de nav más chicos solicitado */
     .nav-logo {
         height: 40px;
     }
@@ -1179,7 +1179,7 @@ background-color: var(--black);
     .btn-cta {
         padding: 1rem 2rem;
         font-size: 0.8rem;
-        width: 90%; /*botones casi full width para facilitar el click */
+        width: 90%; 
     }
 
     .menu-item-card {
@@ -1191,7 +1191,7 @@ background-color: var(--black);
         font-size: 1.8rem;
     }
 
-    /* AGREGADO: Texto de carta reducido a 2 líneas en pantallas mínimas */
+    /* INTEGRADO: Texto de carta reducido a 2 líneas en pantallas mínimas */
     .text-side p {
         -webkit-line-clamp: 2;
     }
@@ -1220,7 +1220,7 @@ background-color: var(--black);
 /*ajuste de hover para pantallas tactiles*/
 @media (hover: none) {
     .menu-item-card:hover {
-        transform: none; /*le saca la animacion de agrandado*/
+        transform: none; 
     }
     
     .btn-cta:hover {
