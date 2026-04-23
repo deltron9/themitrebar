@@ -239,7 +239,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Validaciones
             if (!nombre) return alertAndFocus('Falta el nombre.', 'nombre');
+            if (nombre.length > 15) return alertAndFocus('El nombre no puede superar las 15 letras.', 'nombre');
+
             if (!apellido) return alertAndFocus('Falta el apellido.', 'apellido');
+            if (apellido.length > 15) return alertAndFocus('El apellido no puede superar las 15 letras.', 'apellido');
+
             if (!nacInput || !nacInput.value) return alertAndFocus("Por favor, ingresá tu fecha de nacimiento.", 'nacimiento');
             
             const nacDate = new Date(nacInput.value + 'T00:00:00');
@@ -338,6 +342,7 @@ function closePdfModal() {
     }
 }
 
+// --- Bloqueo de Historial (Solo para Encuesta) ---
 (function() {
     if (window.location.pathname.includes('/encuesta')) {
         window.onpageshow = function(event) {
