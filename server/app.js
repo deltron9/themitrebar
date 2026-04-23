@@ -6,10 +6,13 @@ const indexRoutes = require('./routes');
 const PORT = process.env.PORT || 3000;
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 //configuración de EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '..', 'views'));
+
+app.use(cors());
 
 //configuración de path para archivos estáticos
 app.use(express.static(path.join(__dirname, '..', 'public')));
@@ -18,8 +21,8 @@ app.use(express.urlencoded({ extended: true }));
 
 //si no se define en la ruta, no tira error
 app.use((req, res, next) => {
-    res.locals.page = "";
-    next();
+    res.locals.page = "";
+    next();
 });
 
 //para poder leer las cookies
@@ -30,14 +33,14 @@ app.use('/', indexRoutes);
 
 //ruta de encuesta
 app.get('/encuesta-privada-mitre', (req, res) => {
-    res.render('encuesta');
+    res.render('encuesta');
 });
 
 // renderizado para error 404
 app.use((req, res) => {
-    res.status(404).render('error', { page: 'error' });
+    res.status(404).render('error', { page: 'error' });
 });
 
-app.listen(PORT, () => {
-    console.log(`Servidor de The Mitre corriendo en http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Servidor de The Mitre corriendo en puerto ${PORT}`);
 });
