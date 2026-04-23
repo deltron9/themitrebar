@@ -640,6 +640,22 @@ background-color: var(--black);
     display: inline-block;
 }
 
+#submitSurvey {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 1.2rem 3.5rem;
+    transition: all 0.4s ease;
+    outline: none;
+    display: inline-block;
+}
+
 
 /* dropdown del boton de pedidos*/
 .dropdown-wrapper { position: relative; display: inline-block; }
