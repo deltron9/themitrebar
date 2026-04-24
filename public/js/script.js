@@ -76,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- logo click (acceso admin) ---
     const logo = document.querySelector('.logo-area');
     if (logo) {
         const currentPage = logo.getAttribute('data-page');
@@ -105,10 +104,10 @@ document.addEventListener('DOMContentLoaded', () => {
         background: '#0a0a0a',
         color: '#ffffff',
         willOpen: (popup) => {
-            popup.style.border = '2px solid #e2b04a';
+            popup.style.border = '1px solid #ffaa00';
             popup.style.boxShadow = '0 0 15px rgba(226, 176, 74, 0.3)';
             const timerBar = popup.querySelector('.swal2-timer-progress-bar');
-            if (timerBar) timerBar.style.backgroundColor = '#e2b04a';
+            if (timerBar) timerBar.style.backgroundColor = '#e2da4a';
         }
     }) : null;
 
@@ -306,19 +305,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- swiper configuracion ---
     if (typeof Swiper !== 'undefined') {
+
+        // Función que hace que el slide dure lo que dura el video
+        function manejarTiempoVideo(instanciaSwiper) {
+            const activeSlide = instanciaSwiper.slides[instanciaSwiper.activeIndex];
+            const video = activeSlide.querySelector('video');
+
+            if (video) {
+                video.currentTime = 0;
+                video.play().catch(e => console.log("Play diferido"));
+
+                //cuando el video termina, el swiper pasa al siguiente
+                video.onended = function() {
+                    instanciaSwiper.slideNext();
+                };
+            } else {
+                //si por error cae en un slide sin video, espera 4 segundos
+                setTimeout(() => {
+                    instanciaSwiper.slideNext();
+                }, 4000);
+            }
+        }
+
         const configFotos = {
             effect: 'fade',
             fadeEffect: { crossFade: true },
             loop: true,
-            speed: 2000, 
+            speed: 2000,
             autoplay: { delay: 4000, disableOnInteraction: false },
             pagination: { el: '.swiper-pagination', clickable: true },
             grabCursor: true
         };
 
-        if (document.querySelector('.swiper-esencia')) new Swiper('.swiper-esencia', configFotos);
-        if (document.querySelector('.swiper-carta')) new Swiper('.swiper-carta', configFotos);
+        new Swiper('.swiper-esencia', configFotos);
+        new Swiper('.swiper-carta', configFotos);
+
+        const swiperEventos = new Swiper('.swiper-eventos', {
+            effect: 'fade',
+            fadeEffect: { crossFade: true },
+            loop: true,
+            speed: 2000, 
+            pagination: { el: '.swiper-pagination', clickable: true },
+            grabCursor: true,
+            autoplay: false,
+            on: {
+                init: function () {
+                    manejarTiempoVideo(this);
+                },
+                slideChange: function () {
+                    manejarTiempoVideo(this);
+                }
+            }
+        });
     }
+
 });
 
 // --- modal pdf functions ---
@@ -349,7 +389,6 @@ function closePdfModal() {
         window.addEventListener('pageshow', (event) => {
             if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
                 document.body.innerHTML = "";
-                
                 window.location.replace(window.location.href);
             }
         });
