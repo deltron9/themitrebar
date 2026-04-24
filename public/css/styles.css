@@ -299,16 +299,13 @@ background-color: var(--black);
     gap: 50px;
 }
 
-.menu-item-card.reverse .menu-content {
-    flex-direction: row-reverse;
-}
-
 .text-side {
     flex: 1;
+    align-content: center;
 }
 
 .text-side h2 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Playfair Display', sans-serif, serif;
     font-size: 3rem;
     color: var(--gold);
     margin-bottom: 15px;
@@ -326,14 +323,9 @@ background-color: var(--black);
     background-color: var(--gold);
 }
 
-.menu-item-card.reverse .text-side h2::after {
-    left: auto;
-    right: 0; 
-}
-
 .text-side p {
     font-size: 1.1rem;
-    color: rgba(255,255,255,0.8);
+    color: var(--gold);
     margin-bottom: 30px;
     line-height: 1.8;
 }
@@ -1119,7 +1111,6 @@ background-color: var(--black);
     /* truncado de texto en carta para no ser extensos */
     .text-side p {
         display: -webkit-box;
-        -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -1142,7 +1133,7 @@ background-color: var(--black);
         margin-top: 20px;
     }
 
-    /* Cada bloque (Sección) se asegura de centrar su contenido */
+    /* Cada bloque se asegura de centrar su contenido */
     .footer-section {
         width: 100%;
         display: flex;
@@ -1176,7 +1167,6 @@ background-color: var(--black);
         --navbar-height: 90px;
     }
 
-    /* INTEGRADO: Logo y texto de nav más chicos solicitado */
     .nav-logo {
         height: 45px; /* Un poco más grande que 40px para legibilidad */
     }
@@ -1210,11 +1200,6 @@ background-color: var(--black);
 
     .text-side h2 {
         font-size: 1.8rem;
-    }
-
-    /* INTEGRADO: Texto de carta reducido a 2 líneas en pantallas mínimas */
-    .text-side p {
-        -webkit-line-clamp: 2;
     }
 
     .sch-hours {
