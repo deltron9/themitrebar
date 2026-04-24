@@ -432,30 +432,25 @@ background-color: var(--black);
 .main-footer {
     background-color: #050505;
     border-top: 1.5px solid var(--gold);
-    align-items: center;
+    padding: 15px 0 10px 0; 
 }
 
 .footer-wrapper {
     max-width: 1200px;
     margin: 0 auto;
-    margin-top: 10px;
-}
-
-.footer-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    align-items: center;
-    gap: 1rem;
-}
-
-.titles-row {
-    color: var(--gold);
-}
-
-.footer-col {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-around; /* Distribuye las 3 columnas */
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+/* Cada columna ahora contiene el título y su link */
+.footer-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra el contenido */
+    text-align: center;
+    flex: 1;
 }
 
 .footer-section h3 {
@@ -463,8 +458,10 @@ background-color: var(--black);
     text-transform: uppercase;
     font-size: 0.75rem; 
     letter-spacing: 2px;
+    margin-bottom: 1px;
 }
 
+/* Iconos y Links (Mantengo tus estilos) */
 .social-icons {
     display: flex;
     gap: 20px;
@@ -491,6 +488,7 @@ background-color: var(--black);
     color: var(--gold);
 }
 
+/* Efectos Hover */
 .social-icons a:hover, 
 .contact-link:hover {
     color: var(--gold-bright);
@@ -502,6 +500,7 @@ background-color: var(--black);
     font-size: 0.55rem;
     color: var(--gray-muted);
     letter-spacing: 1px;
+    margin-top: 10px;
 }
 
 /* =========== PÁGINA DE ERROR =========== */
@@ -1073,7 +1072,6 @@ background-color: var(--black);
         color: var(--gold);
         font-size: 2rem;
         cursor: pointer;
-        /* INTEGRADO: Z-index superior para que la X no quede bajo el menú */
         position: relative;
         z-index: 1100; 
     }
@@ -1081,7 +1079,6 @@ background-color: var(--black);
     .nav-links {
         position: fixed;
         top: 0;
-        /* INTEGRADO: Ocupa el 100% para evitar que se vea el contenido de fondo mezclado */
         right: -100%;
         width: 100%; 
         height: 100vh;
@@ -1091,18 +1088,17 @@ background-color: var(--black);
         align-items: center;
         transition: 0.4s ease-in-out;
         backdrop-filter: blur(15px);
-        /* Quitamos el borde lateral al ser full width */
         border-left: none;
         z-index: 1050;
     }
 
-    /* INTEGRADO: Clase coincidente con tu JavaScript para abrir el menú */
+    /* Clase coincidente con tu JavaScript para abrir el menú */
     .nav-links.active {
         right: 0;
     }
 
     .nav-links a {
-        font-size: 1.3rem; /* Un poco más grande para facilitar el toque */
+        font-size: 1.3rem; 
         margin: 10px 0;
     }
 
@@ -1120,7 +1116,7 @@ background-color: var(--black);
         width: 100%;
     }
 
-    /* INTEGRADO: Truncado de texto en carta para no ser extensos */
+    /* truncado de texto en carta para no ser extensos */
     .text-side p {
         display: -webkit-box;
         -webkit-line-clamp: 3;
@@ -1139,22 +1135,25 @@ background-color: var(--black);
         grid-column: span 1;
     }
 
-    /*Footer*/
-    .footer-row {
-        grid-template-columns: 1fr;
-        gap: 2rem;
+    .footer-wrapper {
+        flex-direction: column; 
+        align-items: center;
+        gap: 40px; /* Espacio generoso entre secciones */
+        margin-top: 20px;
+    }
+
+    /* Cada bloque (Sección) se asegura de centrar su contenido */
+    .footer-section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         text-align: center;
     }
 
-    /* INTEGRADO: Orden de footer: Título primero, luego links */
-    .footer-col {
-        flex-direction: column;
-        display: flex;
-    }
-
+    /* Ajuste de margen para los títulos en móvil */
     .footer-section h3 {
-        order: 1;
-        margin-bottom: 15px;
+        margin-bottom: 12px;
     }
 
     .social-icons, .contact-link, .location-info {
