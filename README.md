@@ -10,24 +10,23 @@ El proyecto utiliza un stack basado en JavaScript para cubrir tanto el frontend 
 * **Frontend:** HTML5, CSS3 y JavaScript (Vanilla) para la interactividad.
 * **Gestión de Datos:** Manejo de archivos JSON y controladores específicos para la lógica de negocio.
 
-## Librerias
+## Librerías
 * **Alertas:** [SweetAlert2](https://sweetalert2.github.io/) para la visualización de alertas en errores de formulario.
 * **Animación en Carrusel:** [Swiper]((https://sweetalert2.github.io/)) para animación y transición automática en carrusel de imágenes y videos de la página "nosotros".
 
 ## Vista Previa y Páginas
-
-A continuación se detallan las secciones principales de la aplicación. Podes insertar tus capturas reemplazando el texto entre paréntesis:
+A continuación se detallan las secciones de la aplicación.
 
 ### Bienvenida
-Página de aterrizaje con la identidad visual de **The Mitre Bar**, promociones y destacados.
-> ![Screenshot Home](./screenshots/home-mitre.jpg)
+Página de aterrizaje con la identidad visual de **The Mitre Bar**, con una sugerencia para ver la carta.
+> ![Screenshot Home](./screenshots/home-mitre.png)
 
 ### Nuestra Carta
 Sección dinámica que lista los productos consumiendo la descripción breve desde /data/textos.json, la imagen previa de /preview_cartas y el archivo de las distintas cartas desde la carpeta /cartas_pdf.
 > ![Screenshot Menu](./screenshots/cartas-mitre.png)
 
 ### Ubicación y Horarios
-Interfaz para que el usuario gestione sus productos, cantidades y vea el total de su pedido.
+Sección dinámica que detalla los horarios de atención y ubicación del bar.
 > ![Screenshot Ubicacion](./screenshots/ubicacion.png)
 
 ### Nosotros
@@ -36,13 +35,17 @@ Sección dinámica que detalla brevemente al bar, los servicios que ofrece, y el
 
 ### Encuesta
 Sección dinámica que realiza una encuesta al usuario para luego enviar los datos ya validados a una hoja de cálculo de google sheets.
-> ![Screenshot Nosotros](./screenshots/encuesta.png)
+> ![Screenshot Encuesta](./screenshots/encuesta.png)
+
+### Error
+Página mostrada en caso de querer dirigirse a una sección inexistente.
+![Screenshot Error](./screenshots/error.png)
 
 ### Login
 Sistema de autenticación para usuarios registrados.
 > ![Screenshot Login](./screenshots/login.png)
 
-### 🛠️ Panel de Administración
+### Panel de Administración
 Vista para la gestión de cartas: permite qctualizar individualmente la descripción, la imagen previa y el archivo de cada carta.
 > ![Screenshot Admin](./screenshots/panel.png)
 
