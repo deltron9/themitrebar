@@ -132,7 +132,7 @@ router.get('/login', (req, res) => {
 router.post('/login', (req, res) => {
     const { user, pass } = req.body;
     if (user === process.env.ADMIN_USER && pass === process.env.ADMIN_PASS) {
-        const token = jwt.sign({ user }, process.env.JWT_SECRET || 'clavemitrebar', { expiresIn: '15m' });
+        const token = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '15m' });
         res.cookie('adminToken', token, { httpOnly: true, maxAge: 15 * 60 * 1000 });
         return res.redirect('/admin');
     }
