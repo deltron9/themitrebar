@@ -57,11 +57,16 @@ router.post('/enviar-encuesta', async (req, res) => {
             return res.status(400).json({ success: false, message: 'faltan campos obligatorios.' });
         }
 
-        // se agrega validatestatus para evitar que el 302 de google dispare el catch
-        await axios.get(SCRIPT_URL, { 
-            params: req.body,
-            validateStatus: (status) => status >= 200 && status <= 302 
-        });
+        await axios.post(
+                SCRIPT_URL,
+                JSON.stringify(req.body),
+                {
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8'
+                    },
+                    maxRedirects: 5
+                }
+            );
 
         // creamos la cookie que servira para bloquear el boton atras
         res.cookie('encuesta_completada', 'true', { 
@@ -88,7 +93,7 @@ const protectedAdmin = (req, res, next) => {
     if (!token) return res.redirect('/login');
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'clavemitrebar'); 
+        const decoded = jwt.verify(token, process.env.JWT_SECRET); 
         req.user = decoded;
         next();
     } catch (err) {
